@@ -1,0 +1,24 @@
+#ifndef __MODULE_H__
+#define __MODULE_H__
+#include <typeinfo>
+#include "../Memory/Block.h"
+#include "../Memory/Memory.h"
+
+class Module
+{
+public:
+    Module(Memory * memory, Module * next) :
+        memory(memory),
+        next(next)
+    {
+    }
+
+    virtual const char * name() = 0;
+    virtual Block * process(Block * in) = 0;
+    Module * next;
+    Memory * memory;
+private:
+};
+
+
+#endif
