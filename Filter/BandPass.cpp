@@ -122,9 +122,6 @@ BandPass::BandPass(Memory * memory,
         float bw, 
         int order):
     Module(memory, next),
-    fs(fs),
-    fc(fc),
-    bw(bw),
     order(order)
 {
     if (order % 2 || order < 2) 
@@ -200,10 +197,12 @@ public:
         iter = block->get_iterator();
         value = filter->work(**iter);
         ptr = &value;
+        filter->reset();
     }
 
+    ~BandPassBlock() {};
+
     void free() {
-        printf("freeing BandPassBlock...\n");
         block->free();
         delete this;
     }
@@ -217,7 +216,7 @@ public:
     }
 
     void reset() {
-        filter->reset();
+        //filter->reset();
         block->reset();
     }
 

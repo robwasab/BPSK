@@ -4,7 +4,7 @@
 #include "Block.h"
 #include "../Queue/Queue.h"
 
-#define SIZE (1 << 20) 
+#define SIZE (1 << 19) 
 
 class Memory
 {

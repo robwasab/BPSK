@@ -15,8 +15,8 @@ public:
 
     virtual const char * name() = 0;
     virtual Block * process(Block * in) = 0;
-    Module * next;
     Memory * memory;
+    Module * next;
 private:
 };
 

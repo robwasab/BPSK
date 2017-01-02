@@ -26,32 +26,53 @@ Transmitter_paths=$(addprefix Transmitter/,$(Transmitter_objects))
 Filter_objects=BandPass.o
 Filter_paths=$(addprefix Filter/,$(Filter_objects))
 
+CostasLoop_objects=CostasLoop.o Biquad_LowPass.o CostasLoopBlock.o
+CostasLoop_paths=$(addprefix CostasLoop/,$(CostasLoop_objects))
+
+WavSink_objects=WavSink.o
+WavSink_paths=$(addprefix WavSink/,$(WavSink_objects))
+
+Receiver_objects=BPSKDecoder.o
+Receiver_paths=$(addprefix Receiver/,$(Receiver_objects))
+
 # Default target
 all: main
 
-main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(PLOT_PATHS) -o $(OUTPUT) $(LIBS)
+main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) Colors/Colors.h PlotSink/PlotSink.h
+	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
-	$(CC) $(INCLUDE) -c main.cpp
+	$(CC) -Wall $(INCLUDE) -c main.cpp
 
 $(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
 	make -C ./PlotController $(notdir $@)
 
 $(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h
-	$(CC) $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 $(Memory_paths):%.o:%.cpp %.h Memory/Block.h Colors/Colors.h
-	$(CC) $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 $(Transmitter_paths):%.o: %.cpp %.h Colors/Colors.h PlotController/DataSource.h
-	$(CC) $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 $(Filter_paths):%.o: %.cpp %.h Module/Module.h
-	$(CC) $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
+
+$(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
+
+$(Receiver_paths):%.o: %.cpp %.h Module/Module.h
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 clean:
 	rm $(TaskScheduler_paths)
 	rm $(Memory_paths)
 	rm $(Transmitter_paths)
+	rm $(Filter_paths)
+	rm $(CostasLoop_paths)
+	rm $(WavSink_paths)
+	rm $(Receiver_paths)
+
+    
 	make -C ./PlotController clean

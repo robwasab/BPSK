@@ -15,6 +15,7 @@ public:
     virtual bool next() = 0;
     virtual float ** get_iterator() = 0;
     virtual void print() = 0;
+    virtual ~Block() {};
 };
 
 class MemoryBlock : public Block
@@ -32,6 +33,8 @@ public:
         _free = false;
         counter = 0;
     }
+
+    ~MemoryBlock() {}
 
     MemoryBlock(size_t head, size_t size, float * memory, size_t memory_size) :
         head(head),

@@ -55,7 +55,6 @@ private:
     void slide();
     float * pulseshape;
     float * history;
-    float * buffer;
     int sym_delay;
     float m;
     float min;

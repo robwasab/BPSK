@@ -34,10 +34,7 @@ public:
             double fc,
             double fs):
         bits(bits),
-        training_bits(training_bits),
-        cycles_per_bit(cycles_per_bit),
-        fc(fc),
-        fs(fs)
+        training_bits(training_bits)
     {
         samples_per_cycle = fs/fc;
         len = (size_t) ((training_bits + bits->get_size()) * cycles_per_bit * samples_per_cycle);
@@ -48,8 +45,9 @@ public:
         reset();
     }
 
+    ~BPSKBlock() {}
+
     void free() {
-        printf("freeing BPSKBlock...\n");
         bits->free();
         delete this;
     }
@@ -66,21 +64,21 @@ public:
         bits->reset();
         bits_iter = bits->get_iterator();
 
-        // this is to get it to hit the first if statement in next right after fresh reset
-        phase = phase_per_bit;
 
         inv = false;
         // this forces it to flip on the first bit
-        last_bit = **bits_iter == 0.0 ? 1.0 : 0.0;
+        last_bit = (**bits_iter == 0.0) ? 1.0 : 0.0;
         state = TRAIN;
-        k = 0;
-        n = 0;
+        k = 1;
+        n = 1;
         bit = 0.0;
+        phase = 0;
+        value = (float) ((inv ? -1.0 : 1.0) * sin(phase));
     }
 
     bool next() 
     {
-        if (phase >= phase_per_bit) 
+        if (phase > phase_per_bit) 
         {
             phase -= phase_per_bit;
 
@@ -131,11 +129,7 @@ public:
 
 private:
     Block * bits;
-    BPSK * bpsk;
-    double fc;
-    double fs;
     int training_bits;
-    int cycles_per_bit;
     double phase_per_bit;
     size_t len;
     double samples_per_cycle;

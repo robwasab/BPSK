@@ -91,8 +91,7 @@ Block * Prefix::process(Block * bits)
 {
     float ** bits_iter;
     float ** encode_iter;
-    int n,k;
-    bool bit;
+    int n;
 
     /* STEP 1: Prefix the data with maximal length pseudo random header
      * STEP 2: replace each '1' bit with the same pseudo random header,

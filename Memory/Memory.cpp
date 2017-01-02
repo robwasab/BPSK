@@ -37,6 +37,7 @@ Block * Memory::allocate(size_t amt)
             RED;
             printf("\'blocks\' Queue is full. Recompile with bigger size!\n");
             ENDC;
+            unlock();
             return NULL;
         }
 

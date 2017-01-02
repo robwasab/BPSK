@@ -83,10 +83,9 @@ public:
             n += 1;
         } while(b->next());
 
-        b->free();
         _valid = false;
         unlock();
-        return NULL;
+        return b;
     }
 
     // DataSource

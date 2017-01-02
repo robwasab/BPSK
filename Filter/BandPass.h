@@ -34,9 +34,6 @@ public:
 
 private:
     int order;
-    float bw;
-    float fc;
-    float fs;
     SOSBandPass ** filters;
 };
 
