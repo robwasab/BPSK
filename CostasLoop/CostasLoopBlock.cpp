@@ -17,6 +17,7 @@ CostasLoopBlock::CostasLoopBlock(Block * block,
     block_iter = block->get_iterator();
     ptr = get_pointer(type);
 
+    costa->reset();
     reset();
 }
 

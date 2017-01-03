@@ -10,13 +10,26 @@ public:
             Module * next, 
             float fs, 
             float fc, 
+            bool * prefix,
+            size_t prefix_len,
             int cycles_per_bit,
-            bool first_bit);
+            bool first_bit,
+            float threshold = 0.05);
 
     const char * name();
     Block * process(Block * block);
 private:
+    bool first_bit;
+    uint32_t prefix;
+    uint32_t prefix_mask;
     int sample_period;
+    float fs;
+    uint64_t trail_samples;
+    int trail_samples_len;
+    float threshold;
+    bool majority_vote();
+    void add_level(bool level);
+    void print_shift_register(uint32_t shift_register);
 };
 
 #endif

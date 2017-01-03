@@ -47,7 +47,6 @@ public:
         //return QRectF( -1.25, 0, 2.5, source->size() );
         Point origin = source->get_origin();
         Point length = source->get_lengths();
-        printf("Bounding Rectangle!\n");
         return QRectF(origin.y, origin.x, length.y, length.x);
     }
 
@@ -206,9 +205,6 @@ void Plot::timerEvent( QTimerEvent * )
     if (!source->valid()) {
         Point origin = source->get_origin();
         Point length = source->get_lengths();
-        printf("Updating plot!\n");
-        printf("origin x,y : %.3f,%.3f\n", origin.x, origin.y);
-        printf("length x,y : %.3f,%.3f\n", length.x, length.y);
         float pad = 0.1 * length.y;
         setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
         setAxisScale( QwtPlot::yLeft, origin.y - pad, origin.y + length.y + pad);

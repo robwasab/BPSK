@@ -1,88 +1,25 @@
+#include <string.h>
 #include "Prefix.h"
 
-int feedback_table[] = 
-#if ML_BITS == 2
-    {+1,+0,-1,};
-#elif ML_BITS == 3
-    {+2,+1,-1,};
-#elif ML_BITS == 4
-    {+3,+2,-1};
-#elif ML_BITS == 5
-    {+4,+2,-1};
-#elif ML_BITS == 6
-    {+5,+4,-1};
-#elif ML_BITS == 7
-    {+6,+5,-1};
-#elif ML_BITS == 8
-    {+7,+5,+4,+3,-1};
-#elif ML_BITS == 9
-    {+8,+4,-1};
-#elif ML_BITS == 10
-    {+9,+6,-1};
-#elif ML_BITS == 11
-    {10,+8,-1};
-#elif ML_BITS == 12
-    {11,10,+9,+3,-1};
-#elif ML_BITS == 13
-    {12,11,10,+7,-1};
-#elif ML_BITS == 14
-    {13,12,11,+1,-1};
-#elif ML_BITS == 15
-    {14,13,-1};
-#elif ML_BITS == 16
-    {15,14,12,+3,-1};
-#elif ML_BITS == 17
-    {16,13,-1};
-#elif ML_BITS == 18
-    {17,10,-1};
-#elif ML_BITS == 19
-    {18,17,16,13,-1};
-#else
-#error unknown ML_BITS
-#endif
-
 Prefix::Prefix(Memory * memory, 
-            Module * next):
+            Module * next, 
+            bool * prefix,
+            size_t prefix_len):
     Module(memory, next)
 {
-    int n,k;
-    bool bit;
-
-    for (n = 0; n < ML_BITS; ++n) 
-    {
-        shift_register[n] = true;
-    }
-
-    printf("Calculating pseudo random sequence len: %d\n", RAND_LEN);
-
-    for (n = 0; n < RAND_LEN; ++n)
-    {
-        bit = false;
-        for (k = 0; feedback_table[k] != -1; ++k)
-        {
-            bit ^= shift_register[feedback_table[k]];
-        }
-
-        for (k = ML_BITS-1; k > 0; --k)
-        {
-            shift_register[k] = shift_register[k-1];
-        }
-
-        shift_register[0] = bit;
-
-        rand[n] = bit;
-        printf("%d ", bit);
-    }
-    printf("\n");
+    this->prefix = new bool[prefix_len];
+    memcpy(this->prefix, prefix, prefix_len);
+    this->prefix_len = prefix_len;
 }
 
 void Prefix::encode_helper(Block * encode, bool inv)
 {
     int n;
     float ** iter = encode->get_iterator();
-    for (n = 0; n < RAND_LEN; ++n)
+
+    for (n = 0; n < prefix_len; ++n)
     {
-        **iter = inv ^ rand[n];
+        **iter = inv ^ prefix[n];
         encode->next();
     }
 }
@@ -91,6 +28,7 @@ Block * Prefix::process(Block * bits)
 {
     float ** bits_iter;
     float ** encode_iter;
+    uint8_t size;
     int n;
 
     /* STEP 1: Prefix the data with maximal length pseudo random header
@@ -103,7 +41,10 @@ Block * Prefix::process(Block * bits)
      */
 
     //Block * encode = memory->allocate((bits->get_size() + RAND_LEN) * RAND_LEN);
-    Block * encode = memory->allocate((bits->get_size() + RAND_LEN));
+
+    // prefix + size of data contained in a byte + data + zero byte
+    size = bits->get_size()/8;
+    Block * encode = memory->allocate( prefix_len + 8 + bits->get_size() + 8);
     
     if (!encode) {
         goto fail;
@@ -114,10 +55,10 @@ Block * Prefix::process(Block * bits)
 
     bits->reset();
 
-    for (n = 0; n < RAND_LEN; ++n)
+    for (n = 0; n < prefix_len; ++n)
     {
         //encode_helper(encode, rand[n]); 
-        **encode_iter = rand[n];
+        **encode_iter = prefix[n];
         encode->next();
     }
 
@@ -128,11 +69,22 @@ Block * Prefix::process(Block * bits)
     } while(bits->next());
     */
 
+    for (n = 0; n < 8; ++n)
+    {
+        **encode_iter = (size & (1 << n)) ? 1.0 : 0.0;
+        encode->next();
+    }
+
     do
     {
         **encode_iter = **bits_iter;
     } while(encode->next() && bits->next());
 
+    for (n = 0; n < 8; ++n)
+    {
+        **encode_iter = 0.0;
+        encode->next();
+    }
 
     bits->free();
     return encode;

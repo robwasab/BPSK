@@ -227,9 +227,11 @@ public:
         else {
             //value = **iter;
             value = filter->work(**iter);
+            /*
             if (fabs(value) > 5) {
                 printf("filter->work(%.3f): %.3f\n", **iter, value);
             }
+            */
             return true;
         }
     }

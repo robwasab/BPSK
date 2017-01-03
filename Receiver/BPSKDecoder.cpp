@@ -1,14 +1,44 @@
+#include <string.h>
 #include "BPSKDecoder.h"
+#include "../CostasLoop/CostasLoopBlock.h"
 #include <math.h>
+#define AND &&
+#define OR ||
 
 BPSKDecoder::BPSKDecoder(Memory * memory, 
         Module * next,
         float fs, 
         float fc,
+        bool * prefix,
+        size_t prefix_len,
         int cycles_per_bit, 
-        bool first_bit):
-    Module(memory, next)
+        bool first_bit,
+        float threshold):
+    Module(memory, next),
+    first_bit(first_bit),
+    threshold(threshold)
 {
+    int k, j;
+    prefix_mask = (1 << (prefix_len))-1;
+
+    this->prefix = 0;
+
+    j = 0;
+    for (k = prefix_len - 1; k >= 0; --k)
+    {
+        if (prefix[j]) {
+            this->prefix |= (1 << k);
+        }
+        j += 1;
+    }
+    printf("\n");
+
+    GREEN;
+    printf("%s: prefix = \n", __FILE__);
+    print_shift_register(this->prefix);
+    print_shift_register(prefix_mask);
+    ENDC;
+
     // the time difference between two sampling rates is
     // exact sampling rate fs, ts
     // integer sampling rate fk, tk
@@ -44,6 +74,13 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         ENDC;
     }
     sample_period = (int) samples_per_bit;
+
+    printf("%s: samples per bit: %d\n", __FILE__, sample_period);
+
+    this->fs = fs;
+
+    trail_samples = 0;
+    trail_samples_len = sample_period > 32 ? 32 : sample_period;
 }
 
 const char __name__[] = "BPSKDecoder";
@@ -53,7 +90,258 @@ const char * BPSKDecoder::name()
     return __name__;
 }
 
-Block * BPSKDecoder::process(Block * b)
+bool BPSKDecoder::majority_vote()
 {
+    int n;
+    int high = 0;
+    int low = 0;
+
+    for (n = 0; n < trail_samples_len; ++n) 
+    {
+        if (trail_samples & (1 << n)) 
+        {
+            high += 1;
+        }
+        else 
+        {
+            low += 1;
+        }
+    }
+    if (high > low) 
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+
+void BPSKDecoder::add_level(bool level) 
+{
+    trail_samples <<= 1;
+    trail_samples += level ? 1 : 0;
+}
+
+void BPSKDecoder::print_shift_register(uint32_t shift_register)
+{
+    uint32_t reg = shift_register;
+
+    for (int n = 0; n < 32; ++n)
+    {
+        if (reg & (1 << n)) 
+            printf("1 ");
+        else
+            printf("0 ");
+    }
+    printf("\n");
+}
+
+Block * BPSKDecoder::process(Block * block)
+{
+    static uint32_t shift_register = 0;
+    static float last = 0;
+    static int count = 0;
+    static bool last_bit = false;
+    static enum {ACQUIRE, LOOK_FOR_HEADER, READ_SIZE, COLLECT_BITS} state = ACQUIRE;
+    static uint8_t k = 0;
+    static uint8_t byte = 0;
+    static Block * msg = NULL;
+    static float ** msg_iter = NULL;
+
+    CostasLoopBlock * demod = (CostasLoopBlock *) block;
+    float * lock = demod->get_pointer(LOCK_SIGNAL);
+    //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
+    float * data = demod->get_pointer(IN_PHASE_SIGNAL);
+
+    float derivative;
+    bool bit;
+
+    //Block * deri = memory->allocate(demod->get_size());
+    //float ** deri_iter = deri->get_iterator();
+
+    demod->reset();
+
+    // temporary
+    // state = ACQUIRE;
+
+    do 
+    {
+        if (*lock < 0.8) 
+        {
+            if (state != ACQUIRE) 
+            {
+                /*
+                MAGENTA;
+                printf("%s: Costas loop unlocked!\n", __FILE__);
+                ENDC;
+                */
+                if (msg) 
+                {
+                    msg->free();
+                    msg = NULL;
+                    msg_iter = NULL;
+                }
+                state = ACQUIRE;
+            }
+        }
+
+        add_level( (*data > 0.0) ? true : false );
+        
+        derivative = (*data - last);
+        last = *data;
+        //**deri_iter = derivative;
+        //**deri_iter = *data;
+        //deri->next();
+
+        switch (state)
+        {
+            case ACQUIRE:
+                if (fabs(derivative) > 0.05) 
+                {
+                    /*
+                    GREEN;
+                    printf("%s: state = LOOK_FOR_HEADER\n", __FILE__);
+                    ENDC;
+                    */
+                    state = LOOK_FOR_HEADER;
+                    count = 0;
+                    last_bit = false;
+                    shift_register = 0;
+                }
+                break;
+
+            case LOOK_FOR_HEADER:
+                count += 1;
+                if (count >= sample_period)
+                {
+                    bit = majority_vote();
+                    shift_register <<= 1;
+
+                    if (bit != last_bit) 
+                    {
+                        //printf("1 ");
+                        shift_register |= 1;
+                    }
+                    /*
+                    else {
+                        printf("0 ");
+                    }
+                    */
+
+                    last_bit = bit;
+                    count = 0;
+
+                    /*
+                    printf("%s: shift : ", __FILE__);
+                    print_shift_register(shift_register);
+                    
+                    printf("%s: prefix: ", __FILE__);
+                    print_shift_register(prefix);
+                    */
+
+                    if ((shift_register & prefix_mask) == prefix) 
+                    {
+                        BLUE;
+                        printf("%s: Found Prefix!\n", __FILE__);
+                        ENDC;
+                        k = 0;
+                        byte = 0;
+                        state = READ_SIZE;
+                    }
+                }
+                break;
+
+            case READ_SIZE:
+                count += 1;
+                if (count >= sample_period)
+                {
+                    bit = majority_vote();
+                    if (bit != last_bit)
+                    {
+                        byte |= (1 << k);
+                    }
+                    k += 1;
+
+                    last_bit = bit;
+                    count = 0;
+
+                    if (k >= 8) 
+                    {
+                        BLUE;
+                        printf("%s: Got size: %hhd\n", __FILE__, byte);
+                        ENDC;
+                        msg = memory->allocate(byte);
+                        msg_iter = msg->get_iterator();
+                        k = 0;
+                        byte = 0;
+                        state = COLLECT_BITS;
+                    }
+                }
+                break;
+                
+
+            case COLLECT_BITS:
+                count += 1;
+                if (count >= sample_period)
+                {
+                    bit = majority_vote();
+                    if (bit != last_bit)
+                    {
+                        byte |= (1 << k);
+                        //printf("1 ");
+                    }
+                    else {
+                        //printf("0 ");
+                    }
+                    k += 1;
+
+                    last_bit = bit;
+                    count = 0;
+
+                    if (k >= 8)
+                    {
+                        /*
+                        GREEN;
+                        printf("%c", byte);
+                        ENDC;
+                        */
+
+                        **msg_iter = byte;
+                        if (!msg->next()) 
+                        {
+                            // print the message:
+                            BLUE;
+                            printf("Received: ");
+                            ENDC;
+                            GREEN;
+                            msg->reset();
+                            char c;
+                            do {
+                                c = (char) **msg_iter;
+                                printf("%c", c);
+                            } while(msg->next());
+                            printf("\n");
+                            ENDC;
+
+                            demod->free();
+                            state = ACQUIRE;
+                            Block * ret = msg;
+                            msg = NULL;
+                            msg_iter = NULL;
+                            return ret;
+                        }
+
+                        byte = 0;
+                        k = 0;
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+    } while(demod->next());
+    demod->free();
     return NULL;
 }

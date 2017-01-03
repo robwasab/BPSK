@@ -17,6 +17,7 @@ public:
     float ** get_iterator();
     void print();
     ~CostasLoopBlock();
+    float * get_pointer(SignalType type);
 
 private:
     Block * block;
@@ -31,7 +32,6 @@ private:
     float * error_ptr;
     float * ptr;
     float ** block_iter;
-    float * get_pointer(SignalType type);
 };
 
 #endif

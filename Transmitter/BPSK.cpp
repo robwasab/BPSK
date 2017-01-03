@@ -37,6 +37,7 @@ public:
         training_bits(training_bits)
     {
         samples_per_cycle = fs/fc;
+
         len = (size_t) ((training_bits + bits->get_size()) * cycles_per_bit * samples_per_cycle);
         phase_per_bit = cycles_per_bit * 2.0 * M_PI;
         inc = 2.0*M_PI*fc/fs;
@@ -67,7 +68,7 @@ public:
 
         inv = false;
         // this forces it to flip on the first bit
-        last_bit = (**bits_iter == 0.0) ? 1.0 : 0.0;
+        //last_bit = (**bits_iter < 1.0) ? 1.0 : 0.0;
         state = TRAIN;
         k = 1;
         n = 1;
@@ -95,10 +96,9 @@ public:
             case LOAD_BIT:
                 bit = **bits_iter;
 
-                if (last_bit != bit) 
+                if (bit) 
                 {
                     inv ^= true;
-                    last_bit = bit;
                 }
                 bits->next();
                 break;
@@ -139,7 +139,7 @@ private:
     double phase;
     double inc;
     bool inv;
-    float last_bit;
+    //float last_bit;
     float ** bits_iter;
     enum {TRAIN, LOAD_BIT} state;
     int k,n;

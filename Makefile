@@ -14,6 +14,9 @@ PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 # Copied these from PlotController/Makefile
 LIBS= -F/usr/local/Cellar/qt5/5.7.0/lib -L /usr/local/opt/qwt/lib/qwt.framework/ /usr/local/opt/qwt/lib/qwt.framework/qwt -framework QtPrintSupport -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtOpenGL -framework OpenGL -framework AGL 
 
+generator_objects=generator.o
+generator_paths=$(addprefix MaximumLength/,$(generator_objects))
+
 TaskScheduler_objects=TaskScheduler.o
 TaskScheduler_paths=$(addprefix TaskScheduler/,$(TaskScheduler_objects))
 
@@ -38,8 +41,8 @@ Receiver_paths=$(addprefix Receiver/,$(Receiver_objects))
 # Default target
 all: main
 
-main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) -o $(OUTPUT) $(LIBS)
+main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) Colors/Colors.h PlotSink/PlotSink.h
+	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
 	$(CC) -Wall $(INCLUDE) -c main.cpp
@@ -62,7 +65,13 @@ $(Filter_paths):%.o: %.cpp %.h Module/Module.h
 $(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h
 	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
+$(WavSink_paths):%.o: %.cpp %.h Module/Module.h
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
+
 $(Receiver_paths):%.o: %.cpp %.h Module/Module.h
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
+
+$(generator_paths):%.o: %.cpp %.h
 	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 clean:
@@ -73,6 +82,5 @@ clean:
 	rm $(CostasLoop_paths)
 	rm $(WavSink_paths)
 	rm $(Receiver_paths)
-
-    
+	rm $(generator_paths)
 	make -C ./PlotController clean

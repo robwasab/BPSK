@@ -68,11 +68,6 @@ public:
 
         do
         {
-            if (fabs(**iter) > 5) {
-                RED;
-                printf("data anomoly: data[%zu] = %.3f\n", n, **iter);
-                ENDC;
-            }
             data[n] = **iter;
             if (data[n] > max) {
                 max = data[n];
@@ -127,7 +122,6 @@ public:
         lock();
         p.x = 0;
         p.y = min;
-        printf("get_origin(): x,y : %.3f, %.3f\n", p.x, p.y);
         unlock();
         return p;
     }
@@ -137,7 +131,6 @@ public:
         lock();
         p.x = len;
         p.y = max - min;
-        printf("get_lengths(): x,y : %.3f, %.3f\n", p.x, p.y);
         unlock();
         return p;
     }
