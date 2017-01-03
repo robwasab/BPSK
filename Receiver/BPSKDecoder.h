@@ -2,6 +2,8 @@
 #define __BPSK_DECODER_H__
 
 #include "../Module/Module.h"
+#include "../CostasLoop/CostasLoop.h"
+#include "../PlotController/DataSource.h"
 
 class BPSKDecoder : public Module
 {
@@ -18,6 +20,7 @@ public:
 
     const char * name();
     Block * process(Block * block);
+    DataSource * get_source(SignalType type);
 private:
     bool first_bit;
     uint32_t prefix;

@@ -1,6 +1,8 @@
 #include <string.h>
 #include "BPSKDecoder.h"
 #include "../CostasLoop/CostasLoopBlock.h"
+#include "../CostasLoop/RC_LowPass.h"
+
 #include <math.h>
 #define AND &&
 #define OR ||
@@ -31,13 +33,14 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         }
         j += 1;
     }
-    printf("\n");
 
+    /*
     GREEN;
     printf("%s: prefix = \n", __FILE__);
     print_shift_register(this->prefix);
     print_shift_register(prefix_mask);
     ENDC;
+    */
 
     // the time difference between two sampling rates is
     // exact sampling rate fs, ts
@@ -67,15 +70,12 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
 
     if (fabs(1 - tk_ts) > 1E-6) {
         n = 0.5/fabs(1 - tk_ts);
-        BLINK;
-        YELLOW;
-        printf("Sampling clock drift warning! n = %.3f\n", n);
-        printf("It is recommended you change fc\n");
-        ENDC;
+        WARNING("Sampling clock drift warning! n = %.3f\n", n);
+        WARNING("It is recommended you change fc\n");
     }
     sample_period = (int) samples_per_bit;
 
-    printf("%s: samples per bit: %d\n", __FILE__, sample_period);
+    LOG("samples per bit: %d\n", sample_period);
 
     this->fs = fs;
 
@@ -109,10 +109,12 @@ bool BPSKDecoder::majority_vote()
     }
     if (high > low) 
     {
+        //LOG("[+%d/-%d]\n", high, low);
         return true;
     }
     else 
     {
+        //LOG("[+%d/-%d]\n", high, low);
         return false;
     }
 }
@@ -127,6 +129,7 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
 {
     uint32_t reg = shift_register;
 
+    LOG("");
     for (int n = 0; n < 32; ++n)
     {
         if (reg & (1 << n)) 
@@ -139,6 +142,7 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
 
 Block * BPSKDecoder::process(Block * block)
 {
+    static RC_LowPass timer(0.25, fs);
     static uint32_t shift_register = 0;
     static float last = 0;
     static int count = 0;
@@ -153,6 +157,9 @@ Block * BPSKDecoder::process(Block * block)
     float * lock = demod->get_pointer(LOCK_SIGNAL);
     //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
     float * data = demod->get_pointer(IN_PHASE_SIGNAL);
+
+    Block * reset_signal =  memory->allocate(block->get_size());
+    float ** reset_iter = reset_signal->get_iterator();
 
     float derivative;
     bool bit;
@@ -182,9 +189,16 @@ Block * BPSKDecoder::process(Block * block)
                     msg = NULL;
                     msg_iter = NULL;
                 }
+                timer.reset();
                 state = ACQUIRE;
             }
+            **reset_iter = timer.work(0.0);
         }
+        else 
+        {
+            **reset_iter = timer.work(1.0);
+        }
+        reset_signal->next();
 
         add_level( (*data > 0.0) ? true : false );
         
@@ -197,7 +211,7 @@ Block * BPSKDecoder::process(Block * block)
         switch (state)
         {
             case ACQUIRE:
-                if (fabs(derivative) > 0.05) 
+                if (*lock >= 0.8 && fabs(derivative) > threshold) 
                 {
                     /*
                     GREEN;
@@ -222,6 +236,7 @@ Block * BPSKDecoder::process(Block * block)
                     {
                         //printf("1 ");
                         shift_register |= 1;
+                        timer.reset();
                     }
                     /*
                     else {
@@ -242,9 +257,7 @@ Block * BPSKDecoder::process(Block * block)
 
                     if ((shift_register & prefix_mask) == prefix) 
                     {
-                        BLUE;
-                        printf("%s: Found Prefix!\n", __FILE__);
-                        ENDC;
+                        LOG("Found prefix!\n");
                         k = 0;
                         byte = 0;
                         state = READ_SIZE;
@@ -260,6 +273,7 @@ Block * BPSKDecoder::process(Block * block)
                     if (bit != last_bit)
                     {
                         byte |= (1 << k);
+                        timer.reset();
                     }
                     k += 1;
 
@@ -268,9 +282,7 @@ Block * BPSKDecoder::process(Block * block)
 
                     if (k >= 8) 
                     {
-                        BLUE;
-                        printf("%s: Got size: %hhd\n", __FILE__, byte);
-                        ENDC;
+                        LOG("Got size: %hhd\n", byte);
                         msg = memory->allocate(byte);
                         msg_iter = msg->get_iterator();
                         k = 0;
@@ -289,6 +301,7 @@ Block * BPSKDecoder::process(Block * block)
                     if (bit != last_bit)
                     {
                         byte |= (1 << k);
+                        timer.reset();
                         //printf("1 ");
                     }
                     else {
@@ -311,15 +324,19 @@ Block * BPSKDecoder::process(Block * block)
                         if (!msg->next()) 
                         {
                             // print the message:
-                            BLUE;
-                            printf("Received: ");
-                            ENDC;
+                            LOG("Received: ");
                             GREEN;
                             msg->reset();
                             char c;
-                            do {
+                            do 
+                            {
                                 c = (char) **msg_iter;
+                                if (c == '\n') 
+                                {
+                                    printf("\\n");
+                                }
                                 printf("%c", c);
+
                             } while(msg->next());
                             printf("\n");
                             ENDC;
@@ -329,7 +346,9 @@ Block * BPSKDecoder::process(Block * block)
                             Block * ret = msg;
                             msg = NULL;
                             msg_iter = NULL;
-                            return ret;
+                            ret->free();
+                            //return ret;
+                            return reset_signal;
                         }
 
                         byte = 0;
@@ -343,5 +362,6 @@ Block * BPSKDecoder::process(Block * block)
         }
     } while(demod->next());
     demod->free();
-    return NULL;
+    return reset_signal;
 }
+

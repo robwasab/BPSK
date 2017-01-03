@@ -241,8 +241,9 @@ public:
     }
 
     void print() {
-        printf("Bandpass Block\n");
+        printf("Bandpass Block{\n");
         block->print();
+        printf("}\n");
     }
 
 public:

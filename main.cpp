@@ -30,14 +30,13 @@ int main(int argc, char ** argv)
 
     PlotController controller(argc, argv);
 
-
-    BPSKDecoder deco(&memory, NULL, fs, fc, prefix, prefix_len, cycles_per_bit, false);
-
+    PlotSink rese(NULL);
+    BPSKDecoder deco(&memory, &rese, fs, fc, prefix, prefix_len, cycles_per_bit, false);
     PlotSink sink(&deco);
     CostasLoop  cost(&memory, &sink, fs, fc, IN_PHASE_SIGNAL);
     //WavSink     wave(&memory, &cost);
     BandPass    band(&memory, &cost, fs, fc, bw, order);
-    BPSK        bpsk(&memory, &band, fs, fc, cycles_per_bit, 100);
+    BPSK        bpsk(&memory, &band, fs, fc, cycles_per_bit, 200);
     Prefix      pref(&memory, &bpsk, prefix, prefix_len);
     StdinSource sour(&memory, &pref, &scheduler);
 
@@ -46,5 +45,6 @@ int main(int argc, char ** argv)
 
     //controller.add_plot(&pulseshape);
     controller.add_plot(&sink);
+    controller.add_plot(&rese);
     return controller.run();
 }

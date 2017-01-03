@@ -1,8 +1,14 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
+
 #include <typeinfo>
+#include "../Colors/Colors.h"
 #include "../Memory/Block.h"
 #include "../Memory/Memory.h"
+
+#define LOG(...) BLUE; printf("%s %s(): ", __FILE__, __func__); ENDC; printf(__VA_ARGS__)
+#define WARNING(...) BLINK; YELLOW; printf("%s %s(): ", __FILE__, __func__); ENDC; printf(__VA_ARGS__)
+#define ERROR(...) BLINK; UNDERLINE; BOLD; RED; printf("%s %s(): ", __FILE__, __func__); ENDC; printf(__VA_ARGS__)
 
 class Module
 {
