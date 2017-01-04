@@ -6,7 +6,7 @@
 #include "Transmitter/BPSK.h"
 #include "CostasLoop/CostasLoop.h"
 #include "Receiver/BPSKDecoder.h"
-//#include "PlotSink/PlotSink.h"
+#include "PlotSink/PlotSink.h"
 #include "Filter/Bandpass.h"
 #include "WavSink/WavSink.h"
 #include "Memory/Memory.h"
@@ -31,11 +31,10 @@ int main(int argc, char ** argv)
     generate_ml_sequence(&prefix_len, &prefix);
     prefix[0] = true;
 
-    //PlotController controller(argc, argv);
 
     BPSKDecoder deco(&memory, NULL, fs, fc, prefix, prefix_len, cycles_per_bit, false);
 
-    //PlotSink sink(&deco);
+    PlotSink sink(&deco);
     CostasLoop  cost(&memory, &deco, fs, fc, IN_PHASE_SIGNAL);
     //WavSink     wave(&memory, &cost);
     BandPass    band(&memory, &cost, fs, fc, bw, order);
@@ -45,6 +44,7 @@ int main(int argc, char ** argv)
     scheduler.start();
 
 #ifdef QT_ENABLE
+    PlotController controller(argc, argv);
     sour.start(false);
     controller.add_plot(&pulseshape);
     controller.add_plot(&sink);
