@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdint.h>
 #include "Prefix.h"
 
 Prefix::Prefix(Memory * memory, 

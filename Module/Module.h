@@ -3,6 +3,7 @@
 #include <typeinfo>
 #include "../Memory/Block.h"
 #include "../Memory/Memory.h"
+#include <stdint.h>
 
 class Module
 {
