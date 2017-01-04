@@ -6,13 +6,13 @@ OPTIONS:=-lm -g
 OUTPUT:=main
 
 # QT Stuff
-PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
+#PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
-PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
+#PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 
 # Copied these from PlotController/Makefile
-LIBS= -F/usr/local/Cellar/qt5/5.7.0/lib -L /usr/local/opt/qwt/lib/qwt.framework/ /usr/local/opt/qwt/lib/qwt.framework/qwt -framework QtPrintSupport -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtOpenGL -framework OpenGL -framework AGL 
+#LIBS= -F/usr/local/Cellar/qt5/5.7.0/lib -L /usr/local/opt/qwt/lib/qwt.framework/ /usr/local/opt/qwt/lib/qwt.framework/qwt -framework QtPrintSupport -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtOpenGL -framework OpenGL -framework AGL 
 
 generator_objects=generator.o
 generator_paths=$(addprefix MaximumLength/,$(generator_objects))
@@ -47,8 +47,8 @@ main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
 	$(CC) -Wall $(INCLUDE) -c main.cpp
 
-$(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
-	make -C ./PlotController $(notdir $@)
+#$(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
+#	make -C ./PlotController $(notdir $@)
 
 $(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h
 	$(CC) -Wall $(INCLUDE) -c $< -o $@
@@ -83,4 +83,4 @@ clean:
 	rm $(WavSink_paths)
 	rm $(Receiver_paths)
 	rm $(generator_paths)
-	make -C ./PlotController clean
+#	make -C ./PlotController clean
