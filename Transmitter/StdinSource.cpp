@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdint.h>
 #include "StdinSource.h"
 #include "../Colors/Colors.h"
 #include "../TaskScheduler/TaskScheduler.h"
