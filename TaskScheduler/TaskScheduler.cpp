@@ -80,9 +80,7 @@ int TaskScheduler::run_event()
         {
             if (ret && !e.module->next) 
             {
-                BLUE;
-                printf("Next module is NULL, dumping data!\n");
-                ENDC;
+                LOG("Next module is NULL, dumping data!\n");
                 ret->reset();
                 float ** iter = ret->get_iterator();
                 do 
@@ -93,9 +91,7 @@ int TaskScheduler::run_event()
             }
             else 
             {
-                RED;
-                printf("Module returned NULL...\n");
-                ENDC;
+                LOG("Module returned NULL...\n");
             }
         }
         break;
@@ -157,11 +153,11 @@ void * task_loop(void * args)
         }
         else 
         {
-            printf("going to sleep...\n");
+            LOG("going to sleep...\n");
             self->lock();
             pthread_cond_wait(&self->cond, &self->mutex);
             self->unlock();
-            printf("waking up!\n");
+            LOG("waking up!\n");
         }
     }
     return NULL;

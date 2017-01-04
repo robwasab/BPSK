@@ -56,7 +56,7 @@ void * StdinSource_loop(void * args)
                 printf("%s", buffer);
                 if ( strcmp("quit\n", buffer) == 0 ) 
                 {
-                    printf("quitting...\n");
+                    LOG("quitting...\n");
                     break;
                 }
                 size_t len = strlen(buffer) + 1;
@@ -75,9 +75,7 @@ void * StdinSource_loop(void * args)
                 }
                 else 
                 {
-                    RED;
-                    printf("Could not allocate enough space!\n");
-                    ENDC;
+                    ERROR("Could not allocate enough space!\n");
                 }
             }
         }

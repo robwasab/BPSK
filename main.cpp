@@ -31,14 +31,13 @@ int main(int argc, char ** argv)
     generate_ml_sequence(&prefix_len, &prefix);
     prefix[0] = true;
 
-
-    BPSKDecoder deco(&memory, NULL, fs, fc, prefix, prefix_len, cycles_per_bit, false);
-
+    PlotSink rese(NULL);
+    BPSKDecoder deco(&memory, &rese, fs, fc, prefix, prefix_len, cycles_per_bit, false);
     PlotSink sink(&deco);
     CostasLoop  cost(&memory, &deco, fs, fc, IN_PHASE_SIGNAL);
     //WavSink     wave(&memory, &cost);
     BandPass    band(&memory, &cost, fs, fc, bw, order);
-    BPSK        bpsk(&memory, &band, fs, fc, cycles_per_bit, 100);
+    BPSK        bpsk(&memory, &band, fs, fc, cycles_per_bit, 200);
     Prefix      pref(&memory, &bpsk, prefix, prefix_len);
     StdinSource sour(&memory, &pref, &scheduler);
     scheduler.start();
@@ -48,6 +47,7 @@ int main(int argc, char ** argv)
     sour.start(false);
     controller.add_plot(&pulseshape);
     controller.add_plot(&sink);
+    controller.add_plot(&rese);
     return controller.run();
 #else 
     sour.start(true);

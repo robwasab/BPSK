@@ -20,9 +20,7 @@ BPSK::BPSK(Memory * memory,
     phase_per_bit = cycles_per_bit * 2.0 * M_PI;
 
     double bw = fc/cycles_per_bit * 2.0;
-    MAGENTA;
-    printf("Estimated bandwidth: %.3f\n", bw);
-    ENDC;
+    LOG("Estimated bandwidth: %.3f\n", bw);
 }
 
 class BPSKBlock : public Block
@@ -123,8 +121,9 @@ public:
     }
 
     void print() {
-        printf("BPSK Block\n");
+        printf("BPSK Block {\n");
         bits->print();
+        printf("}\n");
     }
 
 private:
