@@ -21,6 +21,7 @@ public:
         min = -1.0;
         len = 0;
         _valid = true;
+        processing = false;
         pthread_mutex_init(&mutex, NULL);
     }
 
@@ -42,12 +43,22 @@ public:
         pthread_mutex_unlock(&mutex);
     }
 
+    bool is_processing() {
+        bool ret;
+        lock();
+        ret = processing;
+        unlock();
+        return ret;
+    }
+
     Block * process(Block * b) 
     {
         float ** iter;
         size_t n;
 
         lock();
+        processing = true;
+        unlock();
 
         n = 0;
         iter = b->get_iterator();
@@ -79,7 +90,11 @@ public:
         } while(b->next());
 
         _valid = false;
+
+        lock();
+        processing = false;
         unlock();
+
         return b;
     }
 
@@ -94,48 +109,44 @@ public:
 
     Point get_data(size_t index) {
         Point p;
-        lock();
+        while(is_processing());
         p.x = index;
         p.y = data[index];
-        unlock();
         return p;
     }
 
     void next() {
-        lock();
+        while(is_processing());
         if (!_valid) {
             _valid = true;
         }
-        unlock();
     }
 
     bool valid() {
         bool ret;
-        lock();
+        while(is_processing());
         ret = _valid;
-        unlock();
         return ret;
     }
 
     Point get_origin() {
         Point p;
-        lock();
+        while(is_processing());
         p.x = 0;
         p.y = min;
-        unlock();
         return p;
     }
 
     Point get_lengths() {
         Point p;
-        lock();
+        while(is_processing());
         p.x = len;
         p.y = max - min;
-        unlock();
         return p;
     }
 
 private:
+    bool processing;
     Block * block;
     float * data;
     float max;

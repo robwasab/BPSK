@@ -45,7 +45,7 @@ Block * Prefix::process(Block * bits)
 
     // prefix + size of data contained in a byte + data + zero byte
     size = bits->get_size()/8;
-    Block * encode = memory->allocate( prefix_len + 8 + bits->get_size() + 8);
+    Block * encode = memory->allocate( prefix_len + 8 + bits->get_size() + 16);
     
     if (!encode) {
         goto fail;
@@ -81,7 +81,7 @@ Block * Prefix::process(Block * bits)
         **encode_iter = **bits_iter;
     } while(encode->next() && bits->next());
 
-    for (n = 0; n < 8; ++n)
+    for (n = 0; n < 16; ++n)
     {
         **encode_iter = 0.0;
         encode->next();

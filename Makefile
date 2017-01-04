@@ -9,13 +9,13 @@ OUTPUT:=main
 PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
-#PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
+PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 
 # Copied these from PlotController/Makefile
 ifdef PLOT_PATHS
 LIBS= -F/usr/local/Cellar/qt5/5.7.0/lib -L /usr/local/opt/qwt/lib/qwt.framework/ /usr/local/opt/qwt/lib/qwt.framework/qwt -framework QtPrintSupport -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtOpenGL -framework OpenGL -framework AGL 
 PLOT_CLEAN=make -C ./PlotController clean
-OPTIONS+=-D QT_ENABLE
+QT_ENABLE=-D QT_ENABLE
 endif
 
 generator_objects=generator.o
@@ -49,7 +49,7 @@ main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_
 	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
-	$(CC) -Wall $(INCLUDE) -c main.cpp
+	$(CC) $(QT_ENABLE) -Wall $(INCLUDE) -c main.cpp
 
 $(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
 	make -C ./PlotController $(notdir $@)

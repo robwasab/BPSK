@@ -15,6 +15,24 @@
 #include "PlotController/PlotController.h"
 #endif
 
+static char __name__[] = "SuppressPrint";
+
+class SuppressPrint : public Module
+{
+public:
+    SuppressPrint():
+    Module(NULL, NULL) {}
+
+    const char * name() {
+        return __name__;
+    }
+
+    Block * process(Block * in) {
+        in->free();
+        return NULL;
+    }
+};
+
 TaskScheduler scheduler(128);
 Memory memory;
 
@@ -31,10 +49,11 @@ int main(int argc, char ** argv)
     generate_ml_sequence(&prefix_len, &prefix);
     prefix[0] = true;
 
-    PlotSink rese(NULL);
+    SuppressPrint end;
+    PlotSink rese(&end);
     BPSKDecoder deco(&memory, &rese, fs, fc, prefix, prefix_len, cycles_per_bit, false);
     PlotSink sink(&deco);
-    CostasLoop  cost(&memory, &deco, fs, fc, IN_PHASE_SIGNAL);
+    CostasLoop  cost(&memory, &sink, fs, fc, IN_PHASE_SIGNAL);
     //WavSink     wave(&memory, &cost);
     BandPass    band(&memory, &cost, fs, fc, bw, order);
     BPSK        bpsk(&memory, &band, fs, fc, cycles_per_bit, 200);
@@ -45,7 +64,6 @@ int main(int argc, char ** argv)
 #ifdef QT_ENABLE
     PlotController controller(argc, argv);
     sour.start(false);
-    controller.add_plot(&pulseshape);
     controller.add_plot(&sink);
     controller.add_plot(&rese);
     return controller.run();
