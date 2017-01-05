@@ -9,7 +9,7 @@ OUTPUT:=main
 PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
-PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
+#PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 
 # Copied these from PlotController/Makefile
 ifdef PLOT_PATHS
@@ -42,11 +42,14 @@ WavSink_paths=$(addprefix WavSink/,$(WavSink_objects))
 Receiver_objects=BPSKDecoder.o
 Receiver_paths=$(addprefix Receiver/,$(Receiver_objects))
 
+Modulator_objects=Modulator.o
+Modulator_paths=$(addprefix Modulator/,$(Modulator_objects))
+
 # Default target
 all: main
 
-main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) -o $(OUTPUT) $(LIBS)
+main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) Colors/Colors.h PlotSink/PlotSink.h
+	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
 	$(CC) $(QT_ENABLE) -Wall $(INCLUDE) -c main.cpp
@@ -76,6 +79,10 @@ $(Receiver_paths):%.o: %.cpp %.h Module/Module.h
 	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 $(generator_paths):%.o: %.cpp %.h
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
+
+
+$(Modulator_paths):%.o: %.cpp %.h Module/Module.h
 	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
 clean:

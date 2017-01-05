@@ -36,6 +36,8 @@ float * CostasLoopBlock::get_pointer(SignalType type)
 
         case ERROR_SIGNAL:
             return error_ptr;
+        default:
+            return ptr;
     }
 }
 

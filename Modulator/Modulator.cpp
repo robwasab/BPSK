@@ -34,11 +34,13 @@ public:
         inc(inc) 
     {
         block_iter = block->get_iterator();
+        value = **block_iter * sin(vco->work(inc));
+        ptr = &value;
     }
 
     void free() {
         block->free();
-        delete this
+        delete this;
     }
 
     bool is_free() {
@@ -51,20 +53,37 @@ public:
 
     void reset() {
         block->reset();
-        vco->reset();
+        //vco->reset();
     }
 
     bool next() {
-        block->next();
-        value = 
+        if (!block->next()) {
+            return false;
+        }
+        else {
+            value = **block_iter * sin(vco->work(inc));
+            return true;
+        }
+     }
 
-    float ** get_iterator() = 0;
-    void print() = 0;
+    float ** get_iterator() {
+        return &ptr;
+    }
+
+    void print() {
+        block->print();
+    }
 
 private:
     Block * block;
     Integrator * vco;
     double inc;
     float value;
+    float * ptr;
     float ** block_iter;
 };
+
+Block * Modulator::process(Block * sig)
+{
+    return new ModulatorBlock(sig, vco, inc);
+}
