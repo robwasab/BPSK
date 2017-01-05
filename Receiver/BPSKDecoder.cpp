@@ -192,13 +192,18 @@ Block * BPSKDecoder::process(Block * block)
                 timer.reset();
                 state = ACQUIRE;
             }
+            /*
+            timer.reset();
             **reset_iter = timer.work(0.0);
+            */
+            **reset_iter = 0.0;
+            reset_signal->next();
         }
         else 
         {
             **reset_iter = timer.work(1.0);
+            reset_signal->next();
         }
-        reset_signal->next();
 
         add_level( (*data > 0.0) ? true : false );
         
@@ -340,6 +345,12 @@ Block * BPSKDecoder::process(Block * block)
                             } while(msg->next());
                             printf("\n");
                             ENDC;
+
+                            // finish the timer iterator
+                            do
+                            {
+                                **reset_iter = 0.0;
+                            } while(reset_signal->next());
 
                             demod->free();
                             state = ACQUIRE;
