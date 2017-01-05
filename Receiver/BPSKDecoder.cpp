@@ -129,7 +129,7 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
 {
     uint32_t reg = shift_register;
 
-    LOG("");
+    LOG(" ");
     for (int n = 0; n < 32; ++n)
     {
         if (reg & (1 << n)) 

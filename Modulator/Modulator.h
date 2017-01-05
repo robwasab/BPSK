@@ -10,9 +10,11 @@ public:
     Modulator(Memory * memory, Module * next, double fs, double fc);
     ~Modulator();
 
-    const char * name() = 0;
+    const char * name();
     Block * process(Block * msg);
 private:
     double inc;
     Integrator * vco;
 };
+
+#endif
