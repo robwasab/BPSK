@@ -14,6 +14,10 @@ public:
         return last;
     }
 
+    double value() {
+        return last;
+    }
+
     void reset() {
         last = 0.0;
     }

@@ -15,7 +15,7 @@ Modulator::Modulator(Memory * memory,
     Module(memory, next)
 {
     inc = 2.0 * M_PI * fc/fs;
-    vco = new Integrator(fs);
+    phase = 0;
 }
 
 Modulator::~Modulator()
@@ -27,14 +27,13 @@ class ModulatorBlock : public Block
 {
 public:
     ModulatorBlock(Block * block, 
-            Integrator * vco, 
-            double inc):
+            double inc,
+            double * phase):
         block(block),
-        vco(vco),
-        inc(inc) 
+        inc(inc),
+        phase(phase) 
     {
         block_iter = block->get_iterator();
-        value = **block_iter * sin(vco->work(inc));
         ptr = &value;
     }
 
@@ -53,7 +52,8 @@ public:
 
     void reset() {
         block->reset();
-        //vco->reset();
+        value = **block_iter * sin(*phase);
+        *phase += inc;
     }
 
     bool next() {
@@ -61,7 +61,9 @@ public:
             return false;
         }
         else {
-            value = **block_iter * sin(vco->work(inc));
+            value = 2.0 * **block_iter * sin(*phase);
+            //value = sin(*phase);
+            *phase += inc;
             return true;
         }
      }
@@ -76,8 +78,8 @@ public:
 
 private:
     Block * block;
-    Integrator * vco;
     double inc;
+    double * phase;
     float value;
     float * ptr;
     float ** block_iter;
@@ -85,5 +87,5 @@ private:
 
 Block * Modulator::process(Block * sig)
 {
-    return new ModulatorBlock(sig, vco, inc);
+    return new ModulatorBlock(sig, inc, &phase);
 }

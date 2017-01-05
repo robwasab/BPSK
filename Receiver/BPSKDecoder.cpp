@@ -142,7 +142,7 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
 
 Block * BPSKDecoder::process(Block * block)
 {
-    static RC_LowPass timer(0.25, fs);
+    static RC_LowPass timer(0.1, fs);
     static uint32_t shift_register = 0;
     static float last = 0;
     static int count = 0;
@@ -158,14 +158,16 @@ Block * BPSKDecoder::process(Block * block)
     //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
     float * data = demod->get_pointer(IN_PHASE_SIGNAL);
 
+    /*
     Block * reset_signal =  memory->allocate(block->get_size());
     float ** reset_iter = reset_signal->get_iterator();
+    */
 
     float derivative;
     bool bit;
 
-    //Block * deri = memory->allocate(demod->get_size());
-    //float ** deri_iter = deri->get_iterator();
+    Block * deri = memory->allocate(demod->get_size());
+    float ** deri_iter = deri->get_iterator();
 
     demod->reset();
 
@@ -190,28 +192,44 @@ Block * BPSKDecoder::process(Block * block)
                     msg_iter = NULL;
                 }
                 timer.reset();
+                LOG("Lost lock. state->ACQUIRE\n");
                 state = ACQUIRE;
             }
-            /*
             timer.reset();
+            /*
             **reset_iter = timer.work(0.0);
-            */
             **reset_iter = 0.0;
             reset_signal->next();
+            */
         }
         else 
         {
-            **reset_iter = timer.work(1.0);
+            if (state != ACQUIRE) 
+            {
+                timer.work(1.0);
+
+                if (timer.value() > 0.99) {
+                    state = ACQUIRE;
+                    LOG("watchdog timer. state->ACQUIRE\n");
+                    timer.reset();
+                }
+            }
+            else {
+                timer.reset();
+            }
+            /*
+            **reset_iter = timer.value();
             reset_signal->next();
+            */
         }
 
         add_level( (*data > 0.0) ? true : false );
         
         derivative = (*data - last);
         last = *data;
-        //**deri_iter = derivative;
+        **deri_iter = derivative;
         //**deri_iter = *data;
-        //deri->next();
+        deri->next();
 
         switch (state)
         {
@@ -223,6 +241,8 @@ Block * BPSKDecoder::process(Block * block)
                     printf("%s: state = LOOK_FOR_HEADER\n", __FILE__);
                     ENDC;
                     */
+                    LOG("Detected start of packet. state->LOOK_FOR_HEADER\n");
+                    timer.reset();
                     state = LOOK_FOR_HEADER;
                     count = 0;
                     last_bit = false;
@@ -262,7 +282,7 @@ Block * BPSKDecoder::process(Block * block)
 
                     if ((shift_register & prefix_mask) == prefix) 
                     {
-                        LOG("Found prefix!\n");
+                        LOG("Found prefix! state->READ_SIZE\n");
                         k = 0;
                         byte = 0;
                         state = READ_SIZE;
@@ -287,7 +307,7 @@ Block * BPSKDecoder::process(Block * block)
 
                     if (k >= 8) 
                     {
-                        LOG("Got size: %hhd\n", byte);
+                        LOG("Got size: %hhd state->COLLECT_BITS\n", byte);
                         msg = memory->allocate(byte);
                         msg_iter = msg->get_iterator();
                         k = 0;
@@ -347,10 +367,17 @@ Block * BPSKDecoder::process(Block * block)
                             ENDC;
 
                             // finish the timer iterator
+                            /*
                             do
                             {
                                 **reset_iter = 0.0;
                             } while(reset_signal->next());
+                            */
+
+                            do
+                            {
+                                **deri_iter = 0.0;
+                            } while(deri->next());
 
                             demod->free();
                             state = ACQUIRE;
@@ -359,7 +386,8 @@ Block * BPSKDecoder::process(Block * block)
                             msg_iter = NULL;
                             ret->free();
                             //return ret;
-                            return reset_signal;
+                            //return reset_signal;
+                            return deri;
                         }
 
                         byte = 0;
@@ -373,6 +401,7 @@ Block * BPSKDecoder::process(Block * block)
         }
     } while(demod->next());
     demod->free();
-    return reset_signal;
+    //return reset_signal;
+    return deri;
 }
 

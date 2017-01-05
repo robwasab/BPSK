@@ -14,6 +14,7 @@ public:
     Block * process(Block * msg);
 private:
     double inc;
+    double phase;
     Integrator * vco;
 };
 

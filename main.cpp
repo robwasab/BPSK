@@ -61,6 +61,7 @@ int main(int argc, char ** argv)
     BandPass    rx_rf_band(&memory, &rx_rf_modu, fs, fc, bw, order);
     /* Over the air */
     //WavSink     wave(&memory, &cost);
+    //PlotSink    scope(&rx_rf_band);
     BandPass    tx_rf_band(&memory, &rx_rf_band, fs, fc, bw, order);
     Modulator   tx_rf_modu(&memory, &tx_rf_band, fs, fc - fif);
     BandPass    tx_if_band(&memory, &tx_rf_modu, fs, fif, bw, order);
@@ -74,6 +75,7 @@ int main(int argc, char ** argv)
     tx_if_sour.start(false);
     controller.add_plot(&rx_if_sink);
     controller.add_plot(&rx_if_rese);
+    //controller.add_plot(&scope);
     return controller.run();
 #else 
     tx_if_sour.start(true);
