@@ -140,11 +140,47 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
     printf("\n");
 }
 
+class HighPass
+{
+public:
+    HighPass(float tau, float fs)
+    {
+        k = tau * fs / (tau * fs + 1);
+        in_last = 0.0;
+        out_last = 0.0;
+    }
+
+    float work(float in) {
+        float out;
+        out = k * (in - in_last + out_last);
+        out_last = out;
+        in_last = in;
+        return out;
+    }
+
+    double value() {
+        return out_last;
+    }
+
+    void reset() {
+        in_last = 0.0;
+        out_last = 0.0;
+    }
+
+private:
+    float k;
+    float in_last;
+    float out_last;
+};
+
+//#define RESET_SIG_DB
+#define HIGH_PASS_DB
+
 Block * BPSKDecoder::process(Block * block)
 {
-    static RC_LowPass timer(0.1, fs);
+    static HighPass filter(0.005, fs);
+    static RC_LowPass timer(0.25, fs);
     static uint32_t shift_register = 0;
-    static float last = 0;
     static int count = 0;
     static bool last_bit = false;
     static enum {ACQUIRE, LOOK_FOR_HEADER, READ_SIZE, COLLECT_BITS} state = ACQUIRE;
@@ -158,21 +194,19 @@ Block * BPSKDecoder::process(Block * block)
     //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
     float * data = demod->get_pointer(IN_PHASE_SIGNAL);
 
-    /*
+#ifdef RESET_SIG_DB
     Block * reset_signal =  memory->allocate(block->get_size());
     float ** reset_iter = reset_signal->get_iterator();
-    */
+#elif defined(HIGH_PASS_DB)
+    Block * hp = memory->allocate(demod->get_size());
+    float ** hp_iter = hp->get_iterator();
+#endif
 
-    float derivative;
+    float ac_couple;
     bool bit;
 
-    Block * deri = memory->allocate(demod->get_size());
-    float ** deri_iter = deri->get_iterator();
 
     demod->reset();
-
-    // temporary
-    // state = ACQUIRE;
 
     do 
     {
@@ -180,11 +214,6 @@ Block * BPSKDecoder::process(Block * block)
         {
             if (state != ACQUIRE) 
             {
-                /*
-                MAGENTA;
-                printf("%s: Costas loop unlocked!\n", __FILE__);
-                ENDC;
-                */
                 if (msg) 
                 {
                     msg->free();
@@ -196,11 +225,11 @@ Block * BPSKDecoder::process(Block * block)
                 state = ACQUIRE;
             }
             timer.reset();
-            /*
+#ifdef RESET_SIG_DB
             **reset_iter = timer.work(0.0);
             **reset_iter = 0.0;
             reset_signal->next();
-            */
+#endif
         }
         else 
         {
@@ -217,35 +246,31 @@ Block * BPSKDecoder::process(Block * block)
             else {
                 timer.reset();
             }
-            /*
+#ifdef RESET_SIG_DB
             **reset_iter = timer.value();
             reset_signal->next();
-            */
+#endif
         }
 
         add_level( (*data > 0.0) ? true : false );
         
-        derivative = (*data - last);
-        last = *data;
-        **deri_iter = derivative;
-        //**deri_iter = *data;
-        deri->next();
+        ac_couple = filter.work(*data);
+
+#ifdef HIGH_PASS_DB
+        **hp_iter = ac_couple;
+        hp->next();
+#endif
 
         switch (state)
         {
             case ACQUIRE:
-                if (*lock >= 0.8 && fabs(derivative) > threshold) 
+                if (*lock >= 0.8 && fabs(ac_couple) > threshold) 
                 {
-                    /*
-                    GREEN;
-                    printf("%s: state = LOOK_FOR_HEADER\n", __FILE__);
-                    ENDC;
-                    */
                     LOG("Detected start of packet. state->LOOK_FOR_HEADER\n");
                     timer.reset();
                     state = LOOK_FOR_HEADER;
                     count = 0;
-                    last_bit = false;
+                    last_bit = majority_vote();
                     shift_register = 0;
                 }
                 break;
@@ -259,24 +284,18 @@ Block * BPSKDecoder::process(Block * block)
 
                     if (bit != last_bit) 
                     {
-                        //printf("1 ");
                         shift_register |= 1;
                         timer.reset();
                     }
-                    /*
-                    else {
-                        printf("0 ");
-                    }
-                    */
 
                     last_bit = bit;
                     count = 0;
 
                     /*
-                    printf("%s: shift : ", __FILE__);
+                    LOG("shi: ");
                     print_shift_register(shift_register);
                     
-                    printf("%s: prefix: ", __FILE__);
+                    LOG("pre: ");
                     print_shift_register(prefix);
                     */
 
@@ -366,28 +385,33 @@ Block * BPSKDecoder::process(Block * block)
                             printf("\n");
                             ENDC;
 
-                            // finish the timer iterator
-                            /*
+#if defined(RESET_SIG_DB)
                             do
                             {
                                 **reset_iter = 0.0;
                             } while(reset_signal->next());
-                            */
-
+#elif defined(HIGH_PASS_DB)
                             do
                             {
-                                **deri_iter = 0.0;
-                            } while(deri->next());
+                                **hp_iter = 0.0;
+                            } while(hp->next());
+#endif
 
-                            demod->free();
                             state = ACQUIRE;
                             Block * ret = msg;
                             msg = NULL;
                             msg_iter = NULL;
+#if defined(RESET_SIG_DB)
+                            demod->free();
                             ret->free();
-                            //return ret;
-                            //return reset_signal;
-                            return deri;
+                            return reset_signal;
+#elif defined(HIGH_PASS_DB)
+                            demod->free();
+                            ret->free();
+                            return hp;
+#else
+                            return ret;
+#endif
                         }
 
                         byte = 0;
@@ -400,8 +424,16 @@ Block * BPSKDecoder::process(Block * block)
                 break;
         }
     } while(demod->next());
+
+#if defined(RESET_SIG_DB)
     demod->free();
-    //return reset_signal;
-    return deri;
+    return reset_signal;
+
+#elif defined(HIGH_PASS_DB)
+    demod->free();
+    return hp;
+#else
+    return demod;
+#endif
 }
 

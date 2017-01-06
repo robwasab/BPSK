@@ -41,10 +41,10 @@ int main(int argc, char ** argv)
 {
     double fs = 44.1E3;
     double fc = 17E3;
-    double fif = 2E3;
+    double fif = 3E3;
     double bw = 1E3;
     int order = 2;
-    int cycles_per_bit = 20;
+    int cycles_per_bit = 40;
     size_t prefix_len;
     bool * prefix;
 

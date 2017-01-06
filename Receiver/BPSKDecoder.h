@@ -16,7 +16,7 @@ public:
             size_t prefix_len,
             int cycles_per_bit,
             bool first_bit,
-            float threshold = 0.03);
+            float threshold = 0.5);
 
     const char * name();
     Block * process(Block * block);
