@@ -13,6 +13,7 @@ public:
     Queue(size_t max) : _max(max)
     {
         printf("Allocating Queue data: %zu elements\n", _max);
+
         _data = new Type[_max];
         _head = 0;
         _tail = 0;

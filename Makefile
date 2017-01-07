@@ -52,7 +52,7 @@ SpectrumAnalyzer_paths=$(addprefix SpectrumAnalyzer/,$(SpectrumAnalyzer_objects)
 all: main
 
 main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) -o $(OUTPUT) $(LIBS)
+	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
 	$(CC) $(QT_ENABLE) -Wall $(INCLUDE) -c main.cpp

@@ -25,7 +25,9 @@ protected:
 
 private:
     void alignScales();
+    void set_updateInterval(int interval);
 
+    int interval;
     QwtPlotGrid *d_grid;
     QwtPlotCurve *d_curve;
 

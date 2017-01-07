@@ -21,6 +21,9 @@ public:
     virtual Point get_origin() = 0;
     virtual Point get_lengths() = 0;
     virtual bool valid() = 0;
+    virtual int get_updateInterval() {
+        return 50;
+    }
 };
 
 #endif

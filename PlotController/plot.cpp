@@ -89,6 +89,8 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     d_curve->setData( new DataSourceWrapper( source ) );
     d_curve->attach( this );
 
+    set_updateInterval(50);
+
     // Axis
     Point origin = source->get_origin();
     Point length = source->get_lengths();
@@ -129,8 +131,19 @@ void Plot::alignScales()
         if ( scaleDraw )
             scaleDraw->enableComponent( QwtAbstractScaleDraw::Backbone, false );
     }
-
     plotLayout()->setAlignCanvasToScales( true );
+}
+
+void Plot::set_updateInterval(int interval)
+{
+    if ( interval != this->interval ) {
+        this->interval = interval;
+
+        if ( d_timerId >= 0 ) {
+            killTimer( d_timerId );
+        }
+        d_timerId = startTimer( interval );
+    }
 }
 
 void Plot::setSettings( const Settings &s )
@@ -208,6 +221,8 @@ void Plot::timerEvent( QTimerEvent * )
         float pad = 0.1 * length.y;
         setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
         setAxisScale( QwtPlot::yLeft, origin.y - pad, origin.y + length.y + pad);
+
+        set_updateInterval(source->get_updateInterval());
         updateAxes();
     }
     source->next();

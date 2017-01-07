@@ -27,7 +27,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow( QWidget *parent = NULL );
+    MainWindow( QWidget *parent = NULL);
     virtual bool eventFilter( QObject *, QEvent * );
     void add_plot( DataSource * source );
     void remove_plot( DataSource * source );
