@@ -57,6 +57,7 @@ CostasLoop::CostasLoop(Memory * memory,
     // Lock Detector
     lock_detector = new LockDetector(this->fs);
     lock_rc = new RC_LowPass(0.01, this->fs);
+    reset();
 }
 
 CostasLoop::~CostasLoop()

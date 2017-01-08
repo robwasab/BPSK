@@ -54,7 +54,7 @@ class Autogain(object):
 #output[k] = self.gain
         return output
 
-scale = 0.0075
+scale = 0.01
 wav = wave.open('output.wav', 'r')
 
 print 'channels %d'%wav.getnchannels()

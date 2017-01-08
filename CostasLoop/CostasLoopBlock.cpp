@@ -16,8 +16,9 @@ CostasLoopBlock::CostasLoopBlock(Block * block,
     error_ptr = &error_sig;
     block_iter = block->get_iterator();
     ptr = get_pointer(type);
+    //ptr = get_pointer(ERROR_SIGNAL);
 
-    costa->reset();
+    //costa->reset();
     reset();
 }
 
