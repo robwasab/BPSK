@@ -22,7 +22,6 @@ public:
         last = 0.0;
     }
 
-private:
     double tau_fs;
     double last;
 };

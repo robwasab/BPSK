@@ -12,6 +12,7 @@
 #include "Filter/Bandpass.h"
 #include "WavSink/WavSink.h"
 #include "Memory/Memory.h"
+#include "Autogain/Autogain.h"
 
 #ifdef QT_ENABLE
 #include "PlotController/PlotController.h"
@@ -66,8 +67,13 @@ int main(int argc, char ** argv)
     CostasLoop  rx_if_cost(&memory, &rx_if_sink, fs, fif, IN_PHASE_SIGNAL);
 
     //Spectrum    rx_if_spec(&memory, &rx_if_cost, fs, spectrum_size);
+    PlotSink    rx_if_scop(&rx_if_cost);
 
-    BandPass    rx_if_band(&memory, &rx_if_cost, fs, fif, bw, order);
+    Autogain    rx_if_auto(&memory, &rx_if_scop, fs);
+
+    WavSink     rx_if_wave(&memory, &rx_if_auto);
+
+    BandPass    rx_if_band(&memory, &rx_if_wave, fs, fif, bw, order);
 
     //Spectrum    rx_if_spec(&memory, &rx_if_band, fs, spectrum_size);
 
@@ -76,10 +82,9 @@ int main(int argc, char ** argv)
     BandPass    rx_rf_band(&memory, &rx_rf_modu, fs, fc, bw, order);
 
     /* Over the air */
-    WavSink     chann_wave(&memory, &rx_rf_band);
     //PlotSink    scope(&rx_rf_band);
 
-    Spectrum    tx_rf_spec(&memory, &chann_wave, fs, spectrum_size);
+    Spectrum    tx_rf_spec(&memory, &rx_rf_band, fs, spectrum_size);
 
     BandPass    tx_rf_band(&memory, &tx_rf_spec, fs, fc, bw, order);
 
@@ -87,7 +92,7 @@ int main(int argc, char ** argv)
 
     BandPass    tx_if_band(&memory, &tx_rf_modu, fs, fif, bw, order);
 
-    BPSK        tx_if_bpsk(&memory, &tx_if_band, fs, fif, cycles_per_bit, 200);
+    BPSK        tx_if_bpsk(&memory, &tx_if_band, fs, fif, cycles_per_bit, 100);
 
     Prefix      tx_if_pref(&memory, &tx_if_bpsk, prefix, prefix_len);
 
@@ -98,9 +103,10 @@ int main(int argc, char ** argv)
 #ifdef QT_ENABLE
     PlotController controller(argc, argv);
     tx_if_sour.start(false);
+    controller.add_plot(&rx_if_scop);
     controller.add_plot(&rx_if_sink);
-    controller.add_plot(&rx_if_rese);
-    controller.add_plot(&tx_rf_spec);
+    //controller.add_plot(&rx_if_rese);
+    //controller.add_plot(&tx_rf_spec);
     //controller.add_plot(&scope);
     return controller.run();
 #else 

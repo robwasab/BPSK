@@ -48,11 +48,14 @@ Modulator_paths=$(addprefix Modulator/,$(Modulator_objects))
 SpectrumAnalyzer_objects=SpectrumAnalyzer.o
 SpectrumAnalyzer_paths=$(addprefix SpectrumAnalyzer/,$(SpectrumAnalyzer_objects))
 
+Autogain_objects=Autogain.o
+Autogain_paths=$(addprefix Autogain/,$(Autogain_objects))
+
 # Default target
 all: main
 
-main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) -o $(OUTPUT) $(LIBS)
+main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) Colors/Colors.h PlotSink/PlotSink.h
+	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
 	$(CC) $(QT_ENABLE) -Wall $(INCLUDE) -c main.cpp
@@ -90,6 +93,9 @@ $(Modulator_paths):%.o: %.cpp %.h Module/Module.h
 $(SpectrumAnalyzer_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h
 	$(CC) -Wall $(INCLUDE) -c $< -o $@
 
+$(Autogain_paths):%.o: %.cpp %.h Module/Module.h
+	$(CC) -Wall $(INCLUDE) -c $< -o $@
+
 clean:
 	rm $(TaskScheduler_paths)
 	rm $(Memory_paths)
@@ -101,5 +107,6 @@ clean:
 	rm $(generator_paths)
 	rm $(Modulator_paths)
 	rm $(SpectrumAnalyzer_paths)
+	rm $(Autogain_paths)
 	$(PLOT_CLEAN)
 
