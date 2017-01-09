@@ -178,5 +178,6 @@ fail:
 */
 
 Block * CostasLoop::process(Block * block) {
+
     return new CostasLoopBlock(block, this, type);
 }

@@ -72,7 +72,7 @@ public:
 
         b->reset();
 
-        b->print();
+        //b->print();
 
         min = 100;
         max = -100;

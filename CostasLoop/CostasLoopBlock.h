@@ -7,7 +7,11 @@
 class CostasLoopBlock : public Block
 {
 public:
+    CostasLoopBlock();
+
     CostasLoopBlock(Block * block, CostasLoop * costa, SignalType type);
+    
+    CostasLoopBlock& operator=(const CostasLoopBlock& src);
 
     void free();
     bool is_free();
@@ -20,6 +24,7 @@ public:
     float * get_pointer(SignalType type);
 
 private:
+    SignalType type;
     Block * block;
     CostasLoop * costa;
     float in_phase_sig;
@@ -32,6 +37,7 @@ private:
     float * error_ptr;
     float * ptr;
     float ** block_iter;
+    bool _free;
 };
 
 #endif

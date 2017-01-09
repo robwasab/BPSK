@@ -1,6 +1,7 @@
 #ifndef __TASK_SCHEDULER_H__
 #define __TASK_SCHEDULER_H__
 
+#include <time.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include "../Queue/Queue.h"
@@ -41,7 +42,12 @@ public:
     pthread_cond_t cond;
 private:
     pthread_t main;
+    struct timespec time_start;
+    struct timespec time_stop;
     void signal();
+    void tic();
+    void tok();
+    uint64_t get_time();
 };
 
 #endif

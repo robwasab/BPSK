@@ -20,6 +20,107 @@ Autogain::~Autogain()
 {
 }
 
+class AutogainBlock : public Block
+{
+public:
+    AutogainBlock() :
+        autogain(NULL),
+        b(NULL),
+        iter(NULL),
+        ptr(NULL),
+        value(0.0),
+        _free(false)
+    {
+    }
+
+    AutogainBlock& operator=(const AutogainBlock& src)
+    {
+        this->b = src.b;
+        this->autogain = src.autogain;
+        this->iter = this->b->get_iterator();
+        this->ptr = &(this->value);
+        _free = false;
+        reset();
+        return *this;
+    }
+
+    AutogainBlock(Block * b, Autogain * autogain) : 
+        autogain(autogain),
+        b(b) 
+    {
+        iter = b->get_iterator();
+        ptr = &value;
+        _free = false;
+        reset();
+    }
+
+    ~AutogainBlock()
+    {
+    }
+
+    void reset() {
+        b->reset();
+        value = autogain->work(**iter);
+    }
+
+    void free() 
+    {
+        _free = true;
+        b->free();
+        delete this;
+    }
+
+    bool is_free() 
+    {
+        return b->is_free();
+    }
+
+    size_t get_size() 
+    {
+        return b->get_size();
+    }
+
+    bool next() 
+    {
+        bool ret = b->next();
+        if (ret) 
+        {
+            value = autogain->work(**iter);
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+
+    float ** get_iterator() {
+        return &ptr;
+    }
+
+    void print() {
+        printf("Autogain: %p\n", autogain);
+        printf("iterator: %p\n", iter);
+        printf("pointer:  %p\n", ptr);
+        printf("&value:   %p\n", &value);
+        b->print();
+    }
+
+private:
+    Autogain * autogain;
+    Block * b;
+    float ** iter;
+    float * ptr;
+    float value;
+    bool _free;
+};
+
+float Autogain::work(float val)
+{
+    return autogain_a.work(autogain_b.work(autogain_c.work( val )));
+}
+
+/*
 Block * Autogain::process(Block * block)
 {
     static char errors[][25] = {
@@ -58,4 +159,9 @@ fail:
     ERROR("%s\n", errors[error]);
     return NULL;
 }
+*/
 
+
+Block * Autogain::process(Block * block) {
+    return new AutogainBlock(block, this);
+}

@@ -79,6 +79,7 @@ public:
     ~Autogain();
     const char * name();
     Block * process(Block * sig);
+    float work(float val);
 
 private:
     AutogainParams autogain_c;

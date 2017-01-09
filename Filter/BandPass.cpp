@@ -189,15 +189,37 @@ void BandPass::reset()
 class BandPassBlock : public Block
 {
 public:
+    BandPassBlock():
+        block(NULL),
+        filter(NULL),
+        value(0.0),
+        ptr(NULL),
+        iter(NULL),
+        _free(false)
+    {
+    }
+
     BandPassBlock(Block * block, BandPass * filter):
         block(block),
-        filter(filter)
+        filter(filter),
+        _free(false)
     {
         reset();
         iter = block->get_iterator();
         value = filter->work(**iter);
         ptr = &value;
         filter->reset();
+    }
+
+    BandPassBlock& operator=(const BandPassBlock& src)
+    {
+        block = src.block;
+        filter = src.filter;
+        iter = src.iter;
+        ptr = &value;
+        _free = src._free;
+        reset();
+        return *this;
     }
 
     ~BandPassBlock() {};
@@ -225,13 +247,7 @@ public:
             return false;
         }
         else {
-            //value = **iter;
             value = filter->work(**iter);
-            /*
-            if (fabs(value) > 5) {
-                printf("filter->work(%.3f): %.3f\n", **iter, value);
-            }
-            */
             return true;
         }
     }
@@ -252,7 +268,9 @@ public:
     float value;
     float * ptr;
     float ** iter;
+    bool _free;
 };
+
 
 Block * BandPass::process(Block * block) {
     return new BandPassBlock(block, this);

@@ -51,6 +51,21 @@ int TaskScheduler::add_module(Module * module, Block * block)
     return add_module(module, block, false);
 }
 
+void TaskScheduler::tic()
+{
+    clock_gettime(CLOCK_MONOTONIC_RAW, &time_start);
+}
+
+void TaskScheduler::tok()
+{
+    clock_gettime(CLOCK_MONOTONIC_RAW, &time_stop);
+}
+
+uint64_t TaskScheduler::get_time()
+{
+    return (time_stop.tv_sec - time_start.tv_sec)*1000000 + (time_stop.tv_nsec - time_start.tv_nsec)/1000.0;
+}
+
 int TaskScheduler::run_event()
 {
     Event e;
@@ -65,10 +80,12 @@ int TaskScheduler::run_event()
         break;
 
         case MODULE:
-        // GREEN;
-        // printf("Running %s...\n", e.module->name());
-        // ENDC;
+        tic();
         Block * ret = e.module->process(e.block);
+        tok();
+        uint64_t delta = get_time();
+        LOG("%s %llu microseconds\n", e.module->name(), delta);
+
         if (ret && e.module->next)
         {
             // GREEN;
