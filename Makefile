@@ -1,5 +1,6 @@
 CC:=g++
 INCLUDE:=-I /usr/local/include 
+FLAGS:=
 LIBRARY:=-L /usr/local/lib
 OPTIONS:=-lm -g -lfftw3f
 
@@ -9,7 +10,7 @@ OUTPUT:=main
 PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
-PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
+#PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 
 # Copied these from PlotController/Makefile
 ifdef PLOT_PATHS
@@ -64,37 +65,37 @@ $(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
 	make -C ./PlotController $(notdir $@)
 
 $(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Memory_paths):%.o:%.cpp %.h Memory/Block.h Colors/Colors.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Transmitter_paths):%.o: %.cpp %.h Colors/Colors.h PlotController/DataSource.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Filter_paths):%.o: %.cpp %.h Module/Module.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(WavSink_paths):%.o: %.cpp %.h Module/Module.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Receiver_paths):%.o: %.cpp %.h Module/Module.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(generator_paths):%.o: %.cpp %.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Modulator_paths):%.o: %.cpp %.h Module/Module.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(SpectrumAnalyzer_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Autogain_paths):%.o: %.cpp %.h Module/Module.h
-	$(CC) -Wall $(INCLUDE) -c $< -o $@
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 	rm $(TaskScheduler_paths)

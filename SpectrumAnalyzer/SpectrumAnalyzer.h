@@ -12,7 +12,7 @@ public:
     SpectrumAnalyzer(Memory * memory, 
             Module * next, 
             double fs,
-            int spectrum_size = 1024);
+            size_t spectrum_size = 1024);
     ~SpectrumAnalyzer();
     Block * process(Block * sig);
     const char * name();
@@ -24,7 +24,7 @@ public:
     bool valid();
     int get_updateInterval();
 private:
-    int n;
+    size_t n;
     int update_interval;
     float * freq;
     float * inpu;

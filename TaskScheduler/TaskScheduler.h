@@ -1,11 +1,14 @@
 #ifndef __TASK_SCHEDULER_H__
 #define __TASK_SCHEDULER_H__
 
-#include <time.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include "../Queue/Queue.h"
 #include "../Module/Module.h"
+//#define TIMER
+#ifdef TIMER
+#include <time.h>
+#endif
 
 typedef int (*Runnable)(void * args);
 
@@ -42,8 +45,10 @@ public:
     pthread_cond_t cond;
 private:
     pthread_t main;
+#ifdef TIMER
     struct timespec time_start;
     struct timespec time_stop;
+#endif
     void signal();
     void tic();
     void tok();

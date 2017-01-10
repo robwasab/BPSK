@@ -101,7 +101,7 @@ public:
         lock();
         if (_size > len)
         {
-            for (int n = 0; n < len; ++n)
+            for (size_t n = 0; n < len; ++n)
             {
                 t[n] = _data[( _head + n ) % _max];
             }

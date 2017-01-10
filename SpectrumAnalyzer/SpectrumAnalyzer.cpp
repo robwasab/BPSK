@@ -14,7 +14,7 @@ const char * SpectrumAnalyzer::name() {
 SpectrumAnalyzer::SpectrumAnalyzer(Memory * memory, 
         Module * next, 
         double fs,
-        int spectrum_size):
+        size_t spectrum_size):
     Module(memory, next),
     n(spectrum_size),
     queue((1 << 19))
@@ -30,7 +30,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(Memory * memory,
     fwrd = fftwf_plan_r2r_1d
         (n, inpu, outp, FFTW_R2HC, FFTW_MEASURE);
 
-    for (int k = 0; k < n/2+1; ++k) 
+    for (size_t k = 0; k < n/2+1; ++k) 
     {
         freq[k] = fs * ((float) k) / ((float) n);
         //printf("freq[%d] = %.3f\n", k, freq[k]);
@@ -132,9 +132,9 @@ bool SpectrumAnalyzer::valid()
 
     if (!valid) 
     {
-        queue.get(inpu, n); 
+        (void) queue.get(inpu, n); 
         fftwf_execute(fwrd);
-        for (int k = 0; k < n; ++k)
+        for (size_t k = 0; k < n; ++k)
         {
             outp[k] /= (float) n/2.0;
         }
