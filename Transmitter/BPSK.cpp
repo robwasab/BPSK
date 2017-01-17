@@ -27,11 +27,13 @@ class BPSKBlock : public Block
 {
 public:
     BPSKBlock(Block * bits, 
+            double * phase,
             int training_bits,
             int cycles_per_bit,
             double fc,
             double fs):
         bits(bits),
+        phase(phase),
         training_bits(training_bits)
     {
         samples_per_cycle = fs/fc;
@@ -63,7 +65,6 @@ public:
         bits->reset();
         bits_iter = bits->get_iterator();
 
-
         inv = false;
         // this forces it to flip on the first bit
         //last_bit = (**bits_iter < 1.0) ? 1.0 : 0.0;
@@ -71,48 +72,54 @@ public:
         k = 1;
         n = 1;
         bit = 0.0;
-        phase = 0;
-        value = (float) ((inv ? -1.0 : 1.0) * sin(phase));
+        value = (float) ((inv ? -1.0 : 1.0) * sin(*phase));
     }
 
     bool next() 
     {
-        if (phase > phase_per_bit) 
+        if (*phase > phase_per_bit) 
         {
-            phase -= phase_per_bit;
+            *phase -= phase_per_bit;
 
-            if (k >= training_bits) {
-                state = LOAD_BIT;
-            }
-
-            switch (state)
+            if (n < len) 
             {
-            case TRAIN:
-                k += 1;
-                break;
-
-            case LOAD_BIT:
-                bit = **bits_iter;
-
-                if (bit) 
+                if (k >= training_bits) 
                 {
-                    inv ^= true;
+                    state = LOAD_BIT;
                 }
-                bits->next();
-                break;
+
+                switch (state)
+                {
+
+                case TRAIN:
+                    k += 1;
+                    break;
+
+                case LOAD_BIT:
+                    bit = **bits_iter;
+
+                    if (bit) 
+                    {
+                        inv ^= true;
+                    }
+                    bits->next();
+                    break;
+                }
             }
         }
 
         if (n < len) 
         {
-            value = (float) ((inv ? -1.0 : 1.0) * sin(phase));
-            phase += inc;
+            value = (float) ((inv ? -1.0 : 1.0) * sin(*phase));
+            *phase += inc;
             n += 1;
             return true;
         }
         else 
         {
-            return false;
+            value = (float) ((inv ? -1.0 : 1.0) * sin(*phase));
+            *phase += inc;
+            return true;
         }
     }
 
@@ -128,14 +135,13 @@ public:
 
 private:
     Block * bits;
+    double * phase;
     int training_bits;
     double phase_per_bit;
     size_t len;
     double samples_per_cycle;
-
     float * ptr;
     float value;
-    double phase;
     double inc;
     bool inv;
     //float last_bit;
@@ -147,7 +153,7 @@ private:
 
 Block * BPSK::process(Block * bits)
 {
-    Block * ret = new BPSKBlock(bits, training_bits, cycles_per_bit, fc, fs);
+    Block * ret = new BPSKBlock(bits, &phase, training_bits, cycles_per_bit, fc, fs);
     return ret;
 }
 

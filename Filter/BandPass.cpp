@@ -87,6 +87,11 @@ float SOSBandPass::work(float sig)
     return y[0];
 }
 
+float SOSBandPass::value()
+{
+    return y[0];
+}
+
 void SOSBandPass::reset()
 {
     x[0] = 0.0;
@@ -178,6 +183,11 @@ float BandPass::work(float sig)
     return sig;
 }
 
+float BandPass::value()
+{
+    return filters[order - 1]->value();
+}
+
 void BandPass::reset()
 {
     for (int n = 0; n < order; ++n)
@@ -204,11 +214,12 @@ public:
         filter(filter),
         _free(false)
     {
-        reset();
         iter = block->get_iterator();
-        value = filter->work(**iter);
         ptr = &value;
-        filter->reset();
+        block->reset();
+        //filter->reset();
+        value = filter->work(**iter);
+        //value = filter->value();
     }
 
     BandPassBlock& operator=(const BandPassBlock& src)
@@ -218,7 +229,6 @@ public:
         iter = src.iter;
         ptr = &value;
         _free = src._free;
-        reset();
         return *this;
     }
 
@@ -238,18 +248,16 @@ public:
     }
 
     void reset() {
-        //filter->reset();
         block->reset();
     }
 
     bool next() {
-        if (!block->next()) {
-            return false;
-        }
-        else {
+        bool has_next = block->next();
+        if (has_next) {
             value = filter->work(**iter);
             return true;
         }
+        return false;
     }
 
     float ** get_iterator() {

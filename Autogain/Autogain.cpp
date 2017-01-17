@@ -10,9 +10,9 @@ const char * Autogain::name() {
 
 Autogain::Autogain(Memory * memory, Module * next, double fs):
     Module(memory, next),
-    autogain_c(10.0, 0.01, 44.1E3),
-    autogain_b(10.0, 0.10, 44.1E3),
-    autogain_a(10.0, 1.00, 44.1E3)
+    autogain_c(9.0, 0.01, 44.1E3),
+    autogain_b(9.0, 0.10, 44.1E3),
+    autogain_a(9.0, 1.00, 44.1E3)
 {
 }
 
@@ -51,7 +51,8 @@ public:
         iter = b->get_iterator();
         ptr = &value;
         _free = false;
-        reset();
+        b->reset();
+        value = autogain->work(**iter);
     }
 
     ~AutogainBlock()
@@ -60,7 +61,6 @@ public:
 
     void reset() {
         b->reset();
-        value = autogain->work(**iter);
     }
 
     void free() 
@@ -82,16 +82,12 @@ public:
 
     bool next() 
     {
-        bool ret = b->next();
-        if (ret) 
-        {
+        bool has_next = b->next();
+        if (has_next) {
             value = autogain->work(**iter);
             return true;
         }
-        else 
-        {
-            return false;
-        }
+        return false;
     }
 
     float ** get_iterator() {

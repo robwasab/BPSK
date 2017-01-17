@@ -35,6 +35,9 @@ public:
     {
         block_iter = block->get_iterator();
         ptr = &value;
+        block->reset();
+        value = 2.0 * **block_iter * sin(*phase);
+        *phase += inc;
     }
 
     void free() {
@@ -52,20 +55,17 @@ public:
 
     void reset() {
         block->reset();
-        value = **block_iter * sin(*phase);
-        *phase += inc;
     }
 
     bool next() {
-        if (!block->next()) {
-            return false;
-        }
-        else {
+        bool has_next = block->next();
+        if (has_next) {
             value = 2.0 * **block_iter * sin(*phase);
             //value = sin(*phase);
             *phase += inc;
             return true;
         }
+        return false;
      }
 
     float ** get_iterator() {

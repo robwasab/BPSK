@@ -10,7 +10,7 @@ OUTPUT:=main
 PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
-#PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
+PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 
 # Copied these from PlotController/Makefile
 ifdef PLOT_PATHS
@@ -52,13 +52,16 @@ SpectrumAnalyzer_paths=$(addprefix SpectrumAnalyzer/,$(SpectrumAnalyzer_objects)
 Autogain_objects=Autogain.o
 Autogain_paths=$(addprefix Autogain/,$(Autogain_objects))
 
+PortAudio_objects=PortAudioSimulator.o PortAudioStdin.o
+PortAudio_paths=$(addprefix PortAudio/,$(PortAudio_objects))
+
 # Default target
 all: main
 
-main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) -o $(OUTPUT) $(LIBS)
+main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) $(PortAudio_paths) Colors/Colors.h PlotSink/PlotSink.h
+	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) $(PortAudio_paths) -o $(OUTPUT) $(LIBS)
 
-main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Plot_PATHS) Colors/Colors.h
+main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) $(PortAudio_paths) Colors/Colors.h PlotSink/PlotSink.h
 	$(CC) $(QT_ENABLE) -Wall $(INCLUDE) -c main.cpp
 
 $(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
@@ -97,6 +100,9 @@ $(SpectrumAnalyzer_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Modu
 $(Autogain_paths):%.o: %.cpp %.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
+$(PortAudio_paths):%.o: %.cpp %.h Module/Module.h
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
+
 clean:
 	rm $(TaskScheduler_paths)
 	rm $(Memory_paths)
@@ -109,5 +115,6 @@ clean:
 	rm $(Modulator_paths)
 	rm $(SpectrumAnalyzer_paths)
 	rm $(Autogain_paths)
+	rm $(PortAudio_paths)
 	$(PLOT_CLEAN)
 

@@ -141,7 +141,14 @@ public:
         Point p;
         while(is_processing());
         p.x = len;
-        p.y = max - min;
+        float width;
+        if (fabs(max) < fabs(min)) {
+            width = 2.2 * fabs(min);
+        }
+        else {
+            width = 2.2 * fabs(max);
+        }
+        p.y = width;
         return p;
     }
 

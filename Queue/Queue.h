@@ -27,6 +27,27 @@ public:
         delete [] _data;
     }
 
+    Type * add()
+    {
+        Type * ret;
+        lock();
+
+        if (_size < _max) 
+        {
+            ret = &_data[ _tail ];
+            _tail = ( _tail + 1) % _max;
+            _size = _size + 1;
+            unlock();
+            return ret;
+        }
+        else 
+        {
+            unlock();
+            // printf("Queue is full!\n");
+            return NULL;
+        }
+    }
+
     Type * add(Type& t)
     {
         // printf("Adding to the QUEUE!\n");

@@ -36,10 +36,11 @@ CostasLoopBlock::CostasLoopBlock(Block * block,
     block_iter = block->get_iterator();
     ptr = get_pointer(type);
     _free = false;
-    ptr = get_pointer(FREQUENCY_EST_SIGNAL);
+    //ptr = get_pointer(FREQUENCY_EST_SIGNAL);
 
-    //costa->reset();
-    reset();
+    block->reset();
+    in_phase_sig = 
+        costa->work(**block_iter, freq_est_ptr, lock_ptr, error_ptr);
 }
 
 CostasLoopBlock& CostasLoopBlock::operator=(const CostasLoopBlock& src)
@@ -59,8 +60,6 @@ CostasLoopBlock& CostasLoopBlock::operator=(const CostasLoopBlock& src)
     block_iter = block->get_iterator();
     ptr = get_pointer(src.type);
     _free = src._free;
-
-    reset();
 
     return *this;
 }
@@ -92,20 +91,21 @@ float ** CostasLoopBlock::get_iterator()
 
 void CostasLoopBlock::reset() {
     block->reset();
-    //costa->reset();
+    /*
+    costa->reset();
     in_phase_sig = 
         costa->work(**block_iter, freq_est_ptr, lock_ptr, error_ptr);
+    */
 }
 
 bool CostasLoopBlock::next() {
-    if (block->next()) {
+    bool has_next = block->next();
+    if (has_next) {
         in_phase_sig = 
             costa->work(**block_iter, freq_est_ptr, lock_ptr, error_ptr);
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 void CostasLoopBlock::print() {

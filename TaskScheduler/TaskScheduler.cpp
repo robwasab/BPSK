@@ -180,11 +180,11 @@ void * task_loop(void * args)
         }
         else 
         {
-            LOG("going to sleep...\n");
+            //LOG("going to sleep...\n");
             self->lock();
             pthread_cond_wait(&self->cond, &self->mutex);
             self->unlock();
-            LOG("waking up!\n");
+            //LOG("waking up!\n");
         }
     }
     return NULL;

@@ -46,6 +46,7 @@ CostasLoop::CostasLoop(Memory * memory,
 
     inc = 2.0*PI*this->fc;
     
+    //vco = new PeriodicIntegrator(fs, 2.0*PI);
     vco = new Integrator(fs);
     amp = new Integrator(fs);
 

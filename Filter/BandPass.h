@@ -9,6 +9,7 @@ public:
     SOSBandPass(float a, float b, float c, float d);
     float work(float sig);
     void reset();
+    float value();
 private:
     float a[3];
     float b[3];
@@ -31,6 +32,7 @@ public:
     const char * name();
     float work(float sig);
     void reset();
+    float value();
 
 private:
     int order;

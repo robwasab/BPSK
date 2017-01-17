@@ -56,6 +56,7 @@ private:
 
     // Phase Integrator for the vco
     Integrator * vco;
+    //PeriodicIntegrator * vco;
 
     // In Phase LPF
     Biquad_LowPass * ilp;
