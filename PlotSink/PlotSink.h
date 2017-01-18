@@ -23,11 +23,13 @@ public:
         _valid = true;
         processing = false;
         pthread_mutex_init(&mutex, NULL);
+        data_alloc = false;
     }
 
     ~PlotSink() {
-        if (data) {
+        if (data_alloc) {
             delete [] data;
+            data_alloc = false;
         }
     }
 
@@ -64,11 +66,13 @@ public:
         iter = b->get_iterator();
         len = b->get_size();
 
-        if (data) {
+        if (data_alloc) {
             delete [] data;
+            data_alloc = false;
         }
 
         data = new float[len];
+        data_alloc = true;
 
         b->reset();
 
@@ -161,6 +165,7 @@ private:
     size_t len;
     bool _valid;
     pthread_mutex_t mutex;
+    bool data_alloc;
 };
 
 #endif

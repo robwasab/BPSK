@@ -136,7 +136,7 @@ public:
 private:
     Block * bits;
     double * phase;
-    int training_bits;
+    unsigned int training_bits;
     double phase_per_bit;
     size_t len;
     double samples_per_cycle;
@@ -147,7 +147,7 @@ private:
     //float last_bit;
     float ** bits_iter;
     enum {TRAIN, LOAD_BIT} state;
-    int k,n;
+    unsigned int k,n;
     float bit;
 };
 

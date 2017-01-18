@@ -93,7 +93,7 @@ int TaskScheduler::run_event()
         tok();
 #ifdef TIMER
         uint64_t delta = get_time();
-        LOG("%s %llu microseconds\n", e.module->name(), delta);
+        LOG("%s %lu microseconds\n", e.module->name(), delta);
 #endif
 
         if (ret && e.module->next)

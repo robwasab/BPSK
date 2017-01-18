@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include "../Queue/Queue.h"
 #include "../Module/Module.h"
-#define TIMER
+//#define TIMER
 #ifdef TIMER
 #include <time.h>
 #endif

@@ -21,7 +21,7 @@
 #include "PlotController/PlotController.h"
 #endif
 
-//#undef QT_ENABLE
+#undef QT_ENABLE
 
 typedef SpectrumAnalyzer Spectrum;
 
@@ -112,8 +112,13 @@ int main(int argc, char ** argv)
 
     /* Port Audio Migration */
 
+#ifdef QT_ENABLE
     PlotSink          scope(&end);
     BPSKDecoder rx_if_deco(&rx_memory, &scope, fs, fif, prefix, prefix_len, cycles_per_bit, false);
+#else
+    BPSKDecoder rx_if_deco(&rx_memory, &end, fs, fif, prefix, prefix_len, cycles_per_bit, false);
+#endif
+
     CostasLoop  rx_if_cost(&rx_memory, &rx_if_deco, fs, fif, IN_PHASE_SIGNAL);
     Autogain    rx_if_auto(&rx_memory, &rx_if_cost, fs);
     BandPass    rx_if_band(&rx_memory, &rx_if_auto, fs, fif, bw, order);
@@ -158,12 +163,13 @@ int main(int argc, char ** argv)
     //controller.add_plot(&scope);
 
     controller.add_plot(&scope);
-
     rx_scheduler.start();
     simulator.start();
     pa_stdin.start(false);
-    //tx_if_sour.start(true);
-    return controller.run();
+    int ret = controller.run();
+    rx_scheduler.stop();
+    simulator.stop();
+    return ret;
 #else 
     rx_scheduler.start();
     simulator.start();
