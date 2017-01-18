@@ -9,7 +9,7 @@
 #include "Receiver/BPSKDecoder.h"
 #include "Modulator/Modulator.h"
 #include "PlotSink/PlotSink.h"
-#include "Filter/Bandpass.h"
+#include "Filter/BandPass.h"
 #include "WavSink/WavSink.h"
 #include "Memory/Memory.h"
 #include "Autogain/Autogain.h"
