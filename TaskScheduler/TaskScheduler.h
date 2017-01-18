@@ -29,6 +29,7 @@ class TaskScheduler
 {
 public:
     TaskScheduler(size_t max_events);
+    ~TaskScheduler();
     int work();
     int add_event(Runnable runnable, void * arg);
     int add_event(Runnable runnable, void * arg, bool pause);

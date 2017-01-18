@@ -173,8 +173,8 @@ private:
     float out_last;
 };
 
-//#define RESET_SIG_DB
-#define HIGH_PASS_DB
+#define RESET_SIG_DB
+//#define HIGH_PASS_DB
 
 Block * BPSKDecoder::process(Block * block)
 {
@@ -326,7 +326,7 @@ Block * BPSKDecoder::process(Block * block)
 
                     if (k >= 8) 
                     {
-                        LOG("Got size: %hhd state->COLLECT_BITS\n", byte);
+                        LOG("Got size: %hhu state->COLLECT_BITS\n", byte);
                         msg = memory->allocate(byte);
                         msg_iter = msg->get_iterator();
                         k = 0;

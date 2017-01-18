@@ -10,7 +10,7 @@ Memory::Memory():
     head(0),
     tail(0),
     size(0),
-    blocks(256)
+    blocks(1024)
 {
     memory = new float[SIZE];
     pthread_mutex_init(&mutex, NULL);
@@ -44,10 +44,12 @@ Block * Memory::allocate(size_t amt)
         tail = (tail + amt) % SIZE;
         size =  size + amt;
 
+        /*
         printf("Allocat Block: ");
         MAGENTA;
         printf("[++%4zu/%4zu]\n", amt, size);
         ENDC;
+        */
         //ref->print();
         //ENDC;
         unlock();
@@ -72,10 +74,12 @@ void Memory::free_queue()
 
     while ( blocks.size() > 0 && blocks.peek()->is_free() ) 
     {
+        /*
         printf("Freeing Block: ");
         BLUE;
         printf("[--%4zu/%4zu]\n", blocks.peek()->get_size(), size);
         ENDC;
+        */
         //blocks.peek()->print();
         unused = blocks.peek()->get_size();
         head = (head + unused) % SIZE;

@@ -118,12 +118,17 @@ int TaskScheduler::run_event()
             }
             else 
             {
-                LOG("Module returned NULL...\n");
+                //LOG("Module returned NULL...\n");
             }
         }
         break;
     }
     return 0;
+}
+
+TaskScheduler::~TaskScheduler()
+{
+    stop();
 }
 
 void TaskScheduler::stop()
