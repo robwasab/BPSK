@@ -143,3 +143,14 @@ void * PortAudioSimulator_loop(void * arg)
     printf("PortAudio quitting...\n");
     return NULL;
 }
+
+static
+int PortAudio_callback(const void * input, 
+    void * output, 
+    unsigned long frames, 
+    const PaStreamCallbackTimeInfo * timeInfo, 
+    PaStreamCallbackFlags statusFlags, 
+    void * arg)
+{
+
+}

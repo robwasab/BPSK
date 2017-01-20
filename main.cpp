@@ -21,7 +21,7 @@
 #include "PlotController/PlotController.h"
 #endif
 
-#undef QT_ENABLE
+//#undef QT_ENABLE
 
 typedef SpectrumAnalyzer Spectrum;
 

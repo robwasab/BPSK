@@ -44,12 +44,12 @@ Block * Memory::allocate(size_t amt)
         tail = (tail + amt) % SIZE;
         size =  size + amt;
 
-        /*
+#ifdef SHOW_ALLOC
         printf("Allocat Block: ");
         MAGENTA;
         printf("[++%4zu/%4zu]\n", amt, size);
         ENDC;
-        */
+#endif
         //ref->print();
         //ENDC;
         unlock();
@@ -74,12 +74,12 @@ void Memory::free_queue()
 
     while ( blocks.size() > 0 && blocks.peek()->is_free() ) 
     {
-        /*
+#ifdef SHOW_ALLOC
         printf("Freeing Block: ");
         BLUE;
         printf("[--%4zu/%4zu]\n", blocks.peek()->get_size(), size);
         ENDC;
-        */
+#endif
         //blocks.peek()->print();
         unused = blocks.peek()->get_size();
         head = (head + unused) % SIZE;

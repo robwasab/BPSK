@@ -5,6 +5,7 @@
 #include "../Queue/Queue.h"
 
 #define SIZE (1 << 20) 
+//#define SHOW_ALLOC
 
 class Memory
 {
