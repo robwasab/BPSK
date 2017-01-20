@@ -2,7 +2,7 @@ CC:=g++
 INCLUDE:=-I /usr/local/include 
 FLAGS:=
 LIBRARY:=-L /usr/local/lib
-OPTIONS:=-lm -g -lfftw3f
+OPTIONS:=-lm -g -lfftw3f -lpthread -lportaudio
 
 OUTPUT:=main
 
@@ -10,7 +10,7 @@ OUTPUT:=main
 PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
-PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
+#PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
 
 # Copied these from PlotController/Makefile
 ifdef PLOT_PATHS
