@@ -2,6 +2,7 @@
 #define __PORT_AUDIO_TRANSMIT_BLOCK_H__
 
 #include <pthread.h>
+#include <portaudio.h>
 #include "TransmitBlock.h"
 #include "../Queue/Queue.h"
 #include "../Transmitter/Prefix.h"
@@ -30,6 +31,7 @@ public:
     size_t tx_modules_size;
     bool quit;
     pthread_mutex_t mutex;
+    PaStream * stream;
 private:
     pthread_t thread;
 };

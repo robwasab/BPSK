@@ -98,6 +98,10 @@ void CostasLoopBlock::reset() {
     */
 }
 
+void CostasLoopBlock::hard_reset() {
+    costa->reset();
+}
+
 bool CostasLoopBlock::next() {
     bool has_next = block->next();
     if (has_next) {

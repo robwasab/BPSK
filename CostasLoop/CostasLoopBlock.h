@@ -17,6 +17,7 @@ public:
     bool is_free();
     size_t get_size();
     void reset();
+    void hard_reset();
     bool next();
     float ** get_iterator();
     void print();

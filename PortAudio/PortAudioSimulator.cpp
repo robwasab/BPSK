@@ -6,6 +6,8 @@
 #include <math.h>
 #include <portaudio.h>
 
+//#define SIMULATE 
+
 void * PortAudioSimulator_loop(void * arg);
 int PortAudio_callback(
     const void *input, 
@@ -33,7 +35,8 @@ PortAudioSimulator::PortAudioSimulator(
     rx_scheduler(rx_scheduler),
     rx_memory(rx_memory),
     rx_module(rx_module),
-    source(64)
+    source(64),
+    stream(NULL)
 {
     LOG("Calculating size...\n");
     tx_modules_size = calc_size(tx_modules);
@@ -46,9 +49,118 @@ PortAudioSimulator::PortAudioSimulator(
     pthread_mutex_init(&mutex, NULL);
 }
 
+PaError print_devices() 
+{
+    PaDeviceIndex num_dev = Pa_GetDeviceCount();
+
+    if (num_dev < 0) {
+        return num_dev;
+    }
+    for (PaDeviceIndex index = 0; index < num_dev; index += 1)
+    {
+        const PaDeviceInfo * dev_info = Pa_GetDeviceInfo(index);
+        const PaHostApiInfo * api_info = Pa_GetHostApiInfo(dev_info->hostApi);
+        LOG("[%d] %s\n", (int) index, dev_info->name);
+        LOG("    Max input channels      : %d\n" , dev_info->maxInputChannels);
+        LOG("    Max outpu channels      : %d\n" , dev_info->maxOutputChannels);
+        if (dev_info->maxInputChannels != 0 ) {
+            LOG("    Input latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowInputLatency));
+            LOG("    Input latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighInputLatency));
+            LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowInputLatency * dev_info->defaultSampleRate);
+            LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighInputLatency * dev_info->defaultSampleRate);
+        }
+        if (dev_info->maxOutputChannels != 0) {
+            LOG("    Outpu latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowOutputLatency));
+            LOG("    Outpu latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighOutputLatency));
+            LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowOutputLatency * dev_info->defaultSampleRate);
+            LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighOutputLatency * dev_info->defaultSampleRate);
+        }
+        LOG("    Sampling rate      [Hz] : %.3lf\n", dev_info->defaultSampleRate);
+        LOG("    API name                : %s\n" , api_info->name);
+        LOG("    API num devices         : %d\n" , api_info->deviceCount);
+        LOG("    API default input index : %d\n" , (int) (api_info->defaultInputDevice));
+        LOG("    API default outpu index : %d\n" , (int) (api_info->defaultOutputDevice));
+    }
+    return paNoError;
+}
+
 void PortAudioSimulator::start()
 {
+#ifdef SIMULATE
     pthread_create(&thread, NULL, PortAudioSimulator_loop, this);
+    return;
+#else
+    PaStreamParameters input_params;
+    PaStreamParameters outpu_params;
+    double input_fs;
+    double outpu_fs;
+
+    PaError error = Pa_Initialize();
+    error = print_devices();
+    if (error != paNoError) {
+        goto fail;
+    }
+
+    // Setup input device
+    input_params.device = Pa_GetDefaultInputDevice();
+    if (input_params.device == paNoDevice) {
+        error = paNoDevice;
+        goto fail;
+    }
+
+    // Setup output device
+    outpu_params.device = Pa_GetDefaultOutputDevice();
+    if (outpu_params.device == paNoDevice) {
+        error = paNoDevice;
+        goto fail;
+    }
+
+    input_params.channelCount = 1;
+    input_params.sampleFormat = paFloat32;
+    input_params.suggestedLatency = Pa_GetDeviceInfo(input_params.device)->defaultLowInputLatency;
+    input_params.hostApiSpecificStreamInfo = NULL;
+    input_fs = Pa_GetDeviceInfo(input_params.device)->defaultSampleRate;
+
+    outpu_params.channelCount = 1;
+    outpu_params.sampleFormat = paFloat32;
+    outpu_params.suggestedLatency = Pa_GetDeviceInfo(outpu_params.device)->defaultLowOutputLatency;
+    outpu_params.hostApiSpecificStreamInfo = NULL;
+    outpu_fs = Pa_GetDeviceInfo(outpu_params.device)->defaultSampleRate;
+
+    if (input_fs != outpu_fs) {
+        WARNING("default input fs %.3lf != default output fs %.3lf\n", input_fs, outpu_fs);
+    }
+
+    if (input_fs != 44.1E3) {
+        WARNING("input fs %.3lf != 44.1kHz\n", input_fs);
+        WARNING("outpu fs %.3lf != 44.1kHz\n", outpu_fs);
+    }
+
+    error = Pa_OpenStream(
+            &this->stream,
+            &input_params,
+            &outpu_params,
+            44.1E3,
+            1024,
+            0,
+            PortAudio_callback,
+            this);
+
+    if (error != paNoError) {
+        goto fail;
+    }
+
+    error = Pa_StartStream(this->stream);
+
+    if (error != paNoError) {
+        goto fail;
+    }
+
+    return;
+fail:
+    ERROR("%s\n", Pa_GetErrorText(error));
+    return;
+#endif
 }
 
 PortAudioSimulator::~PortAudioSimulator()
@@ -62,7 +174,15 @@ void PortAudioSimulator::stop()
     pthread_mutex_lock(&mutex);
     quit = true;
     pthread_mutex_unlock(&mutex);
+#ifdef SIMULATE
     pthread_join(thread, NULL);
+#else
+    PaError err = Pa_CloseStream(this->stream);
+    if (err != paNoError) {
+        ERROR("%s\n", Pa_GetErrorText(err));
+    }
+    Pa_Terminate();
+#endif
 }
 
 void PortAudioSimulator::add(Block * block)
@@ -160,7 +280,6 @@ int PortAudio_callback(
         LOG("Priming the stream.\n");
     }
 
-
     if (self->source.size() > 0)
     {
         Block * block;
@@ -179,7 +298,7 @@ int PortAudio_callback(
 
         for (size_t n = 0; n < frames; ++n)
         {
-            tx_buffer[n] = **tx_iter;
+            tx_buffer[n] = **tx_iter * 0.75;
             tx_block->next();
         }
 
@@ -209,16 +328,9 @@ int PortAudio_callback(
     }
     pthread_mutex_unlock(&self->mutex);
 
+    if (self->stream) {
+        double load = Pa_GetStreamCpuLoad(self->stream);
+        LOG("CPU load: %.3lf\r", 100.0 * load);
+    }
     return paContinue;
-}
-
-static
-int PortAudio_callback(const void * input, 
-    void * output, 
-    unsigned long frames, 
-    const PaStreamCallbackTimeInfo * timeInfo, 
-    PaStreamCallbackFlags statusFlags, 
-    void * arg)
-{
-
 }

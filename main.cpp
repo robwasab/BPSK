@@ -115,16 +115,20 @@ int main(int argc, char ** argv)
 #ifdef QT_ENABLE
     PlotSink          scope(&end);
     BPSKDecoder rx_if_deco(&rx_memory, &scope, fs, fif, prefix, prefix_len, cycles_per_bit, false);
+    //PlotSink    freq(&rx_if_deco);
+    CostasLoop  rx_if_cost(&rx_memory, &rx_if_deco, fs, fif, IN_PHASE_SIGNAL);
+    //PlotSink    auto_scope(&rx_if_cost);
+    Autogain    rx_if_auto(&rx_memory, &rx_if_cost, fs);
 #else
     BPSKDecoder rx_if_deco(&rx_memory, &end, fs, fif, prefix, prefix_len, cycles_per_bit, false);
-#endif
-
     CostasLoop  rx_if_cost(&rx_memory, &rx_if_deco, fs, fif, IN_PHASE_SIGNAL);
     Autogain    rx_if_auto(&rx_memory, &rx_if_cost, fs);
+#endif
+
     BandPass    rx_if_band(&rx_memory, &rx_if_auto, fs, fif, bw, order);
     Modulator   rx_rf_modu(&rx_memory, &rx_if_band, fs, fc - fif);
     BandPass    rx_rf_band(&rx_memory, &rx_rf_modu, fs, fc, bw, order);
-    Attenuator  rx_rf_atte(&rx_memory, &rx_rf_band, 0.01);
+    //Attenuator  rx_rf_atte(&rx_memory, &rx_rf_band, 0.1);
 
     BandPass  bprf(&tx_memory, NULL, fs, fc, bw, order);
     Modulator mdrf(&tx_memory, NULL, fs, fc - fif);
@@ -148,7 +152,7 @@ int main(int argc, char ** argv)
     tx_modules[10] = NULL;
     */
 
-    PortAudioSimulator simulator(&rx_scheduler, &rx_memory, tx_modules, &rx_rf_atte);
+    PortAudioSimulator simulator(&rx_scheduler, &rx_memory, tx_modules, &rx_rf_band);
 
     PortAudioStdin pa_stdin(&tx_memory, &simulator);
 
@@ -156,13 +160,9 @@ int main(int argc, char ** argv)
 
 #ifdef QT_ENABLE
     PlotController controller(argc, argv);
-    //controller.add_plot(&rx_if_sink);
-    //controller.add_plot(&rx_if_scop);
-    //controller.add_plot(&rx_if_rese);
-    //controller.add_plot(&rx_if_spec);
-    //controller.add_plot(&scope);
-
     controller.add_plot(&scope);
+    //controller.add_plot(&auto_scope);
+    //controller.add_plot(&freq);
     rx_scheduler.start();
     simulator.start();
     pa_stdin.start(false);

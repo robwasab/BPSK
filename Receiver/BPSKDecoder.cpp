@@ -180,6 +180,7 @@ Block * BPSKDecoder::process(Block * block)
 {
     static HighPass filter(0.005, fs);
     static RC_LowPass timer(0.25, fs);
+    static RC_LowPass no_lock_timer(0.25, fs);
     static uint32_t shift_register = 0;
     static int count = 0;
     static bool last_bit = false;
@@ -225,6 +226,14 @@ Block * BPSKDecoder::process(Block * block)
                 state = ACQUIRE;
             }
             timer.reset();
+            no_lock_timer.work(1.0);
+
+            if (no_lock_timer.value() > 0.99) 
+            {
+                LOG("Hard resetting costas loop...\n");
+                demod->hard_reset();
+                no_lock_timer.reset();
+            }
 #ifdef RESET_SIG_DB
             **reset_iter = timer.work(0.0);
             **reset_iter = 0.0;
@@ -233,6 +242,7 @@ Block * BPSKDecoder::process(Block * block)
         }
         else 
         {
+            no_lock_timer.reset();
             if (state != ACQUIRE) 
             {
                 timer.work(1.0);

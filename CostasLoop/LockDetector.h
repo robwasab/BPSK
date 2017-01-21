@@ -8,7 +8,7 @@
 class LockDetector
 {
 public:
-    LockDetector(float fs, float thresh = 0.1) {
+    LockDetector(float fs, float thresh = 0.5) {
         in_phase_lp = new Biquad_LowPass(0.707106, 10.0, fs);
         qu_phase_lp = new Biquad_LowPass(0.707106, 10.0, fs);
         this->thresh = thresh;

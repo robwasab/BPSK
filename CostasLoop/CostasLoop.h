@@ -82,6 +82,5 @@ private:
 
     // RC circuit that charges up when lock is true
     RC_LowPass * lock_rc;
-
 };
 #endif

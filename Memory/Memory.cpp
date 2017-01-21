@@ -10,7 +10,7 @@ Memory::Memory():
     head(0),
     tail(0),
     size(0),
-    blocks(1024)
+    blocks(4096)
 {
     memory = new float[SIZE];
     pthread_mutex_init(&mutex, NULL);
