@@ -21,7 +21,7 @@
 #include "PlotController/PlotController.h"
 #endif
 
-//#undef QT_ENABLE
+#undef QT_ENABLE
 
 typedef SpectrumAnalyzer Spectrum;
 
@@ -52,9 +52,9 @@ int main(int argc, char ** argv)
     double fs = 44.1E3;
     double fc = 18E3;
     double fif = 3E3;
-    double bw = 2E3;
-    int order = 4;
-    int cycles_per_bit = 20;
+    double bw = 3E3;
+    int order = 6;
+    int cycles_per_bit = 10;
     size_t prefix_len;
     bool * prefix;
     int spectrum_size = 1 << 10;
@@ -64,53 +64,6 @@ int main(int argc, char ** argv)
     prefix[0] = true;
 
     SuppressPrint end;
-
-    /*
-
-    PlotSink rx_if_rese(&end);
-
-    BPSKDecoder rx_if_deco(&memory, &rx_if_rese, fs, fif, prefix, prefix_len, cycles_per_bit, false);
-
-    PlotSink    rx_if_sink(&rx_if_deco);
-
-    CostasLoop  rx_if_cost(&memory, &rx_if_sink, fs, fif, IN_PHASE_SIGNAL);
-
-    //Spectrum    rx_if_spec(&memory, &rx_if_cost, fs, spectrum_size);
-
-    PlotSink    rx_if_scop(&rx_if_cost);
-
-    //Spectrum    rx_if_spec(&memory, &rx_if_scop, fs, spectrum_size);
-
-    Autogain    rx_if_auto(&memory, &rx_if_scop, fs);
-
-    BandPass    rx_if_band(&memory, &rx_if_auto, fs, fif, bw, order);
-
-    Modulator   rx_rf_modu(&memory, &rx_if_band, fs, fc - fif);
-
-    BandPass    rx_rf_band(&memory, &rx_rf_modu, fs, fc, bw, order);
-
-    // Over the air
-
-    //PlotSink    scope(&rx_rf_band);
-    //WavSink     rx_if_wave(&memory, &rx_rf_band);
-
-    //Spectrum    tx_rf_spec(&memory, &rx_rf_band, fs, spectrum_size);
-
-    BandPass    tx_rf_band(&memory, &rx_rf_band, fs, fc, bw, order);
-
-    Modulator   tx_rf_modu(&memory, &tx_rf_band, fs, fc - fif);
-
-    BandPass    tx_if_band(&memory, &tx_rf_modu, fs, fif, bw, order);
-
-    BPSK        tx_if_bpsk(&memory, &tx_if_band, fs, fif, cycles_per_bit, 200);
-
-    Prefix      tx_if_pref(&memory, &tx_if_bpsk, prefix, prefix_len);
-
-    StdinSource tx_if_sour(&memory, &tx_if_pref, &scheduler);
-
-    */
-
-    /* Port Audio Migration */
 
 #ifdef QT_ENABLE
     PlotSink          scope(&end);
@@ -125,10 +78,9 @@ int main(int argc, char ** argv)
     Autogain    rx_if_auto(&rx_memory, &rx_if_cost, fs);
 #endif
 
-    BandPass    rx_if_band(&rx_memory, &rx_if_auto, fs, fif, bw, order);
-    Modulator   rx_rf_modu(&rx_memory, &rx_if_band, fs, fc - fif);
-    BandPass    rx_rf_band(&rx_memory, &rx_rf_modu, fs, fc, bw, order);
-    //Attenuator  rx_rf_atte(&rx_memory, &rx_rf_band, 0.1);
+    BandPass  rx_if_band(&rx_memory, &rx_if_auto, fs, fif, bw, order);
+    Modulator rx_rf_modu(&rx_memory, &rx_if_band, fs, fc - fif);
+    BandPass  rx_rf_band(&rx_memory, &rx_rf_modu, fs, fc, bw, order);
 
     BandPass  bprf(&tx_memory, NULL, fs, fc, bw, order);
     Modulator mdrf(&tx_memory, NULL, fs, fc - fif);

@@ -137,7 +137,7 @@ void PortAudioSimulator::start()
     }
 
     error = Pa_OpenStream(
-            &this->stream,
+            &(this->stream),
             &input_params,
             &outpu_params,
             44.1E3,
@@ -248,8 +248,11 @@ int PortAudio_callback(
 {
     /* assume mono playback */
     static Block * tx_block = NULL;
+    static float scale = 0.75;
     float * tx_buffer = (float *) output;
     const float * rx_buffer = (const float *) input;
+    float ** tx_iter;
+    size_t start;
 
     PortAudioSimulator * self = (PortAudioSimulator *) arg;
 
@@ -280,11 +283,15 @@ int PortAudio_callback(
         LOG("Priming the stream.\n");
     }
 
+    start = 0;
     if (self->source.size() > 0)
     {
         Block * block;
         self->source.get(&block);
         if (tx_block) {
+            tx_iter = tx_block->get_iterator();
+            tx_buffer[0] = **tx_iter * scale;
+            start = 1;
             tx_block->free();
         }
         tx_block = block;
@@ -294,11 +301,11 @@ int PortAudio_callback(
 
     if (tx_block) 
     {
-        float ** tx_iter = tx_block->get_iterator();
+        tx_iter = tx_block->get_iterator();
 
-        for (size_t n = 0; n < frames; ++n)
+        for (size_t n = start; n < frames; ++n)
         {
-            tx_buffer[n] = **tx_iter * 0.75;
+            tx_buffer[n] = **tx_iter * scale; 
             tx_block->next();
         }
 
@@ -328,9 +335,11 @@ int PortAudio_callback(
     }
     pthread_mutex_unlock(&self->mutex);
 
+    /*
     if (self->stream) {
         double load = Pa_GetStreamCpuLoad(self->stream);
         LOG("CPU load: %.3lf\r", 100.0 * load);
     }
+    */
     return paContinue;
 }

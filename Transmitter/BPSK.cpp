@@ -43,7 +43,11 @@ public:
         inc = 2.0*M_PI*fc/fs;
 
         ptr = &value;
+        inv = 1.0;
+        *phase += inc;
+        value = (float) inv * sin(*phase);
         reset();
+        bits_iter = bits->get_iterator();
     }
 
     ~BPSKBlock() {}
@@ -63,16 +67,11 @@ public:
 
     void reset() {
         bits->reset();
-        bits_iter = bits->get_iterator();
-
-        inv = false;
         // this forces it to flip on the first bit
         //last_bit = (**bits_iter < 1.0) ? 1.0 : 0.0;
         state = TRAIN;
         k = 1;
         n = 1;
-        bit = 0.0;
-        value = (float) ((inv ? -1.0 : 1.0) * sin(*phase));
     }
 
     bool next() 
@@ -90,35 +89,35 @@ public:
 
                 switch (state)
                 {
+                    case TRAIN:
+                        k += 1;
+                        break;
 
-                case TRAIN:
-                    k += 1;
-                    break;
+                    case LOAD_BIT:
+                        bit = **bits_iter;
 
-                case LOAD_BIT:
-                    bit = **bits_iter;
+                        if (bit) 
+                        {
+                            inv *= -1.0;
+                        }
 
-                    if (bit) 
-                    {
-                        inv ^= true;
-                    }
-                    bits->next();
-                    break;
+                        bits->next();
+                        break;
                 }
             }
         }
 
         if (n < len) 
         {
-            value = (float) ((inv ? -1.0 : 1.0) * sin(*phase));
             *phase += inc;
+            value = (float) inv * sin(*phase);
             n += 1;
             return true;
         }
         else 
         {
-            value = (float) ((inv ? -1.0 : 1.0) * sin(*phase));
             *phase += inc;
+            value = (float) inv * sin(*phase);
             return true;
         }
     }
@@ -143,7 +142,7 @@ private:
     float * ptr;
     float value;
     double inc;
-    bool inv;
+    double inv;
     //float last_bit;
     float ** bits_iter;
     enum {TRAIN, LOAD_BIT} state;
