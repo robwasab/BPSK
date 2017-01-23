@@ -15,7 +15,6 @@ public:
 private:
     double inc;
     double phase;
-    Integrator * vco;
 };
 
 #endif

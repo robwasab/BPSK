@@ -1,8 +1,8 @@
 CC:=g++
 INCLUDE:=-I /usr/local/include 
-FLAGS:=
+FLAGS:=-g
 LIBRARY:=-L /usr/local/lib
-OPTIONS:=-lm -g -lfftw3f -lpthread -lportaudio
+OPTIONS:=-lm -lfftw3f -lpthread -lportaudio
 
 OUTPUT:=main
 
@@ -62,7 +62,7 @@ main: main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_
 	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) $(PortAudio_paths) -o $(OUTPUT) $(LIBS)
 
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(Transmitter_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(WavSink_paths) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Autogain_paths) $(PortAudio_paths) Colors/Colors.h PlotSink/PlotSink.h
-	$(CC) $(QT_ENABLE) -Wall $(INCLUDE) -c main.cpp
+	$(CC) $(QT_ENABLE) -Wall $(FLAGS) $(INCLUDE) -c main.cpp
 
 $(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp
 	make -C ./PlotController $(notdir $@)

@@ -36,6 +36,7 @@ PortAudioSimulator::PortAudioSimulator(
     rx_memory(rx_memory),
     rx_module(rx_module),
     source(64),
+    quit(false),
     stream(NULL)
 {
     LOG("Calculating size...\n");
