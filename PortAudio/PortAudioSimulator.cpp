@@ -50,38 +50,31 @@ PortAudioSimulator::PortAudioSimulator(
     pthread_mutex_init(&mutex, NULL);
 }
 
-PaError print_devices() 
+PaError print_device(PaDeviceIndex index) 
 {
-    PaDeviceIndex num_dev = Pa_GetDeviceCount();
+    const PaDeviceInfo * dev_info = Pa_GetDeviceInfo(index);
+    const PaHostApiInfo * api_info = Pa_GetHostApiInfo(dev_info->hostApi);
+    LOG("[%d] %s\n", (int) index, dev_info->name);
+    LOG("    Max input channels      : %d\n" , dev_info->maxInputChannels);
+    LOG("    Max outpu channels      : %d\n" , dev_info->maxOutputChannels);
+    if (dev_info->maxInputChannels != 0 ) {
+        LOG("    Input latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowInputLatency));
+        LOG("    Input latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighInputLatency));
+        LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowInputLatency * dev_info->defaultSampleRate);
+        LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighInputLatency * dev_info->defaultSampleRate);
+    }
+    if (dev_info->maxOutputChannels != 0) {
+        LOG("    Outpu latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowOutputLatency));
+        LOG("    Outpu latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighOutputLatency));
+        LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowOutputLatency * dev_info->defaultSampleRate);
+        LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighOutputLatency * dev_info->defaultSampleRate);
+    }
+    LOG("    Sampling rate      [Hz] : %.3lf\n", dev_info->defaultSampleRate);
+    LOG("    API name                : %s\n" , api_info->name);
+    LOG("    API num devices         : %d\n" , api_info->deviceCount);
+    LOG("    API default input index : %d\n" , (int) (api_info->defaultInputDevice));
+    LOG("    API default outpu index : %d\n" , (int) (api_info->defaultOutputDevice));
 
-    if (num_dev < 0) {
-        return num_dev;
-    }
-    for (PaDeviceIndex index = 0; index < num_dev; index += 1)
-    {
-        const PaDeviceInfo * dev_info = Pa_GetDeviceInfo(index);
-        const PaHostApiInfo * api_info = Pa_GetHostApiInfo(dev_info->hostApi);
-        LOG("[%d] %s\n", (int) index, dev_info->name);
-        LOG("    Max input channels      : %d\n" , dev_info->maxInputChannels);
-        LOG("    Max outpu channels      : %d\n" , dev_info->maxOutputChannels);
-        if (dev_info->maxInputChannels != 0 ) {
-            LOG("    Input latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowInputLatency));
-            LOG("    Input latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighInputLatency));
-            LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowInputLatency * dev_info->defaultSampleRate);
-            LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighInputLatency * dev_info->defaultSampleRate);
-        }
-        if (dev_info->maxOutputChannels != 0) {
-            LOG("    Outpu latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowOutputLatency));
-            LOG("    Outpu latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighOutputLatency));
-            LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowOutputLatency * dev_info->defaultSampleRate);
-            LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighOutputLatency * dev_info->defaultSampleRate);
-        }
-        LOG("    Sampling rate      [Hz] : %.3lf\n", dev_info->defaultSampleRate);
-        LOG("    API name                : %s\n" , api_info->name);
-        LOG("    API num devices         : %d\n" , api_info->deviceCount);
-        LOG("    API default input index : %d\n" , (int) (api_info->defaultInputDevice));
-        LOG("    API default outpu index : %d\n" , (int) (api_info->defaultOutputDevice));
-    }
     return paNoError;
 }
 
@@ -97,7 +90,11 @@ void PortAudioSimulator::start()
     double outpu_fs;
 
     PaError error = Pa_Initialize();
-    error = print_devices();
+    LOG("Printing input device...\n");
+    print_device(Pa_GetDefaultInputDevice());
+    LOG("Printing output device...\n");
+    print_device(Pa_GetDefaultOutputDevice());
+
     if (error != paNoError) {
         goto fail;
     }
