@@ -166,6 +166,14 @@ fail:
 PortAudioSimulator::~PortAudioSimulator()
 {
     stop();
+
+    PaError err = Pa_CloseStream(this->stream);
+
+    if (err != paNoError) {
+        ERROR("%s\n", Pa_GetErrorText(err));
+    }
+
+    Pa_Terminate();
     delete [] tx_modules;
 }
 
@@ -177,11 +185,34 @@ void PortAudioSimulator::stop()
 #ifdef SIMULATE
     pthread_join(thread, NULL);
 #else
-    PaError err = Pa_CloseStream(this->stream);
-    if (err != paNoError) {
-        ERROR("%s\n", Pa_GetErrorText(err));
+    PaError err;
+
+    if (Pa_IsStreamActive(this->stream) == 1)
+    {
+        err = Pa_StopStream(stream);
+        
+        if (err != paNoError) {
+            goto fail;
+        }
+
+        while(1) 
+        {
+            err = Pa_IsStreamStopped(this->stream); 
+            Pa_Sleep(100);
+            if (err < 0) {
+                goto fail;
+            }
+            else if (err == 1) {
+                break;
+            }
+            Pa_Sleep(100);
+        }
     }
-    Pa_Terminate();
+
+    return;
+fail:
+    ERROR("%s\n", Pa_GetErrorText(err));
+    return;
 #endif
 }
 

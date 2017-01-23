@@ -20,7 +20,6 @@ Modulator::Modulator(Memory * memory,
 
 Modulator::~Modulator()
 {
-    delete vco;
 }
 
 class ModulatorBlock : public Block
