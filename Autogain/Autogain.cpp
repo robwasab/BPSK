@@ -10,6 +10,7 @@ const char * Autogain::name() {
 
 Autogain::Autogain(Memory * memory, Module * next, double fs):
     Module(memory, next),
+    autogain_d(9.0, 0.001, 44.1E3),
     autogain_c(9.0, 0.01, 44.1E3),
     autogain_b(9.0, 0.10, 44.1E3),
     autogain_a(9.0, 1.00, 44.1E3)
@@ -113,7 +114,7 @@ private:
 
 float Autogain::work(float val)
 {
-    return autogain_a.work(autogain_b.work(autogain_c.work( val )));
+    return autogain_a.work(autogain_b.work(autogain_c.work(autogain_d.work(val))));
 }
 
 /*

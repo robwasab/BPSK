@@ -82,6 +82,7 @@ public:
     float work(float val);
 
 private:
+    AutogainParams autogain_d;
     AutogainParams autogain_c;
     AutogainParams autogain_b;
     AutogainParams autogain_a;
