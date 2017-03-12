@@ -4,32 +4,33 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdint.h>
-#include "PortAudioStdin.h"
-#include "PortAudioSimulator.h"
-#include "../Memory/Memory.h"
+#include "QPSK_StdinSource.h"
 #include "../Colors/Colors.h"
+#include "../TaskScheduler/TaskScheduler.h"
 
-void * PortAudioStdin_loop(void * args);
+void * QPSK_StdinSource_loop(void * args);
 
-PortAudioStdin::PortAudioStdin(Memory * memory, PortAudioSimulator * portaudio):
-    memory(memory),
-    portaudio(portaudio)
+QPSK_StdinSource::QPSK_StdinSource(Memory * memory, 
+        Module * next,
+        TaskScheduler * scheduler):
+    Module(memory, next),
+    scheduler(scheduler)
 {
 }
 
-void PortAudioStdin::start(bool block)
+void QPSK_StdinSource::start(bool block)
 {
-    pthread_create(&main, NULL, PortAudioStdin_loop, this);
+    pthread_create(&main, NULL, QPSK_StdinSource_loop, this);
     if (block) {
         pthread_join(main, NULL);
     }
 }
 
-void * PortAudioStdin_loop(void * args)
+void * QPSK_StdinSource_loop(void * args)
 {
     char buffer[256] = {0};
     fd_set read_fds;
-    PortAudioStdin * self = (PortAudioStdin *) args;
+    QPSK_StdinSource * self = (QPSK_StdinSource *) args;
 
     FD_ZERO(&read_fds);
     FD_SET(fileno(stdin), &read_fds);
@@ -42,14 +43,16 @@ void * PortAudioStdin_loop(void * args)
         result = select(n, &read_fds, NULL, NULL, NULL);
         if (result == -1) 
         {
-            ERROR("select returned -1\n");
+            perror("select");
         }
         else 
         {
             if (FD_ISSET(fileno(stdin), &read_fds)) 
             {
                 read(fileno(stdin), buffer, sizeof(buffer));
-                LOG("read: ");
+                BLUE;
+                printf("Read: ");
+                ENDC;
                 printf("%s", buffer);
                 if ( strcmp("quit\n", buffer) == 0 ) 
                 {
@@ -68,18 +71,7 @@ void * PortAudioStdin_loop(void * args)
                         **iter = (float) buffer[n];
                         block->next();
                     }
-
-                    block = self->process(block);
-
-                    if (block)
-                    {
-                        LOG("adding to portaudio!\n");
-                        self->portaudio->add(block);
-                    }
-                    else
-                    {
-                        ERROR("process() returned NULL\n");
-                    }
+                    self->scheduler->add_module(self, block);
                 }
                 else 
                 {
@@ -91,8 +83,7 @@ void * PortAudioStdin_loop(void * args)
     return NULL;
 }
 
-
-Block * PortAudioStdin::process(Block * msg)
+Block * QPSK_StdinSource::process(Block * msg)
 {
     static char errors[][100] = {
         {"No error"},
@@ -107,11 +98,7 @@ Block * PortAudioStdin::process(Block * msg)
     float ** msg_iter = NULL;
     float ** bit_iter = NULL;
 
-#ifdef QPSK_ENCODE
     size_t len = msg->get_size() * 4;
-#else
-    size_t len = msg->get_size() * 8;
-#endif
 
     bit = memory->allocate(len);
 
@@ -129,19 +116,11 @@ Block * PortAudioStdin::process(Block * msg)
     do
     {
         byte = (uint8_t) **msg_iter;
-#ifdef QPSK_ENCODE
         for (n = 0; n < 4; ++n)
         {
             **bit_iter = (byte & (0x03 << (n * 2))) >> (n * 2) ;
             bit->next();
         }
-#else
-        for (n = 0; n < 8; ++n)
-        {
-            **bit_iter = byte & (1 << n) ? 1.0 : 0.0;
-            bit->next();
-        }
-#endif
     } while(msg->next());
 
     if (msg->next() || bit->next()) {
@@ -155,8 +134,9 @@ Block * PortAudioStdin::process(Block * msg)
 
 
 fail:
-    
-    ERROR("[%zu]: %s\n", line, errors[error]);
+    RED;
+    fprintf(stderr, "[%zu]: %s\n", line, errors[error]);
+    ENDC;
     msg->free();
     if (bit) {
         bit->free();

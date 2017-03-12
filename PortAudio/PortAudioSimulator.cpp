@@ -6,8 +6,6 @@
 #include <math.h>
 #include <portaudio.h>
 
-//#define SIMULATE 
-
 void * PortAudioSimulator_loop(void * arg);
 int PortAudio_callback(
     const void *input, 
@@ -165,6 +163,7 @@ PortAudioSimulator::~PortAudioSimulator()
 {
     stop();
 
+#ifdef SIMULATE
     PaError err = Pa_CloseStream(this->stream);
 
     if (err != paNoError) {
@@ -172,6 +171,7 @@ PortAudioSimulator::~PortAudioSimulator()
     }
 
     Pa_Terminate();
+#endif
     delete [] tx_modules;
 }
 
@@ -277,7 +277,7 @@ int PortAudio_callback(
 {
     /* assume mono playback */
     static Block * tx_block = NULL;
-    static float scale = 0.75;
+    static float scale = 1.0;
     float * tx_buffer = (float *) output;
     const float * rx_buffer = (const float *) input;
     float ** tx_iter;
@@ -364,11 +364,9 @@ int PortAudio_callback(
     }
     pthread_mutex_unlock(&self->mutex);
 
-    /*
     if (self->stream) {
         double load = Pa_GetStreamCpuLoad(self->stream);
         LOG("CPU load: %.3lf\r", 100.0 * load);
     }
-    */
     return paContinue;
 }

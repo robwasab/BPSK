@@ -9,6 +9,7 @@
 #include "../Transmitter/BPSK.h"
 #include "../Memory/Memory.h"
 #include "../TaskScheduler/TaskScheduler.h"
+#include "../switches.h"
 
 class PortAudioSimulator 
 {

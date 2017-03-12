@@ -1,23 +1,5 @@
 #include "CostasLoopBlock.h"
 
-CostasLoopBlock::CostasLoopBlock():
-    type(IN_PHASE_SIGNAL),
-    block(NULL),
-    costa(NULL),
-    in_phase_sig(0.0),
-    freq_est_sig(0.0),
-    lock_sig(0.0),
-    error_sig(0.0),
-    in_phase_ptr(&in_phase_sig),
-    freq_est_ptr(&freq_est_sig),
-    lock_ptr(&lock_sig),
-    error_ptr(&error_sig),
-    ptr(NULL),
-    block_iter(NULL),
-    _free(false)
-{
-}
-
 CostasLoopBlock::CostasLoopBlock(Block * block,
         CostasLoop * costa, SignalType type):
     type(type),
@@ -25,43 +7,27 @@ CostasLoopBlock::CostasLoopBlock(Block * block,
     costa(costa)
 {
     in_phase_sig = 0.0;
+    qu_phase_sig = 0.0;
     freq_est_sig = 0.0;
-    lock_sig = 0.0;
-    error_sig = 0.0;
+    lock_sig     = 0.0;
+    error_sig    = 0.0;
 
     in_phase_ptr = &in_phase_sig;
+    qu_phase_ptr = &qu_phase_sig;
     freq_est_ptr = &freq_est_sig;
-    lock_ptr = &lock_sig;
-    error_ptr = &error_sig;
+    lock_ptr     = &lock_sig;
+    error_ptr    = &error_sig;
+
     block_iter = block->get_iterator();
     ptr = get_pointer(type);
-    _free = false;
-    //ptr = get_pointer(FREQUENCY_EST_SIGNAL);
 
     block->reset();
-    in_phase_sig = 
-        costa->work(**block_iter, freq_est_ptr, lock_ptr, error_ptr);
-}
-
-CostasLoopBlock& CostasLoopBlock::operator=(const CostasLoopBlock& src)
-{
-    block = src.block;
-    costa = src.costa;
-
-    in_phase_sig = 0.0;
-    freq_est_sig = 0.0;
-    lock_sig = 0.0;
-    error_sig = 0.0;
-
-    in_phase_ptr = &in_phase_sig;
-    freq_est_ptr = &freq_est_sig;
-    lock_ptr = &lock_sig;
-    error_ptr = &error_sig;
-    block_iter = block->get_iterator();
-    ptr = get_pointer(src.type);
-    _free = src._free;
-
-    return *this;
+    costa->work(**block_iter, 
+            &in_phase_sig,
+            NULL,
+            freq_est_ptr, 
+            lock_ptr, 
+            error_ptr);
 }
 
 float * CostasLoopBlock::get_pointer(SignalType type)
@@ -70,6 +36,9 @@ float * CostasLoopBlock::get_pointer(SignalType type)
     {
         case IN_PHASE_SIGNAL:
             return in_phase_ptr;
+
+        case QU_PHASE_SIGNAL:
+            return qu_phase_ptr;
 
         case FREQUENCY_EST_SIGNAL:
             return freq_est_ptr;
@@ -91,11 +60,6 @@ float ** CostasLoopBlock::get_iterator()
 
 void CostasLoopBlock::reset() {
     block->reset();
-    /*
-    costa->reset();
-    in_phase_sig = 
-        costa->work(**block_iter, freq_est_ptr, lock_ptr, error_ptr);
-    */
 }
 
 void CostasLoopBlock::hard_reset() {
@@ -105,8 +69,12 @@ void CostasLoopBlock::hard_reset() {
 bool CostasLoopBlock::next() {
     bool has_next = block->next();
     if (has_next) {
-        in_phase_sig = 
-            costa->work(**block_iter, freq_est_ptr, lock_ptr, error_ptr);
+        costa->work(**block_iter, 
+                in_phase_ptr,
+                qu_phase_ptr,
+                freq_est_ptr, 
+                lock_ptr, 
+                error_ptr);
         return true;
     }
     return false;

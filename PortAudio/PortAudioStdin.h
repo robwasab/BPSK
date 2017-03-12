@@ -5,6 +5,7 @@
 #include "../Memory/Memory.h"
 #include "../Memory/Block.h"
 #include "PortAudioSimulator.h"
+#include "../switches.h"
 
 class PortAudioStdin
 {

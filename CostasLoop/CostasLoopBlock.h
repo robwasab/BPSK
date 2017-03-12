@@ -29,16 +29,17 @@ private:
     Block * block;
     CostasLoop * costa;
     float in_phase_sig;
+    float qu_phase_sig;
     float freq_est_sig;
     float lock_sig;
     float error_sig;
     float * in_phase_ptr;
+    float * qu_phase_ptr;
     float * freq_est_ptr;
     float * lock_ptr;
     float * error_ptr;
     float * ptr;
     float ** block_iter;
-    bool _free;
 };
 
 #endif

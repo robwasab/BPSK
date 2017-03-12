@@ -2,7 +2,7 @@
 #define __COSTAS_LOOP_H__
 
 #include "../Module/Module.h"
-#include "Integrator.h"
+#include "SecondOrderPLL.h"
 #include "Biquad_LowPass.h"
 #include "RC_LowPass.h"
 #include "LockDetector.h"
@@ -10,53 +10,44 @@
 enum SignalType
 {
     IN_PHASE_SIGNAL,
+    QU_PHASE_SIGNAL,
     FREQUENCY_EST_SIGNAL,
     LOCK_SIGNAL,
     ERROR_SIGNAL
 };
 
-class CostasLoop : public Module
+class CostasLoop : public SecondOrderPLL
 {
 public:
     CostasLoop(Memory * memory, 
             Module * next, 
             double fs, 
             double fc, 
-            SignalType type = IN_PHASE_SIGNAL);
+            SignalType type = IN_PHASE_SIGNAL,
+            double biqu_fcut = 600.0,
+            double loop_fnat = 200.0,
+            double lock_thesh = 0.5);
+
     ~CostasLoop();
     Block * process(Block * block);
-    float work(float input, float * freq_ptr, float * lock_ptr, float * error);
+    void work(float input, 
+            float * in_phase, 
+            float * qu_phase,
+            float * freq_ptr, 
+            float * lock_ptr, 
+            float * error);
     const char * name();
     void reset();
 
-private:
+    void error_detector(float input, 
+            double * error, 
+            double * in_phase, 
+            double * qu_phase,
+            double * lock);
 
-    // sampling frequency
-    double fs;
-
-    // center frequency
-    double fc;
-
-    SignalType type;
-
-    // Loop variables from PLL theory
-    // Book: Basic Simulation Models of Phase Tracking devices Using MATLAB
-    // Author: William Tranter, Ratchaneekorn Thamvichai, Tamal Bose
-    // Section 4.1 Basic Models fro Phase-Locked Loops, Pg. 47, figure 4.2
-    // Appendix B.2 The Loop Filter for the Perfect Second-Order Phase-Locked 
-    // Loop, Pg. 100-101
-    double G;
-    double a;
-
-    // Loop Integrator
-    Integrator * amp;
-
-    // the amount of phase to increment the vco each iteration
-    double inc;
-
-    // Phase Integrator for the vco
-    Integrator * vco;
-    //PeriodicIntegrator * vco;
+protected:
+    // Lock detector threshold
+    double lock_thresh;
 
     // In Phase LPF
     Biquad_LowPass * ilp;
@@ -64,6 +55,13 @@ private:
     // Quadrature Phase LPF
     Biquad_LowPass * qlp;
 
+    // LockDetector multiplies the downconverted in and quadrature 
+    // phase signals together.
+    // If they are below a very low number, the loop is locked
+    LockDetector * lock_detector;
+
+private:
+    SignalType type;
     
     // Filter to help measure the freqruency
     Biquad_LowPass * freq_filter;
@@ -73,12 +71,6 @@ private:
 
     // To measure frequency you need the delta between new and old phase
     double last_vco_phase;
-
-
-    // LockDetector multiplies the downconverted in and quadrature 
-    // phase signals together.
-    // If they are below a very low number, the loop is locked
-    LockDetector * lock_detector;
 
     // RC circuit that charges up when lock is true
     RC_LowPass * lock_rc;
