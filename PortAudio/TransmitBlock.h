@@ -1,8 +1,8 @@
 #ifndef __TRANSMIT_BLOCK_H__
 #define __TRANSMIT_BLOCK_H__
 
-#include "../Transmitter/Prefix.h"
-#include "../Transmitter/BPSK.h"
+#include "../EncoderBPSK/Prefix.h"
+#include "../EncoderBPSK/BPSK.h"
 #include "../Memory/Block.h"
 
 class TransmitBlock

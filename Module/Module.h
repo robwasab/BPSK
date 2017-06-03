@@ -19,6 +19,8 @@ public:
         next(next)
     {
     }
+    virtual ~Module() {
+    }
 
     virtual const char * name() = 0;
     virtual Block * process(Block * in) = 0;
@@ -26,6 +28,5 @@ public:
     Module * next;
 private:
 };
-
 
 #endif

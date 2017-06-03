@@ -20,6 +20,22 @@ public:
         delete [] _data;
     }
 
+    Type * peek()
+    {
+        Type * ret;
+        lock();
+        if (_size > 0)
+        {
+            ret = &_data[_tail - 1];
+        }
+        else
+        {
+            ret = NULL;
+        }
+        unlock();
+        return ret;
+    }
+
     Type * push(Type& t)
     {
         Type * ret;
@@ -31,6 +47,7 @@ public:
             _data[_tail ] = t;
             ret = &_data[_tail ];
             _tail += 1;
+            _size += 1;
             unlock();
             return ret;
         }
@@ -47,7 +64,7 @@ public:
 
         if (_size > 0)
         {
-            *t = _data[_tail ];
+            *t = _data[_tail - 1 ];
             _tail -= 1;
             _size -= 1;
             unlock();
@@ -86,3 +103,5 @@ private:
         return 0;
     }
 };
+
+#endif

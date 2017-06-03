@@ -5,8 +5,8 @@
 #include <portaudio.h>
 #include "TransmitBlock.h"
 #include "../Queue/Queue.h"
-#include "../Transmitter/Prefix.h"
-#include "../Transmitter/BPSK.h"
+#include "../EncoderBPSK/Prefix.h"
+#include "../EncoderBPSK/BPSK.h"
 #include "../Memory/Memory.h"
 #include "../TaskScheduler/TaskScheduler.h"
 #include "../switches.h"

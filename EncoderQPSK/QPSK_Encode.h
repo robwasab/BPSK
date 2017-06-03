@@ -15,6 +15,7 @@ public:
 
     Block * process(Block * block);
     const char * name();
+    ~QPSK_Encode() { }
 private:
     double fs;
     double fc;

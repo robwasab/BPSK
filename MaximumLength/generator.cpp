@@ -82,4 +82,5 @@ void generate_ml_sequence(size_t * len, bool ** ret_seq)
 
     *len = RAND_LEN;
     *ret_seq = sequence;
+    (*ret_seq)[0] = true;
 }

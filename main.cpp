@@ -2,15 +2,15 @@
 #include "Constellation/Constellation.h"
 #include "TaskScheduler/TaskScheduler.h"
 #include "MaximumLength/generator.h"
-#include "Transmitter/StdinSource.h"
-#include "Transmitter/Pulseshape.h"
-#include "Transmitter/Prefix.h"
-#include "Transmitter/BPSK.h"
-#include "QPSK_Transmitter/QPSK_Encode.h"
-#include "QPSK_Transmitter/QPSK_Prefix.h"
+#include "EncoderBPSK/StdinSource.h"
+#include "EncoderBPSK/Pulseshape.h"
+#include "EncoderBPSK/Prefix.h"
+#include "EncoderBPSK/BPSK.h"
+#include "EncoderQPSK/QPSK_Encode.h"
+#include "EncoderQPSK/QPSK_Prefix.h"
 #include "CostasLoop/CostasLoop.h"
 #include "CostasLoop/QPSK.h"
-#include "Receiver/BPSKDecoder.h"
+#include "DecoderBPSK/BPSKDecoder.h"
 #include "Modulator/Modulator.h"
 #include "PlotSink/PlotSink.h"
 #include "Filter/BandPass.h"
@@ -20,31 +20,15 @@
 #include "PortAudio/PortAudioSimulator.h"
 #include "PortAudio/PortAudioStdin.h"
 #include "Attenuator/Attenuator.h"
+#include "SuppressPrint/SuppressPrint.h"
 #include "switches.h"
+#include "Transceivers/Transceiver.h"
 
 #ifdef QT_ENABLE
 #include "PlotController/PlotController.h"
 #endif
 
 typedef SpectrumAnalyzer Spectrum;
-
-static char __name__[] = "SuppressPrint";
-
-class SuppressPrint : public Module
-{
-public:
-    SuppressPrint():
-    Module(NULL, NULL) {}
-
-    const char * name() {
-        return __name__;
-    }
-
-    Block * process(Block * in) {
-        in->free();
-        return NULL;
-    }
-};
 
 TaskScheduler rx_scheduler(128);
 Memory tx_memory;
@@ -55,17 +39,15 @@ int main(int argc, char ** argv)
     double fs = 44.1E3;
     double fc = 18E3;
     double fif = 3E3;
-    double bw = 3.5E3;
+    double bw = 3E3;
     int order = 6;
-    int cycles_per_bit = 10;
+    int cycles_per_bit = 5;
     size_t prefix_len;
     bool * prefix;
     int spectrum_size = 1 << 10;
     Module * tx_modules[16] = {NULL};
 
     generate_ml_sequence(&prefix_len, &prefix);
-
-    prefix[0] = true;
 
     SuppressPrint end;
 
@@ -98,10 +80,10 @@ int main(int argc, char ** argv)
 
 #ifdef QPSK_ENCODE
     QPSK_Prefix pref(&tx_memory, NULL);
-    QPSK_Encode enco(&tx_memory, NULL, fs, fif, cycles_per_bit, 250);
+    QPSK_Encode enco(&tx_memory, NULL, fs, fif, cycles_per_bit, 50);
 #else
     Prefix pref(&tx_memory, NULL, prefix, prefix_len);
-    BPSK   enco(&tx_memory, NULL, fs, fif, cycles_per_bit, 250);
+    BPSK   enco(&tx_memory, NULL, fs, fif, cycles_per_bit, 50);
 #endif
 
     tx_modules[0] = &pref;
