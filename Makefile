@@ -101,9 +101,6 @@ qpsk: qpsk.o $(Module_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_
 qpsk.o: qpsk.cpp $(Transceivers_paths) $(TestFramework_paths) Colors/Colors.h PlotSink/PlotSink.h switches.h
 	$(CC) $(QT_ENABLE) -Wall $(FLAGS) $(INCLUDE) -c qpsk.cpp
 
-main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(DecoderBPSK_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(PortAudio_paths) Colors/Colors.h PlotSink/PlotSink.h switches.h
-	$(CC) $(QT_ENABLE) -Wall $(FLAGS) $(INCLUDE) -c main.cpp
-
 $(Module_paths):%.o:%.cpp %.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
@@ -152,9 +149,6 @@ $(Constellation_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.
 $(Autogain_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(PortAudio_paths):%.o: %.cpp %.h Module/Module.h switches.h
-	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
-
 $(PortAudioDriver_paths):%.o: %.cpp %.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
@@ -189,7 +183,6 @@ clean:
 	rm $(SpectrumAnalyzer_paths)
 	rm $(Constellation_paths)
 	rm $(Autogain_paths)
-	rm $(PortAudio_paths)
 	rm $(PortAudioDriver_paths)
 	rm $(Channel_paths)
 	rm $(Transceivers_paths)

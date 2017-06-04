@@ -19,7 +19,7 @@ void transceiver_callback(void * arg, RadioMsg * msg);
 class Transceiver : public SignaledThread<RadioMsg>
 {
 public:
-    Transceiver(TransceiverNotify notify_cb, void * obj, double fs=44.1E3, double fc=18E3, double fif=3E3, double bw=3E3);
+    Transceiver(TransceiverNotify notify_cb, void * obj, double fs=44.1E3, double fc=19E3, double fif=4E3, double bw=3E3);
 
     virtual void process(RadioMsg msg);
 
