@@ -6,6 +6,7 @@
 #include "../EncoderBPSK/Pulseshape.h"
 #include "../EncoderBPSK/Prefix.h"
 #include "../EncoderBPSK/BPSK.h"
+#include "../EncoderQPSK/QPSK_StdinSource.h"
 #include "../EncoderQPSK/QPSK_Encode.h"
 #include "../EncoderQPSK/QPSK_Prefix.h"
 #include "../CostasLoop/CostasLoop.h"
@@ -21,83 +22,110 @@
 #include "../PortAudio/PortAudioStdin.h"
 #include "../Attenuator/Attenuator.h"
 #include "../SuppressPrint/SuppressPrint.h"
+#include "../Channel/Channel.h"
 #include "../switches.h"
 
 #ifdef QT_ENABLE
 #include "../PlotController/PlotController.h"
 #endif
 
-void TransceiverQPSK::init_receiver()
+TransceiverQPSK::TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double fs, double fc):
+    Transceiver(notify_cb, obj, fs, fc)
 {
-    #ifdef QT_ENABLE
-    Constellation * constellation;
-    #endif
-    SuppressPrint * end;
-    QPSK      * deco;
-    Autogain  * gain;
-    BandPass  * bpif;
-    Modulator * modu;
-    BandPass  * bprf;
+    /* Transmitter variables */
+    BandPass * tx_bpif;
+    Modulator * tx_mdrf;
+    BandPass * tx_bprf;
 
-    end = new SuppressPrint;
-
-    #ifdef QT_ENABLE
-    constellation = new Constellation(rx_memory, end, fs, 1024);
-    controller->add_plot(constellation);
-    #endif
-
-    deco = new QPSK     (rx_memory, constellation, fs, fif);
-    gain = new Autogain (rx_memory, deco, fs);
-    bpif = new BandPass (rx_memory, gain, fs, fif, bw, order);
-    modu = new Modulator(rx_memory, bpif, fs, fc - fif);
-    bprf = new BandPass (rx_memory, modu, fs, fc , bw, order);
-
-    rx_modules[0] = bprf;
-    rx_modules[1] = modu;
-    rx_modules[2] = bpif;
-    rx_modules[3] = gain;
-    rx_modules[4] = deco;
-    #ifdef QT_ENABLE
-    rx_modules[5] = constellation;
-    rx_modules[6] = end;
-    rx_modules[7] = NULL;
+    #ifdef QPSK_ENCODE
+    QPSK_StdinSource * tx_data;
+    QPSK_Prefix * tx_pref;
+    QPSK_Encode * tx_enco;
     #else
-    rx_modules[5] = end;
-    rx_modules[6] = NULL;
+    StdinSource * tx_data;
+    Prefix * tx_pref;
+    BPSK   * tx_enco;
     #endif
-}
 
-void TransceiverQPSK::init_transmitter()
-{
-    BandPass  * bpif = new BandPass (tx_memory, NULL, fs, fif, bw, order);
-    Modulator * mdrf = new Modulator(tx_memory, NULL, fs, fc - fif);
-    BandPass  * bprf = new BandPass (tx_memory, NULL, fs, fc, bw, 8);
+    /* Channel Variables */
+    Channel * rf_chan;
 
-#ifdef QPSK_ENCODE
-    QPSK_Prefix * pref = new QPSK_Prefix (tx_memory, NULL);
-    QPSK_Encode * enco = new QPSK_Encode (tx_memory, NULL, fs, fif, cycles_per_bit, 50);
-#else
-    Prefix * pref = new Prefix (tx_memory, NULL, prefix, prefix_len);
-    BPSK   * enco = new BPSK   (tx_memory, NULL, fs, fif, cycles_per_bit, 50);
-#endif
+    /* Receiver Variables */
+    #ifdef QT_ENABLE
+    Constellation * rx_plot;
+    #endif
+    SuppressPrint * rx_end;
+    QPSK      * rx_deco;
+    Autogain  * rx_gain;
+    BandPass  * rx_bpif;
+    Modulator * rx_modu;
+    BandPass  * rx_bprf;
 
-    tx_modules[0] = pref;
-    tx_modules[1] = enco;
-    tx_modules[2] = bpif;
-    tx_modules[3] = mdrf;
-    tx_modules[4] = bprf;
-    tx_modules[5] = NULL;
-}
+    /* Transmitter Section */
+    double fm = fc - fif;
+    tx_mdrf = new Modulator(tx_memory, transceiver_callback, this, fs, fm);
+    tx_bpif = new BandPass (tx_memory, transceiver_callback, this, fs, fif, bw, order);
+    tx_bprf = new BandPass (tx_memory, transceiver_callback, this, fs, fc, bw, order);
 
-TransceiverQPSK::TransceiverQPSK(double fs, double fc):
-    Transceiver(fs, fc)
-{
-    init_transmitter();
-    init_receiver();
-}
+    #ifdef QPSK_ENCODE
+    tx_data = new QPSK_StdinSource(tx_memory, transceiver_callback, this);
+    tx_pref = new QPSK_Prefix (tx_memory, transceiver_callback, this);
+    tx_enco = new QPSK_Encode (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
+    #else
+    tx_data = new StdinSource(tx_memory, transceiver_callback, this);
+    tx_pref = new Prefix (tx_memory, transceiver_callback, this, prefix, prefix_len);
+    tx_enco = new BPSK   (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
+    #endif
 
-int TransceiverQPSK::start()
-{
-    return Transceiver::start();
+    /* Channel + Transducer Section */
+    rf_chan = new Channel(rx_memory, transceiver_callback, this);
+
+    /* Receiver Section */
+    rx_end = new SuppressPrint;
+
+    #ifdef QT_ENABLE
+    rx_plot = new Constellation(rx_memory, transceiver_callback, this, fs, 1024);
+    #endif
+
+    rx_deco = new QPSK     (rx_memory, transceiver_callback, this, fs, fif);
+    rx_gain = new Autogain (rx_memory, transceiver_callback, this, fs);
+    rx_bpif = new BandPass (rx_memory, transceiver_callback, this, fs, fif, bw, order);
+    rx_modu = new Modulator(rx_memory, transceiver_callback, this, fs, fm);
+    rx_bprf = new BandPass (rx_memory, transceiver_callback, this, fs, fc , bw, order);
+
+    Module * chain[] =
+    {
+        tx_data, //STANDARD INPUT
+        tx_pref, //PREFIX
+        tx_enco, //ENCODER
+        tx_bpif, //IF BANDPASS FILTER
+        tx_mdrf, //RF MODULATOR
+        tx_bprf, //RF BANDPASS FILTER
+        rf_chan, //RF CHANNEL
+        rx_bprf, //RF BANDPASS FILTER
+        rx_modu, //RF MODULATOR
+        rx_bpif, //IF BANDPASS FILTER
+        rx_gain, //AUTO GAIN
+        rx_deco, //PLL
+        #ifdef QT_ENABLE
+        rx_plot, //CONSTELLATION PLOT
+        #endif
+        rx_end,  //END
+        NULL,
+    };
+
+    RadioMsg msg(CMD_RESET_ALL);
+
+    int k;
+    for (k = 0; chain[k] != NULL; k++)
+    {
+        chain[k]->id = k;
+        modules[k] = chain[k];
+        modules[k]->dispatch(&msg);
+    }
+
+    #ifdef QT_ENABLE
+    controller->add_plot(rx_plot);
+    #endif
 }
 

@@ -2,9 +2,8 @@
 #define __SIGNALED_THREAD_H__
 #include <stdlib.h>
 #include <pthread.h>
+#include "../Log/Log.h"
 #include "../Queue/Queue.h"
-#include "../Notify/Notify.h"
-#include "../Module/Module.h"
 
 template <class T>
 class SignaledThread
@@ -26,7 +25,6 @@ public:
     void notify(T n)
     {
         notifications.add(n);
-        LOG("NOTIFYING!\n");
         signal();
     }
 
@@ -63,11 +61,9 @@ public:
     /* wait until signal */
     void wait()
     {
-        LOG("WAITING!\n");
         lock();
         pthread_cond_wait(&cond, &mutex);
         unlock();
-        LOG("WAKING UP!\n");
     }
 
     static
@@ -75,12 +71,10 @@ public:
     {
         SignaledThread * self = (SignaledThread *) args;
 
-
-        while( ! self->should_quit() )
+        while(1)
         {
             if (self->notifications.size() > 0)
             {
-                LOG("DISPATCHING!\n");
                 /* dispatch event */
                 T t;
                 int rc;
@@ -91,12 +85,24 @@ public:
                     self->process(t);
                 }
             }
+            else if (self->should_quit())
+            {
+                break;
+            }
             else
             {
                 self->wait();
             }
         }
         return NULL;
+    }
+
+    void signal()
+    {
+        lock();
+        pthread_cond_signal(&cond);
+        //pthread_cond_broadcast(&cond);
+        unlock();
     }
 
     virtual void process(T t) = 0;
@@ -110,12 +116,6 @@ protected:
     pthread_t main;
 
     /* Operating system dependent thread functions */
-    void signal()
-    {
-        lock();
-        pthread_cond_signal(&cond);
-        unlock();
-    }
 
     void lock()
     {

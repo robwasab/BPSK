@@ -13,14 +13,15 @@ const char * CostasLoop::name() {
 }
 
 CostasLoop::CostasLoop(Memory * memory, 
-        Module * next,
+        TransceiverCallback cb,
+        void * trans,
         double fs,
         double fc,
         SignalType type, 
         double biqu_fcut,
         double loop_fnat,
         double lock_thresh):
-    SecondOrderPLL(memory, next, fs, fc, loop_fnat, 1.0/sqrt(2.0)),
+    SecondOrderPLL(memory, cb, trans, fs, fc, loop_fnat, 1.0/sqrt(2.0)),
     type(type)
 {
     // Quality factor of in and out of phase low pass filters
@@ -184,7 +185,8 @@ fail:
 }
 */
 
-Block * CostasLoop::process(Block * block) {
-
+Block * CostasLoop::process(Block * block)
+{
     return new CostasLoopBlock(block, this, type);
 }
+

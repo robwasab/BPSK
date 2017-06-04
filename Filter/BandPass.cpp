@@ -121,12 +121,13 @@ BandPass::~BandPass()
 }
 
 BandPass::BandPass(Memory * memory, 
-        Module * next, 
+        TransceiverCallback cb,
+        void * trans,
         float fs,
         float fc, 
         float bw, 
         int order):
-    Module(memory, next),
+    Module(memory, cb, trans),
     order(order)
 {
     if (order % 2 || order < 2) 

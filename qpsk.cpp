@@ -3,6 +3,7 @@
 
 int _argc = 0;
 char ** _argv = NULL;
+pthread_mutex_t log_mutex;
 
 int main(int argc, char ** argv)
 {
@@ -11,7 +12,9 @@ int main(int argc, char ** argv)
     _argc = argc;
     _argv = argv;
 
+    pthread_mutex_init(&log_mutex, NULL);
+
     TestFramework testbench(PSK4, simple); 
-    testbench.start(false);
+    testbench.main_loop();
     return 0;
 }

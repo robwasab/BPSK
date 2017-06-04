@@ -4,8 +4,9 @@
 #include "../MaximumLength/generator.h"
 
 QPSK_Prefix::QPSK_Prefix(Memory * memory, 
-            Module * next):
-    Module(memory, next)
+            TransceiverCallback cb,
+            void * trans):
+    Module(memory, cb, trans)
 {
     size_t prefix_len;
     bool * prefix;

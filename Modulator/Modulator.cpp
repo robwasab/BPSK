@@ -9,10 +9,11 @@ const char * Modulator::name()
 }
 
 Modulator::Modulator(Memory * memory, 
-        Module * next,
+        TransceiverCallback cb,
+        void * transceiver,
         double fs, 
         double fc):
-    Module(memory, next)
+    Module(memory, cb, transceiver)
 {
     inc = 2.0 * M_PI * fc/fs;
     phase = 0;

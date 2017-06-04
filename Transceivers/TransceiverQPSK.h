@@ -6,13 +6,8 @@
 class TransceiverQPSK : public Transceiver
 {
 public:
-    TransceiverQPSK(double fs, double fc);
-
-    /* Start the thread */
-    int start();
+    TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double fs, double fc);
 
 private:
-    void init_receiver();
-    void init_transmitter();
 };
 #endif

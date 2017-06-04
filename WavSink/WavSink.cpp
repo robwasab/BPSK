@@ -85,10 +85,12 @@ const char * WavSink::name()
 }
 
 WavSink::WavSink(Memory * memory,
-        Module * next,
+        TransceiverCallback cb,
+        void * trans,
         const char filename[]):
-    Module(memory, next)
+    Module(memory, cb, trans)
 {
+
     file = wavefile_open(filename);
     buffer = new int16_t[1024];
 }

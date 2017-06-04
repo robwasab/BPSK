@@ -75,16 +75,16 @@ private:
 class Autogain : public Module
 {
 public:
-    Autogain(Memory * memory, Module * next, double fs);
+    Autogain(Memory * memory, TransceiverCallback cb, void * trans, double fs);
     ~Autogain();
     const char * name();
-    Block * process(Block * sig);
     float work(float val);
 
 private:
     AutogainParams autogain_c;
     AutogainParams autogain_b;
     AutogainParams autogain_a;
+    Block * process(Block * block);
 };
 
 #endif

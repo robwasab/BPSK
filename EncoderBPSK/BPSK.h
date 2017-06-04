@@ -7,7 +7,8 @@ class BPSK : public Module
 {
 public:
     BPSK(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * tran,
             float fs, 
             float fc, 
             int cycles_per_bit,

@@ -1,6 +1,6 @@
 CC:=g++
 INCLUDE:=-I /usr/local/include 
-FLAGS:=-g
+FLAGS:=-g 
 LIBRARY:=-L /usr/local/lib
 OPTIONS:=-lm -lfftw3f -lpthread -lportaudio
 
@@ -18,6 +18,9 @@ LIBS= -F/usr/local/Cellar/qt5/5.7.0/lib -L /usr/local/opt/qwt/lib/qwt.framework/
 PLOT_CLEAN=make -C ./PlotController clean
 #QT_ENABLE=-D QT_ENABLE
 endif
+
+Module_objects=Module.o
+Module_paths=$(addprefix Module/,$(Module_objects))
 
 generator_objects=generator.o
 generator_paths=$(addprefix MaximumLength/,$(generator_objects))
@@ -64,17 +67,23 @@ Autogain_paths=$(addprefix Autogain/,$(Autogain_objects))
 PortAudio_objects=PortAudioSimulator.o PortAudioStdin.o
 PortAudio_paths=$(addprefix PortAudio/,$(PortAudio_objects))
 
-Transceivers_objects=TransceiverQPSK.o
-Transceivers_paths=$(addprefix Transceivers/,$(Transceivers_objects))
+PortAudioDriver_objects=PortAudioDriver.o
+PortAudioDriver_paths=$(addprefix PortAudioDriver/,$(PortAudioDriver_objects))
 
-#SignaledThread_objects=SignaledThread.o
-#SignaledThread_paths=$(addprefix SignaledThread/,$(SignaledThread_objects))
+Channel_objects=Channel.o
+Channel_paths=$(addprefix Channel/,$(Channel_objects))
+
+Transceivers_objects=TransceiverQPSK.o Transceiver.o
+Transceivers_paths=$(addprefix Transceivers/,$(Transceivers_objects))
 
 TestFramework_objects=TestFramework.o
 TestFramework_paths=$(addprefix TestFramework/,$(TestFramework_objects))
 
 Tests_objects=simple.o
 Tests_paths=$(addprefix Tests/,$(Tests_objects))
+
+RadioMsg_objects=RadioMsg.o
+RadioMsg_paths=$(addprefix RadioMsg/,$(RadioMsg_objects))
 
 # Default target
 all: main
@@ -84,11 +93,10 @@ debug:
 	echo $(EncoderQPSK_paths)
 	echo $(Tests_paths)
 
-main: main.o $(TaskScheduler_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(DecoderBPSK_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(PortAudio_paths) $(Transceivers_paths) Colors/Colors.h PlotSink/PlotSink.h switches.h SuppressPrint/SuppressPrint.h
-	$(CC) $(LIBRARY) $(OPTIONS) main.o $(TaskScheduler_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(Transmitter_paths) $(QPSK_Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(PortAudio_paths) -o $(OUTPUT) $(LIBS)
+main: qpsk
 
-qpsk: qpsk.o $(TaskScheduler_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(DecoderBPSK_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(PortAudio_paths) $(Transceivers_paths) $(SignaledThread_paths) $(TestFramework_paths) $(Tests_paths) Colors/Colors.h PlotSink/PlotSink.h switches.h SuppressPrint/SuppressPrint.h
-	$(CC) $(LIBRARY) $(OPTIONS) qpsk.o $(TaskScheduler_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(Transmitter_paths) $(QPSK_Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(PortAudio_paths) $(Transceivers_paths) $(TestFramework_paths) $(Tests_paths) -o $(OUTPUT) $(LIBS)
+qpsk: qpsk.o $(Module_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(DecoderBPSK_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(Transceivers_paths) $(SignaledThread_paths) $(TestFramework_paths) $(Tests_paths) $(RadioMsg_paths) $(Channel_paths) $(PortAudioDriver_paths)  Colors/Colors.h PlotSink/PlotSink.h switches.h SuppressPrint/SuppressPrint.h
+	$(CC) $(LIBRARY) $(OPTIONS) qpsk.o $(Module_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(Transmitter_paths) $(QPSK_Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(Transceivers_paths) $(TestFramework_paths) $(Tests_paths) $(RadioMsg_paths) $(Channel_paths) $(PortAudioDriver_paths) -o $(OUTPUT) $(LIBS)
 
 qpsk.o: qpsk.cpp $(Transceivers_paths) $(TestFramework_paths) Colors/Colors.h PlotSink/PlotSink.h switches.h
 	$(CC) $(QT_ENABLE) -Wall $(FLAGS) $(INCLUDE) -c qpsk.cpp
@@ -96,28 +104,31 @@ qpsk.o: qpsk.cpp $(Transceivers_paths) $(TestFramework_paths) Colors/Colors.h Pl
 main.o: main.cpp $(TaskScheduler_paths) $(Memory_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(DecoderBPSK_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(PortAudio_paths) Colors/Colors.h PlotSink/PlotSink.h switches.h
 	$(CC) $(QT_ENABLE) -Wall $(FLAGS) $(INCLUDE) -c main.cpp
 
-$(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp switches.h
+$(Module_paths):%.o:%.cpp %.h Module/Module.h
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
+
+$(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp switches.h Module/Module.h
 	make -C ./PlotController $(notdir $@)
 
-$(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h switches.h
+$(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Memory_paths):%.o:%.cpp %.h Memory/Block.h Colors/Colors.h switches.h
+$(Memory_paths):%.o:%.cpp %.h Memory/Block.h Colors/Colors.h switches.h Module/Module.h Queue/Queue.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(EncoderBPSK_paths):%.o: %.cpp %.h Colors/Colors.h PlotController/DataSource.h switches.h
+$(EncoderBPSK_paths):%.o: %.cpp %.h Colors/Colors.h PlotController/DataSource.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(EncoderQPSK_paths):%.o: %.cpp %.h Colors/Colors.h switches.h
+$(EncoderQPSK_paths):%.o: %.cpp %.h Colors/Colors.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Filter_paths):%.o: %.cpp %.h Module/Module.h switches.h
+$(Filter_paths):%.o: %.cpp %.h Module/Module.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h
+$(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(QPSK_paths):%.o: %.cpp %.h CostasLoop/CostasLoop.h CostasLoop/CostasLoopBlock.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h
+$(QPSK_paths):%.o: %.cpp %.h CostasLoop/CostasLoop.h CostasLoop/CostasLoopBlock.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(WavSink_paths):%.o: %.cpp %.h Module/Module.h switches.h
@@ -126,13 +137,13 @@ $(WavSink_paths):%.o: %.cpp %.h Module/Module.h switches.h
 $(DecoderBPSK_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(generator_paths):%.o: %.cpp %.h switches.h
+$(generator_paths):%.o: %.cpp %.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Modulator_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(SpectrumAnalyzer_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h switches.h
+$(SpectrumAnalyzer_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h switches.h Queue/Queue.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Constellation_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h
@@ -144,17 +155,27 @@ $(Autogain_paths):%.o: %.cpp %.h Module/Module.h switches.h
 $(PortAudio_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Transceivers_paths):%.o: %.cpp %.h Module/Module.h switches.h Transceivers/Transceiver.h
+$(PortAudioDriver_paths):%.o: %.cpp %.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(TestFramework_paths):%.o: %.cpp %.h switches.h Stack/Stack.h Transceivers/Transceiver.h Transceivers/TransceiverQPSK.h Notify/Notify.h SignaledThread/SignaledThread.h
+$(Channel_paths):%.o: %.cpp %.h Module/Module.h RadioMsg/RadioMsg.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Tests_paths):%.o: %.cpp %.h TestFramework/TestFramework.h
+$(Transceivers_paths):%.o: %.cpp %.h Module/Module.h switches.h Transceivers/Transceiver.h Signaledthread/Signaledthread.h Queue/Queue.h
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
+
+$(TestFramework_paths):%.o: %.cpp %.h switches.h Stack/Stack.h Transceivers/Transceiver.h Transceivers/TransceiverQPSK.h Notify/Notify.h SignaledThread/SignaledThread.h Module/Module.h Queue/Queue.h
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
+
+$(Tests_paths):%.o: %.cpp %.h TestFramework/TestFramework.h Module/Module.h
+	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
+
+$(RadioMsg_paths):%.o: %.cpp %.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
-	rm $(TaskScheduler_paths)
+#	rm $(TaskScheduler_paths)
+	rm $(Module_paths)
 	rm $(Memory_paths)
 	rm $(EncoderBPSK_paths)
 	rm $(EncoderQPSK_paths)
@@ -169,9 +190,11 @@ clean:
 	rm $(Constellation_paths)
 	rm $(Autogain_paths)
 	rm $(PortAudio_paths)
+	rm $(PortAudioDriver_paths)
+	rm $(Channel_paths)
 	rm $(Transceivers_paths)
-#	rm $(SignaledThread_paths)
 	rm $(TestFramework_paths)
 	rm $(Tests_paths)
+	rm $(RadioMsg_paths)
 	$(PLOT_CLEAN)
 

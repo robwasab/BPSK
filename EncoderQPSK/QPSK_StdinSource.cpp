@@ -11,10 +11,9 @@
 void * QPSK_StdinSource_loop(void * args);
 
 QPSK_StdinSource::QPSK_StdinSource(Memory * memory, 
-        Module * next,
-        TaskScheduler * scheduler):
-    Module(memory, next),
-    scheduler(scheduler)
+        TransceiverCallback cb,
+        void * trans):
+    Module(memory, cb, trans)
 {
 }
 
@@ -23,6 +22,51 @@ void QPSK_StdinSource::start(bool block)
     pthread_create(&main, NULL, QPSK_StdinSource_loop, this);
     if (block) {
         pthread_join(main, NULL);
+    }
+}
+
+void QPSK_StdinSource::stop()
+{
+    pthread_join(main, NULL);
+}
+
+void QPSK_StdinSource::dispatch(RadioMsg * msg)
+{
+    RadioData * data;
+    Block * block;
+
+    data = (RadioData *) msg;
+
+    switch(msg->type)
+    {
+        case PROCESS_DATA:
+            block = data->get_block();
+
+            block = process(block);
+
+            if (block != NULL)
+            {
+                handoff(block, data->get_tid());
+            }
+            break;
+
+        case CMD_START:
+            start(false);
+            break;
+        case CMD_STOP:
+            stop();
+            break;
+        case NOTIFY_USER_REQUEST_QUIT:
+        case CMD_RESET_ALL:
+        case CMD_RESET_TRANSMITTER:
+        case CMD_RESET_RECEIVER:
+        case CMD_SET_TRANSMIT_CHANNEL:
+        case CMD_SET_RECEIVE_CHANNEL:
+        case NOTIFY_PLL_LOST_LOCK:
+        case NOTIFY_PACKET_HEADER_DETECTED:
+        case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
+        case NOTIFY_DATA_RECEIVED:
+            break;
     }
 }
 
@@ -57,6 +101,8 @@ void * QPSK_StdinSource_loop(void * args)
                 if ( strcmp("quit\n", buffer) == 0 ) 
                 {
                     LOG("quitting...\n");
+                    RadioMsg msg(NOTIFY_USER_REQUEST_QUIT);
+                    self->transceiver_cb(self->transceiver, &msg);
                     break;
                 }
                 size_t len = strlen(buffer) + 1;
@@ -71,7 +117,8 @@ void * QPSK_StdinSource_loop(void * args)
                         **iter = (float) buffer[n];
                         block->next();
                     }
-                    self->scheduler->add_module(self, block);
+                    block = self->process(block);
+                    self->handoff(block, 0);
                 }
                 else 
                 {
@@ -144,3 +191,9 @@ fail:
     return NULL;
 }
 
+static
+const char _STDIN_SOURCE_NAME_[] = "QPSK_StdinSource";
+
+const char * QPSK_StdinSource::name() {
+    return _STDIN_SOURCE_NAME_; 
+}

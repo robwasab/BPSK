@@ -21,7 +21,8 @@ class BandPass : public Module
 {
 public:
     BandPass(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb, 
+            void * transceiver,
             float fs,
             float fc,
             float bw,

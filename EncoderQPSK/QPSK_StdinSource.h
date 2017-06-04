@@ -5,19 +5,16 @@
 #include "../Module/Module.h"
 #include "../TaskScheduler/TaskScheduler.h"
 
-const char _STDIN_SOURCE_NAME_[] = "QPSK_StdinSource";
 
 class QPSK_StdinSource: public Module
 {
 public:
-    QPSK_StdinSource(Memory * memory, Module * next, TaskScheduler * scheduler);
+    QPSK_StdinSource(Memory * memory, TransceiverCallback cb, void * trans);
     void start(bool block = true);
+    void stop();
     Block * process(Block * block);
-    TaskScheduler * scheduler;
-    using Module::name;
-    const char * name() {
-        return _STDIN_SOURCE_NAME_; 
-    }
+    void dispatch(RadioMsg * msg);
+    const char * name();
 private:
     pthread_t main;
 };

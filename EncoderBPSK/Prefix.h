@@ -13,7 +13,8 @@ class Prefix : public Module
 {
 public:
     Prefix(Memory * memory, 
-            Module * next,
+            TransceiverCallback cb,
+            void * trans,
             bool * prefix,
             size_t prefix_len);
 

@@ -9,12 +9,13 @@ class SecondOrderPLL : public Module
 {
 public:
     SecondOrderPLL(Memory * memory, 
-            Module * next, 
+            TransceiverCallback transceiver_cb,
+            void * transceiver,
             double fs, 
             double fc, 
             double loop_fnat, 
             double loop_zeta=0.707106):
-        Module(memory, next),
+        Module(memory, transceiver_cb, transceiver),
         fs(fs),
         fc(fc),
         loop_fnat(loop_fnat),

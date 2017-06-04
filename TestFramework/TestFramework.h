@@ -12,8 +12,9 @@ struct TestEvent
     enum {
         EVENT_START,
         EVENT_DONE,
+        EVENT_KILL,
     } type;
-    uint8_t * data;
+    void * data;
     size_t len;
 };
 
@@ -37,7 +38,10 @@ public:
     TestFramework(TransceiverType type, StateMachine sm);
     ~TestFramework();
     void smStart(StateMachine sm, TestEvent te);
+    void smReturn(TestEvent te);
+    void main_loop();
     void start(bool block);
+    void stop();
 protected:
     void process(TestEvent t);
 private:

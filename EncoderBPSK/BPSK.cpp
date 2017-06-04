@@ -2,12 +2,13 @@
 #include "BPSK.h"
 
 BPSK::BPSK(Memory * memory, 
-        Module * next, 
+        TransceiverCallback cb,
+        void * tran,
         float fs, 
         float fc, 
         int cycles_per_bit,
         int training_bits):
-    Module(memory, next),
+    Module(memory, cb, tran),
     fs(fs),
     fc(fc),
     cycles_per_bit(cycles_per_bit),

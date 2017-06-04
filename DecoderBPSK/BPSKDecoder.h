@@ -9,7 +9,8 @@ class BPSKDecoder : public Module
 {
 public:
     BPSKDecoder(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * trans,
             float fs, 
             float fc, 
             bool * prefix,

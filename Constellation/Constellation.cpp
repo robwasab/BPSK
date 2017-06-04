@@ -10,10 +10,11 @@ const char * Constellation::name() {
 }
 
 Constellation::Constellation(Memory * memory,
-        Module * next,
+        TransceiverCallback cb,
+        void * trans,
         double fs,
         size_t chunk):
-    Module(memory, next),
+    Module(memory, cb, trans),
     fs(fs),
     chunk(chunk),
     in_phase_queue((1 << 18)),

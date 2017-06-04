@@ -10,7 +10,8 @@ class SpectrumAnalyzer : public DataSource, public Module
 {
 public:
     SpectrumAnalyzer(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * trans,
             double fs,
             size_t spectrum_size = 1024);
     ~SpectrumAnalyzer();

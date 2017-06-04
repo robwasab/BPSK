@@ -7,7 +7,7 @@
 class Modulator : public Module
 {
 public:
-    Modulator(Memory * memory, Module * next, double fs, double fc);
+    Modulator(Memory * memory, TransceiverCallback cb, void * transceiver, double fs, double fc);
     ~Modulator();
 
     const char * name();

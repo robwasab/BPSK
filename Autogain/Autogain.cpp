@@ -8,8 +8,8 @@ const char * Autogain::name() {
 }
 
 
-Autogain::Autogain(Memory * memory, Module * next, double fs):
-    Module(memory, next),
+Autogain::Autogain(Memory * memory, TransceiverCallback cb, void * trans, double fs):
+    Module(memory, cb, trans),
     autogain_c(9.0, 0.01, 44.1E3),
     autogain_b(9.0, 0.10, 44.1E3),
     autogain_a(9.0, 1.00, 44.1E3)
@@ -127,7 +127,6 @@ Block * Autogain::process(Block * block)
     float ** iter = NULL;
     float ** out_iter = NULL;
     Block * out = NULL;
-
     iter = block->get_iterator();
     out = memory->allocate(block->get_size());
     
@@ -135,16 +134,12 @@ Block * Autogain::process(Block * block)
         error = 1;
         goto fail;
     }
-
     out_iter = out->get_iterator();
-
     block->reset();
-
     do
     {
         **out_iter = autogain_a.work(autogain_b.work(autogain_c.work(**iter * 0.07)));
     } while(out->next() && block->next());
-
     block->free();
     return out;
 fail:

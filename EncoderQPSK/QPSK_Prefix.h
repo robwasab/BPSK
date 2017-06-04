@@ -13,7 +13,8 @@ class QPSK_Prefix : public Module
 {
 public:
     QPSK_Prefix(Memory * memory, 
-            Module * next);
+            TransceiverCallback cb,
+            void * trans);
 
     ~QPSK_Prefix() {
         delete [] qpsk_prefix;

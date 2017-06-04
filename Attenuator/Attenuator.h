@@ -57,8 +57,8 @@ private:
 class Attenuator : public Module
 {
 public:
-    Attenuator(Memory * memory, Module * next, float atten) :
-        Module(memory, next),
+    Attenuator(Memory * memory, TransceiverCallback transceiver_cb, void * transceiver, float atten) :
+        Module(memory, transceiver_cb, transceiver),
         atten(atten)
     {
     }
@@ -67,12 +67,13 @@ public:
         return __ATTENUATOR_NAME__;
     }
 
-    Block * process(Block * in) {
-        return new AttenuatorBlock(in, atten);
-    }
-
 private:
     float atten;
+
+    Block * process(Block * in)
+    {
+        return new AttenuatorBlock(in, atten);
+    }
 };
 
 #endif

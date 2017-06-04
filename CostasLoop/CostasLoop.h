@@ -20,7 +20,8 @@ class CostasLoop : public SecondOrderPLL
 {
 public:
     CostasLoop(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * trans,
             double fs, 
             double fc, 
             SignalType type = IN_PHASE_SIGNAL,
@@ -29,7 +30,6 @@ public:
             double lock_thesh = 0.5);
 
     ~CostasLoop();
-    Block * process(Block * block);
     void work(float input, 
             float * in_phase, 
             float * qu_phase,
@@ -61,6 +61,7 @@ protected:
     LockDetector * lock_detector;
 
 private:
+    Block * process(Block * block);
     SignalType type;
     
     // Filter to help measure the freqruency

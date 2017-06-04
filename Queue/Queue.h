@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "../Colors/Colors.h"
+#include "../Log/Log.h"
 
 template<class Type> 
 class Queue
@@ -43,15 +44,15 @@ public:
         else 
         {
             unlock();
-            // printf("Queue is full!\n");
+            ERROR("Queue is full!\n");
             return NULL;
         }
     }
 
     Type * add(Type& t)
     {
-        // printf("Adding to the QUEUE!\n");
         Type * ret;
+
         lock();
 
         if (_size < _max) 
@@ -66,7 +67,6 @@ public:
         else 
         {
             unlock();
-            // printf("Queue is full!\n");
             return NULL;
         }
     }
@@ -88,9 +88,7 @@ public:
         }
         else 
         {
-            RED;
-            printf("Queue is full!\n");
-            ENDC;
+            ERROR("Queue is full!\n");
             unlock();
             return -1;
         }

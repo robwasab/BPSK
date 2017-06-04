@@ -7,7 +7,7 @@
 class WavSink : public Module
 {
 public:
-    WavSink(Memory * memory, Module * next, const char filename[] = "output.wav");
+    WavSink(Memory * memory, TransceiverCallback cb, void * arg, const char filename[] = "output.wav");
     ~WavSink();
     Block * process(Block * block);
     const char * name();

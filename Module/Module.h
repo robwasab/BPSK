@@ -1,31 +1,33 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#include <typeinfo>
-#include "../Colors/Colors.h"
-#include "../Memory/Block.h"
-#include "../Memory/Memory.h"
 #include <stdint.h>
+#include "../RadioMsg/RadioMsg.h"
+#include "../Colors/Colors.h"
+#include "../Memory/Memory.h"
+#include "../Memory/Block.h"
+#include "../Log/Log.h"
 
-#define LOG(...) BLUE; printf("%s %s(): ", __FILE__, __func__); ENDC; printf(__VA_ARGS__)
-#define WARNING(...) BLINK; YELLOW; printf("%s %s(): ", __FILE__, __func__); ENDC; printf(__VA_ARGS__)
-#define ERROR(...) BLINK; UNDERLINE; BOLD; RED; printf("%s %s(): ", __FILE__, __func__); ENDC; printf(__VA_ARGS__)
+typedef void (*TransceiverCallback)(void * obj, RadioMsg * msg);
 
 class Module
 {
 public:
-    Module(Memory * memory, Module * next) :
-        memory(memory),
-        next(next)
-    {
-    }
-    virtual ~Module() {
-    }
+    Module(Memory * memory, TransceiverCallback cb, void * transceiver);
+
+    virtual ~Module();
+
+    virtual void handoff(Block * block, uint8_t thread_id=0);
+
+    virtual Block * process(Block * block) = 0;
+
+    virtual void dispatch(RadioMsg * msg);
 
     virtual const char * name() = 0;
-    virtual Block * process(Block * in) = 0;
     Memory * memory;
-    Module * next;
+    TransceiverCallback transceiver_cb;
+    void * transceiver;
+    uint8_t id;
 private:
 };
 

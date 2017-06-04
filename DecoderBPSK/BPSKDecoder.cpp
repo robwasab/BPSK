@@ -8,7 +8,8 @@
 #define OR ||
 
 BPSKDecoder::BPSKDecoder(Memory * memory, 
-        Module * next,
+        TransceiverCallback cb,
+        void * trans,
         float fs, 
         float fc,
         bool * prefix,
@@ -16,7 +17,7 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         int cycles_per_bit, 
         bool first_bit,
         float threshold):
-    Module(memory, next),
+    Module(memory, cb, trans),
     first_bit(first_bit),
     threshold(threshold)
 {

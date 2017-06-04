@@ -11,10 +11,9 @@
 void * StdinSource_loop(void * args);
 
 StdinSource::StdinSource(Memory * memory, 
-        Module * next,
-        TaskScheduler * scheduler):
-    Module(memory, next),
-    scheduler(scheduler)
+        TransceiverCallback cb,
+        void * trans):
+    Module(memory, cb, trans)
 {
 }
 
@@ -71,7 +70,10 @@ void * StdinSource_loop(void * args)
                         **iter = (float) buffer[n];
                         block->next();
                     }
-                    self->scheduler->add_module(self, block);
+
+                    block = self->process(block);
+
+                    self->handoff(block, 0);
                 }
                 else 
                 {

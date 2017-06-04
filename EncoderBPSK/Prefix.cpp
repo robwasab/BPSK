@@ -3,10 +3,11 @@
 #include "Prefix.h"
 
 Prefix::Prefix(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * trans,
             bool * prefix,
             size_t prefix_len):
-    Module(memory, next)
+    Module(memory, cb, trans)
 {
     this->prefix = new bool[prefix_len];
     memcpy(this->prefix, prefix, prefix_len);

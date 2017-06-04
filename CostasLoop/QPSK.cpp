@@ -13,12 +13,13 @@ const char * QPSK::name() {
 }
 
 QPSK::QPSK(Memory * memory,
-        Module * next,
+        TransceiverCallback cb,
+        void * trans,
         double fs,
         double fc,
         double biqu_fcut,
         double loop_fnat):
-    CostasLoop(memory, next, fs, fc, IN_PHASE_SIGNAL, biqu_fcut, loop_fnat, 0.1),
+    CostasLoop(memory, cb, trans, fs, fc, IN_PHASE_SIGNAL, biqu_fcut, loop_fnat, 0.1),
     vco_offset_2(M_PI/4.0),
     vco_offset_3(M_PI/2.0),
     vco_offset_4(M_PI*3.0/4.0)

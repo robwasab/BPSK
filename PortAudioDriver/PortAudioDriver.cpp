@@ -1,48 +1,46 @@
-#include "PortAudioSimulator.h"
-#include "../Memory/Block.h"
+#include <portaudio.h>
+#include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#include <assert.h>
 #include <stdio.h>
 #include <math.h>
-#include <portaudio.h>
 
-void * PortAudioSimulator_loop(void * arg);
+#include "../Module/Module.h"
+#include "../Queue/Queue.h"
+#include "../switches.h"
 
+#include "PortAudioDriver.h"
+
+static void * _arg;
+static PortAudioOnReceive receive_cb = NULL;
+static PaStream * stream = NULL;
+
+static Queue<Block *> source(64);
+static pthread_mutex_t mutex;
+static bool quit = false;
+#ifdef SIMULATE
+static pthread_t thread;
+static void * PortAudioSimulator_loop(void * arg);
+#endif
+
+static
 int PortAudio_callback( const void *input, void *output, unsigned long frames, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void * arg );
 
-size_t calc_size(Module ** modules)
+void PortAudio_init(void * arg, PortAudioOnReceive cb)
 {
-    size_t count = 0;
-    while (modules[count] != NULL) {
-        count += 1;
-    }
-    LOG("count: %zu\n", count);
-    return count;
-}
-
-PortAudioSimulator::PortAudioSimulator(
-        TaskScheduler * rx_scheduler,
-        Memory *  rx_memory,
-        Module ** tx_modules,
-        Module * rx_module):
-    rx_scheduler(rx_scheduler),
-    rx_memory(rx_memory),
-    rx_module(rx_module),
-    source(64),
-    quit(false),
-    stream(NULL)
-{
-    LOG("Calculating size...\n");
-    tx_modules_size = calc_size(tx_modules);
-
-    LOG("Copying tx_modules\n");
-    this->tx_modules = new Module*[tx_modules_size];
-
-    memcpy(this->tx_modules, tx_modules, sizeof(Module *) * this->tx_modules_size);
-
+    assert(cb != NULL);
+    _arg = arg;
+    receive_cb = cb;
     pthread_mutex_init(&mutex, NULL);
 }
 
+void PortAudio_add(Block * block)
+{
+    source.add(block);
+}
+
+static
 PaError print_device(PaDeviceIndex index) 
 {
     const PaDeviceInfo * dev_info = Pa_GetDeviceInfo(index);
@@ -50,13 +48,15 @@ PaError print_device(PaDeviceIndex index)
     LOG("[%d] %s\n", (int) index, dev_info->name);
     LOG("    Max input channels      : %d\n" , dev_info->maxInputChannels);
     LOG("    Max outpu channels      : %d\n" , dev_info->maxOutputChannels);
-    if (dev_info->maxInputChannels != 0 ) {
+    if (dev_info->maxInputChannels != 0 ) 
+    {
         LOG("    Input latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowInputLatency));
         LOG("    Input latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighInputLatency));
         LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowInputLatency * dev_info->defaultSampleRate);
         LOG("    Est. num samples hig lat: %.3lf\n", dev_info->defaultHighInputLatency * dev_info->defaultSampleRate);
     }
-    if (dev_info->maxOutputChannels != 0) {
+    if (dev_info->maxOutputChannels != 0) 
+    {
         LOG("    Outpu latency low  [Hz] : %.3lf\n", 1.0/(dev_info->defaultLowOutputLatency));
         LOG("    Outpu latency high [Hz] : %.3lf\n", 1.0/(dev_info->defaultHighOutputLatency));
         LOG("    Est. num samples low lat: %.3lf\n", dev_info->defaultLowOutputLatency * dev_info->defaultSampleRate);
@@ -71,37 +71,44 @@ PaError print_device(PaDeviceIndex index)
     return paNoError;
 }
 
-void PortAudioSimulator::start()
+void PortAudio_start()
 {
 #ifdef SIMULATE
-    pthread_create(&thread, NULL, PortAudioSimulator_loop, this);
+    pthread_create(&thread, NULL, PortAudioSimulator_loop, NULL);
     return;
 #else
     PaStreamParameters input_params;
     PaStreamParameters outpu_params;
     double input_fs;
     double outpu_fs;
+    PaError error;
 
-    PaError error = Pa_Initialize();
+    error = Pa_Initialize();
+
     LOG("Printing input device...\n");
+
     print_device(Pa_GetDefaultInputDevice());
     LOG("Printing output device...\n");
+
     print_device(Pa_GetDefaultOutputDevice());
 
-    if (error != paNoError) {
+    if (error != paNoError) 
+    {
         goto fail;
     }
 
     // Setup input device
     input_params.device = Pa_GetDefaultInputDevice();
-    if (input_params.device == paNoDevice) {
+    if (input_params.device == paNoDevice) 
+    {
         error = paNoDevice;
         goto fail;
     }
 
     // Setup output device
     outpu_params.device = Pa_GetDefaultOutputDevice();
-    if (outpu_params.device == paNoDevice) {
+    if (outpu_params.device == paNoDevice) 
+    {
         error = paNoDevice;
         goto fail;
     }
@@ -118,30 +125,33 @@ void PortAudioSimulator::start()
     outpu_params.hostApiSpecificStreamInfo = NULL;
     outpu_fs = Pa_GetDeviceInfo(outpu_params.device)->defaultSampleRate;
 
-    if (input_fs != outpu_fs) {
+    if (input_fs != outpu_fs) 
+    {
         WARNING("default input fs %.3lf != default output fs %.3lf\n", input_fs, outpu_fs);
     }
 
-    if (input_fs != 44.1E3) {
+    if (input_fs != 44.1E3) 
+    {
         WARNING("input fs %.3lf != 44.1kHz\n", input_fs);
         WARNING("outpu fs %.3lf != 44.1kHz\n", outpu_fs);
     }
 
     error = Pa_OpenStream(
-            &(this->stream),
+            &stream,
             &input_params,
             &outpu_params,
             44.1E3,
             1024,
             0,
             PortAudio_callback,
-            this);
+            NULL);
 
-    if (error != paNoError) {
+    if (error != paNoError) 
+    {
         goto fail;
     }
 
-    error = Pa_StartStream(this->stream);
+    error = Pa_StartStream(stream);
 
     if (error != paNoError) {
         goto fail;
@@ -154,23 +164,7 @@ fail:
 #endif
 }
 
-PortAudioSimulator::~PortAudioSimulator()
-{
-    stop();
-
-#ifdef SIMULATE
-    PaError err = Pa_CloseStream(this->stream);
-
-    if (err != paNoError) {
-        ERROR("%s\n", Pa_GetErrorText(err));
-    }
-
-    Pa_Terminate();
-#endif
-    delete [] tx_modules;
-}
-
-void PortAudioSimulator::stop()
+void PortAudio_stop()
 {
     pthread_mutex_lock(&mutex);
     quit = true;
@@ -180,27 +174,38 @@ void PortAudioSimulator::stop()
 #else
     PaError err;
 
-    if (Pa_IsStreamActive(this->stream) == 1)
+    if (Pa_IsStreamActive(stream) == 1)
     {
         err = Pa_StopStream(stream);
         
-        if (err != paNoError) {
+        if (err != paNoError) 
+        {
             goto fail;
         }
 
         while(1) 
         {
-            err = Pa_IsStreamStopped(this->stream); 
+            err = Pa_IsStreamStopped(stream); 
             Pa_Sleep(100);
-            if (err < 0) {
+            if (err < 0) 
+            {
                 goto fail;
             }
-            else if (err == 1) {
+            else if (err == 1) 
+            {
                 break;
             }
             Pa_Sleep(100);
         }
     }
+
+    err = Pa_CloseStream(stream);
+
+    if (err != paNoError) {
+        ERROR("%s\n", Pa_GetErrorText(err));
+    }
+
+    Pa_Terminate();
 
     return;
 fail:
@@ -209,15 +214,7 @@ fail:
 #endif
 }
 
-void PortAudioSimulator::add(Block * block)
-{
-    for (size_t k = 0; k < tx_modules_size; ++k)
-    {
-        block = tx_modules[k]->process(block);
-    }
-    source.add(block);
-}
-
+#ifdef SIMULATE
 void * PortAudioSimulator_loop(void * arg)
 {
     size_t size = 1024;
@@ -261,7 +258,9 @@ void * PortAudioSimulator_loop(void * arg)
     LOG("PortAudio quitting...\n");
     return NULL;
 }
+#endif
 
+static
 int PortAudio_callback(
     const void *input, 
     void *output,
@@ -277,8 +276,6 @@ int PortAudio_callback(
     const float * rx_buffer = (const float *) input;
     float ** tx_iter;
     size_t start;
-
-    PortAudioSimulator * self = (PortAudioSimulator *) arg;
 
     /* Parse Error Messages TODO */
     /*
@@ -308,10 +305,10 @@ int PortAudio_callback(
     }
 
     start = 0;
-    if (self->source.size() > 0)
+    if (source.size() > 0)
     {
         Block * block;
-        self->source.get(&block);
+        source.get(&block);
         if (tx_block) 
         {
             tx_iter = tx_block->get_iterator();
@@ -333,35 +330,23 @@ int PortAudio_callback(
             tx_buffer[n] = **tx_iter * scale; 
             tx_block->next();
         }
-
-        Block * rx_block = self->rx_memory->allocate(frames);
-        float ** rx_iter = rx_block->get_iterator();
-
-        for (size_t n = 0; n < frames; ++n)
-        {
-            **rx_iter = rx_buffer[n];
-            rx_block->next();
-        }
-
-        rx_block->reset();
-
-        self->rx_scheduler->add_module(self->rx_module, rx_block);
+        receive_cb(_arg, rx_buffer, frames);
     }
     else 
     {
         memset(tx_buffer, 0, sizeof(float) * frames);
     }
 
-    pthread_mutex_lock(&self->mutex);
-    if (self->quit) 
+    pthread_mutex_lock(&mutex);
+    if (quit) 
     {
-        pthread_mutex_unlock(&self->mutex);
+        pthread_mutex_unlock(&mutex);
         return paComplete;
     }
-    pthread_mutex_unlock(&self->mutex);
+    pthread_mutex_unlock(&mutex);
 
-    if (self->stream) {
-        double load = Pa_GetStreamCpuLoad(self->stream);
+    if (stream) {
+        double load = Pa_GetStreamCpuLoad(stream);
         LOG("CPU load: %.3lf\r", 100.0 * load);
     }
     return paContinue;

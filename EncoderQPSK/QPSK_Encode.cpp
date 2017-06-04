@@ -2,12 +2,13 @@
 #include "QPSK_Encode.h"
 
 QPSK_Encode::QPSK_Encode(Memory * memory, 
-        Module * next, 
+        TransceiverCallback cb,
+        void * trans,
         float fs, 
         float fc, 
         int cycles_per_sym,
         int training_cycles):
-    Module(memory, next),
+    Module(memory, cb, trans),
     fs(fs),
     fc(fc),
     cycles_per_sym(cycles_per_sym),

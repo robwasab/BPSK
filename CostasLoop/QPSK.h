@@ -8,14 +8,14 @@ class QPSK : public CostasLoop
 {
 public:
     QPSK(Memory * memory,
-            Module * next,
+            TransceiverCallback cb,
+            void * trans,
             double fs,
             double fc,
             double biqu_fcut = 550.0,
             double loop_fnat = 200.0);
 
-    //override
-    Block * process(Block * block);
+
     const char * name();
 
     void error_detector(float input,
@@ -32,6 +32,8 @@ private:
     Biquad_LowPass * lp2;
     Biquad_LowPass * lp4;
 
+    //override
+    Block * process(Block * block);
 };
 
 #endif

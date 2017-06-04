@@ -3,17 +3,15 @@
 
 #include <pthread.h>
 #include "../Module/Module.h"
-#include "../TaskScheduler/TaskScheduler.h"
 
 const char _STDIN_SOURCE_NAME_[] = "StdinSource";
 
 class StdinSource: public Module
 {
 public:
-    StdinSource(Memory * memory, Module * next, TaskScheduler * scheduler);
+    StdinSource(Memory * memory, TransceiverCallback cb, void * trans);
     void start(bool block = true);
     Block * process(Block * block);
-    TaskScheduler * scheduler;
     using Module::name;
     const char * name() {
         return _STDIN_SOURCE_NAME_; 

@@ -12,10 +12,11 @@ const char * SpectrumAnalyzer::name() {
 #define IN_PLACE
 
 SpectrumAnalyzer::SpectrumAnalyzer(Memory * memory, 
-        Module * next, 
+        TransceiverCallback cb,
+        void * trans,
         double fs,
         size_t spectrum_size):
-    Module(memory, next),
+    Module(memory, cb, trans),
     n(spectrum_size),
     queue((1 << 19))
 {

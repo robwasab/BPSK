@@ -8,7 +8,7 @@ class SuppressPrint : public Module
 {
 public:
     SuppressPrint():
-    Module(NULL, NULL) {}
+    Module(NULL, NULL, NULL) {}
 
     const char * name() {
         return __suppress_print_name__;

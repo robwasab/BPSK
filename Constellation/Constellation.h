@@ -8,12 +8,12 @@ class Constellation : public DataSource, public Module
 {
 public:
     Constellation(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * trans,
             double fs,
             size_t chunk);
 
     ~Constellation();
-    Block * process(Block * sig);
     const char * name();
     size_t size();
     Point get_data(size_t index);
@@ -31,6 +31,8 @@ private:
     Queue<float> qu_phase_queue;
     float * in_phase_memory;
     float * qu_phase_memory;
+
+    Block * process(Block * block);
 };
 
 #endif

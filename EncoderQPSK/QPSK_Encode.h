@@ -7,7 +7,8 @@ class QPSK_Encode : public Module
 {
 public:
     QPSK_Encode(Memory * memory, 
-            Module * next, 
+            TransceiverCallback cb,
+            void * trans,
             float fs, 
             float fc, 
             int cycles_per_sym,

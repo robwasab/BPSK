@@ -12,8 +12,8 @@ const char __PLOT_SINK_NAME__[] = "PlotSink";
 class PlotSink : public Module, public DataSource
 {
 public:
-    PlotSink(Module * next) :
-    Module(NULL, next)
+    PlotSink(Memory * memory, TransceiverCallback transceiver_cb, void * transceiver) :
+    Module(memory, transceiver_cb, transceiver)
     {
         block = NULL;
         data = NULL;
