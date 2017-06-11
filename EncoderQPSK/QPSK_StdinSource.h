@@ -15,6 +15,7 @@ public:
     Block * process(Block * block);
     void dispatch(RadioMsg * msg);
     const char * name();
+    int fd[2];
 private:
     pthread_t main;
 };

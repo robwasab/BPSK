@@ -14,6 +14,7 @@
 #include "../DecoderBPSK/BPSKDecoder.h"
 #include "../Modulator/Modulator.h"
 #include "../PlotSink/PlotSink.h"
+#include "../SpectrumAnalyzer/SpectrumAnalyzer.h"
 #include "../Filter/BandPass.h"
 #include "../WavSink/WavSink.h"
 #include "../Memory/Memory.h"
@@ -52,7 +53,9 @@ TransceiverQPSK::TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double
 
     /* Receiver Variables */
     #ifdef QT_ENABLE
-    Constellation * rx_plot;
+    Constellation    * rx_plot;
+    PlotSink         * rx_view;
+    SpectrumAnalyzer * rx_spec;
     #endif
     SuppressPrint * rx_end;
     QPSK      * rx_deco;
@@ -84,7 +87,9 @@ TransceiverQPSK::TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double
     rx_end = new SuppressPrint;
 
     #ifdef QT_ENABLE
-    rx_plot = new Constellation(rx_memory, transceiver_callback, this, fs, 1024);
+    rx_plot = new Constellation   (rx_memory, transceiver_callback, this, fs, 1024);
+    rx_spec = new SpectrumAnalyzer(rx_memory, transceiver_callback, this, fs, 256);
+    rx_view = new PlotSink        (rx_memory, transceiver_callback, this);
     #endif
 
     rx_deco = new QPSK     (rx_memory, transceiver_callback, this, fs, fif);
@@ -102,6 +107,7 @@ TransceiverQPSK::TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double
         tx_mdrf, //RF MODULATOR
         tx_bprf, //RF BANDPASS FILTER
         rf_chan, //RF CHANNEL
+        rx_view, //VIEW THE WAVEFORM
         rx_bprf, //RF BANDPASS FILTER
         rx_modu, //RF MODULATOR
         rx_bpif, //IF BANDPASS FILTER
@@ -109,6 +115,7 @@ TransceiverQPSK::TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double
         rx_deco, //PLL
         #ifdef QT_ENABLE
         rx_plot, //CONSTELLATION PLOT
+        //rx_spec, //SPECTRUM ANALYZER
         #endif
         rx_end,  //END
         NULL,
@@ -125,7 +132,9 @@ TransceiverQPSK::TransceiverQPSK(TransceiverNotify notify_cb, void * obj, double
     }
 
     #ifdef QT_ENABLE
+    controller->add_plot(rx_view);
     controller->add_plot(rx_plot);
+    //controller->add_plot(rx_spec);
     #endif
 }
 

@@ -23,11 +23,11 @@ public:
     void print();
     ~CostasLoopBlock();
     float * get_pointer(SignalType type);
+    CostasLoop * costa;
 
 private:
     SignalType type;
     Block * block;
-    CostasLoop * costa;
     float in_phase_sig;
     float qu_phase_sig;
     float freq_est_sig;

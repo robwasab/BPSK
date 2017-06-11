@@ -17,7 +17,7 @@ void TestFramework_cb(void * obj, RadioMsg * msg)
             self->notify(te);
             break;
             
-        case NOTIFY_PLL_LOST_LOCK:
+        case NOTIFY_PLL_RESET:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
         case NOTIFY_DATA_RECEIVED:
@@ -31,6 +31,8 @@ void TestFramework_cb(void * obj, RadioMsg * msg)
         case CMD_RESET_RECEIVER:
         case CMD_SET_TRANSMIT_CHANNEL:
         case CMD_SET_RECEIVE_CHANNEL:
+            break;
+        default:
             break;
     }
 }

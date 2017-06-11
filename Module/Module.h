@@ -21,7 +21,11 @@ public:
 
     virtual Block * process(Block * block) = 0;
 
+    /* To be used to process transceiver messages */
     virtual void dispatch(RadioMsg * msg);
+
+    /* For notifying the transceiver if something happens */
+    virtual void broadcast(RadioMsg * msg);
 
     virtual const char * name() = 0;
     Memory * memory;

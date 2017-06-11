@@ -24,7 +24,24 @@ MainWindow::MainWindow( QWidget *parent ):
 
     this->statusBar()->addWidget( d_frameCount, 10 );
 
+    this->cb = NULL;
+    this->obj = NULL;
     startTimer(500);
+}
+
+void MainWindow::set_close_cb(OnCloseCallback cb, void * obj)
+{
+    this->cb = cb;
+    this->obj = obj;
+}
+
+void MainWindow::closeEvent( QCloseEvent * event )
+{
+    if (this->cb != NULL && this->obj != NULL)
+    {
+        cb(obj);
+    }
+    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::add_plot( DataSource * source )

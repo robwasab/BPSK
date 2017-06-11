@@ -13,11 +13,13 @@ enum RadioMsgType
     CMD_RESET_RECEIVER,
     CMD_SET_TRANSMIT_CHANNEL,
     CMD_SET_RECEIVE_CHANNEL,
-    NOTIFY_PLL_LOST_LOCK,
+    CMD_SET_NOISE_LEVEL,
+    NOTIFY_PLL_RESET,
     NOTIFY_PACKET_HEADER_DETECTED,
     NOTIFY_RECEIVER_RESET_CONDITION_DETECTED,
     NOTIFY_DATA_RECEIVED,
     NOTIFY_USER_REQUEST_QUIT,
+    RADIO_MSG_TYPE_LEN,
 };
 
 typedef enum RadioMsgType RadioMsgType;
@@ -29,7 +31,6 @@ class RadioMsg
     public:
         RadioMsg(RadioMsgType type=PROCESS_DATA);
         RadioMsgType type;
-    protected:
         uint8_t args[RADIO_ARG_SIZE];
 };
 

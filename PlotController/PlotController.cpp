@@ -20,6 +20,12 @@ void PlotController::remove_plot(DataSource * source)
     mw->remove_plot(source);
 }
 
+void PlotController::set_close_cb(OnCloseCallback cb, void * obj)
+{
+    MainWindow * mw = (MainWindow *) main_window;
+    mw->set_close_cb(cb, obj);
+}
+
 int PlotController::run()
 {
     QApplication * app = (QApplication *) application;

@@ -24,6 +24,26 @@ public:
         modulat_phase += 32*modulat_inc;
         carrier_phase += 32*carrier_inc;
     }
+
+    Point get_origin() {
+        Point pnt;
+        pnt.x = 0;
+        pnt.y = -1.5;
+        return pnt;
+    }
+
+    Point get_lengths() {
+        Point pnt;
+        pnt.x = len;
+        pnt.y = 3.0;
+        return pnt;
+    }
+
+    bool valid()
+    {
+        return false;
+    }
+
 private:
     void * plot;
     const size_t len;

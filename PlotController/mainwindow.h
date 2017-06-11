@@ -6,6 +6,7 @@
 #include <list>
 #include <queue>
 #include "DataSource.h"
+#include "PlotController.h"
 
 class Plot;
 class Panel;
@@ -33,6 +34,8 @@ public:
     void remove_plot( DataSource * source );
     void __add_plot__( DataSource * source );
     void __remove_plot__( DataSource * source );
+    void closeEvent ( QCloseEvent * event );
+    void set_close_cb(OnCloseCallback cb, void * obj);
 
 private Q_SLOTS:
     void applySettings( const Settings & );
@@ -46,6 +49,9 @@ private:
     QWidget * w;
     QLabel *d_frameCount;
     bool checkCanvas( QObject * object );
+
+    OnCloseCallback cb;
+    void * obj;
 
 protected:
     void timerEvent( QTimerEvent * event );

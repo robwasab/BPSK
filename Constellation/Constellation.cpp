@@ -82,9 +82,12 @@ Block * Constellation::process(Block * in)
                 LOG("Hard Resetting Demodulator\n");
                 qpsk->hard_reset();
                 no_lock_timer.reset();
+
+                RadioMsg reset_notify(NOTIFY_PLL_RESET);
+                qpsk->costa->broadcast(&reset_notify);
             }
         }
-        **ret_iter = *lock_sig;
+        **ret_iter = *in_phase + *qu_phase;
     } while(qpsk->next());
 
     in->free();

@@ -12,21 +12,30 @@ void transceiver_callback(void * arg, RadioMsg * msg)
     self->notify(*msg);
 }
 
+void plotcontroller_close_callback(void * arg)
+{
+    Transceiver * self = (Transceiver *) arg;
+
+    RadioMsg window_close(NOTIFY_USER_REQUEST_QUIT);
+
+    self->notify(window_close);
+}
+
 void Transceiver::debug(RadioMsg msg)
 {
     signal();
 }
 
 Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, double fs, double fc, double fif, double bw):
+    SignaledThread(128),
     notify_cb(notify_cb),
     obj(obj),
-    SignaledThread(128),
     fs(fs),
     fc(fc),
     fif(fif),
     bw(bw),
-    order(8),
-    cycles_per_bit(5),
+    order(6),
+    cycles_per_bit(10),
     spectrum_size(1 << 10)
 {
     //generate_ml_sequence(&prefix_len, &prefix);
@@ -44,8 +53,8 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, double fs, dou
 
     #ifdef QT_ENABLE
     controller = new PlotController(_argc, _argv);
+    controller->set_close_cb(plotcontroller_close_callback, this);
     #endif
-
 }
 
 void Transceiver::process(RadioMsg msg)
@@ -74,7 +83,8 @@ void Transceiver::process(RadioMsg msg)
         case CMD_RESET_RECEIVER:
         case CMD_SET_TRANSMIT_CHANNEL:
         case CMD_SET_RECEIVE_CHANNEL:
-        case NOTIFY_PLL_LOST_LOCK:
+        case CMD_SET_NOISE_LEVEL:
+        case NOTIFY_PLL_RESET:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
         case NOTIFY_DATA_RECEIVED:
@@ -87,6 +97,8 @@ void Transceiver::process(RadioMsg msg)
                 modules[k]->dispatch(&msg);
                 k++;
             }
+            break;
+        default:
             break;
     }
 }

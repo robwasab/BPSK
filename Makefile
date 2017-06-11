@@ -86,14 +86,12 @@ RadioMsg_objects=RadioMsg.o
 RadioMsg_paths=$(addprefix RadioMsg/,$(RadioMsg_objects))
 
 # Default target
-all: main
+all: qpsk
 
 debug:
 	echo $(EncoderBPSK_paths)
 	echo $(EncoderQPSK_paths)
 	echo $(Tests_paths)
-
-main: qpsk
 
 qpsk: qpsk.o $(Module_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(PLOT_PATHS) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(DecoderBPSK_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(Transceivers_paths) $(SignaledThread_paths) $(TestFramework_paths) $(Tests_paths) $(RadioMsg_paths) $(Channel_paths) $(PortAudioDriver_paths)  Colors/Colors.h PlotSink/PlotSink.h switches.h SuppressPrint/SuppressPrint.h
 	$(CC) $(LIBRARY) $(OPTIONS) qpsk.o $(Module_paths) $(EncoderBPSK_paths) $(EncoderQPSK_paths) $(Memory_paths) $(Transmitter_paths) $(QPSK_Transmitter_paths) $(Filter_paths) $(CostasLoop_paths) $(QPSK_paths) $(WavSink_paths) $(PLOT_PATHS) $(Receiver_paths) $(generator_paths) $(Modulator_paths) $(SpectrumAnalyzer_paths) $(Constellation_paths) $(Autogain_paths) $(Transceivers_paths) $(TestFramework_paths) $(Tests_paths) $(RadioMsg_paths) $(Channel_paths) $(PortAudioDriver_paths) -o $(OUTPUT) $(LIBS)
@@ -125,7 +123,7 @@ $(Filter_paths):%.o: %.cpp %.h Module/Module.h switches.h Module/Module.h
 $(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(QPSK_paths):%.o: %.cpp %.h CostasLoop/CostasLoop.h CostasLoop/CostasLoopBlock.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h
+$(QPSK_paths):%.o: %.cpp %.h CostasLoop/CostasLoop.h CostasLoop/CostasLoopBlock.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(WavSink_paths):%.o: %.cpp %.h Module/Module.h switches.h
@@ -134,7 +132,7 @@ $(WavSink_paths):%.o: %.cpp %.h Module/Module.h switches.h
 $(DecoderBPSK_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(generator_paths):%.o: %.cpp %.h switches.h Module/Module.h
+$(generator_paths):%.o: %.cpp %.h switches.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Modulator_paths):%.o: %.cpp %.h Module/Module.h switches.h
@@ -143,16 +141,16 @@ $(Modulator_paths):%.o: %.cpp %.h Module/Module.h switches.h
 $(SpectrumAnalyzer_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h switches.h Queue/Queue.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Constellation_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h
+$(Constellation_paths):%.o: %.cpp %.h PlotController/DataSource.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Autogain_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(PortAudioDriver_paths):%.o: %.cpp %.h Module/Module.h
+$(PortAudioDriver_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Channel_paths):%.o: %.cpp %.h Module/Module.h RadioMsg/RadioMsg.h
+$(Channel_paths):%.o: %.cpp %.h Module/Module.h RadioMsg/RadioMsg.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(Transceivers_paths):%.o: %.cpp %.h Module/Module.h switches.h Transceivers/Transceiver.h Signaledthread/Signaledthread.h Queue/Queue.h
@@ -161,10 +159,10 @@ $(Transceivers_paths):%.o: %.cpp %.h Module/Module.h switches.h Transceivers/Tra
 $(TestFramework_paths):%.o: %.cpp %.h switches.h Stack/Stack.h Transceivers/Transceiver.h Transceivers/TransceiverQPSK.h Notify/Notify.h SignaledThread/SignaledThread.h Module/Module.h Queue/Queue.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Tests_paths):%.o: %.cpp %.h TestFramework/TestFramework.h Module/Module.h
+$(Tests_paths):%.o: %.cpp %.h TestFramework/TestFramework.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(RadioMsg_paths):%.o: %.cpp %.h Module/Module.h
+$(RadioMsg_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
