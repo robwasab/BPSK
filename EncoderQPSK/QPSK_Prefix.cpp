@@ -72,6 +72,7 @@ Block * QPSK_Prefix::process(Block * bits)
         encode->next();
     }
 
+    /* Add size of message */
     for (n = 0; n < 4; ++n)
     {
         int val = 0;

@@ -2,6 +2,7 @@
 #define __BANDPASS_H__
 
 #include "../Module/Module.h"
+//#include "PhaseEqualizer.h"
 
 class SOSBandPass 
 {
@@ -38,6 +39,7 @@ public:
 private:
     int order;
     SOSBandPass ** filters;
+    //PhaseEqualizer * equalizer;
 };
 
 #endif

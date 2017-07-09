@@ -1,5 +1,6 @@
 #include "TestFramework.h"
 #include "../Transceivers/TransceiverQPSK.h"
+#include "../Transceivers/TransceiverPSK8.h"
 #include <assert.h>
 
 #define MAX_STATE_MACHINE 128
@@ -53,7 +54,7 @@ TestFramework::TestFramework(TransceiverType type, StateMachine sm):
             break;
 
         case PSK8:
-            assert(false);
+            transceiver = new TransceiverPSK8(TestFramework_cb, this, 44.1E3, 18E3);
             break;
 
         case PSK16:

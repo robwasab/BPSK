@@ -1,4 +1,5 @@
 #include "BandPass.h"
+#include "PhaseEqualizer.h"
 #include <math.h>
 
 #define DEBUG
@@ -118,6 +119,7 @@ BandPass::~BandPass()
         }
         delete [] filters;
     }
+    //delete equalizer;
 }
 
 BandPass::BandPass(Memory * memory, 
@@ -173,6 +175,8 @@ BandPass::BandPass(Memory * memory,
             filters[k++] = new SOSBandPass(A1,B1,C1,D);
             filters[k++] = new SOSBandPass(A2,B2,C2,D);
     }
+
+    //equalizer = new PhaseEqualizer(fs, fc, bw, order);
 }
 
 float BandPass::work(float sig)
@@ -181,6 +185,8 @@ float BandPass::work(float sig)
     {
         sig = filters[n]->work(sig);
     }
+
+    //sig = equalizer->work(sig);
     return sig;
 }
 

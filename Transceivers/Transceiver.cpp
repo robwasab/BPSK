@@ -34,7 +34,7 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, double fs, dou
     fc(fc),
     fif(fif),
     bw(bw),
-    order(6),
+    order(8),
     cycles_per_bit(10),
     spectrum_size(1 << 10)
 {
@@ -84,6 +84,7 @@ void Transceiver::process(RadioMsg msg)
         case CMD_SET_TRANSMIT_CHANNEL:
         case CMD_SET_RECEIVE_CHANNEL:
         case CMD_SET_NOISE_LEVEL:
+        case CMD_TEST_PSK8_SIG_GEN:
         case NOTIFY_PLL_RESET:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:

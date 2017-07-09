@@ -4,7 +4,6 @@
 #include "../Module/Module.h"
 #include "../Memory/Block.h"
 
-char __ATTENUATOR_NAME__[] = "Attenuator";
 
 class AttenuatorBlock : public Block
 {
@@ -64,6 +63,7 @@ public:
     }
 
     const char * name() {
+        static char __ATTENUATOR_NAME__[] = "Attenuator";
         return __ATTENUATOR_NAME__;
     }
 

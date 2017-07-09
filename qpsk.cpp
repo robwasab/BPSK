@@ -14,7 +14,7 @@ int main(int argc, char ** argv)
 
     pthread_mutex_init(&log_mutex, NULL);
 
-    TestFramework testbench(PSK4, simple); 
+    TestFramework testbench(PSK8, simple); 
     testbench.main_loop();
     return 0;
 }

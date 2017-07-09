@@ -96,6 +96,13 @@ void cmd_set_noise_level(QPSK_StdinSource * self)
 }
 
 static
+void cmd_test(QPSK_StdinSource * self, RadioMsgType msg_type)
+{
+    RadioMsg msg(msg_type);
+    self->transceiver_cb(self->transceiver, &msg);
+}
+
+static
 void handle_command(QPSK_StdinSource * self)
 {
     int k;
@@ -114,21 +121,12 @@ void handle_command(QPSK_StdinSource * self)
             cmd_set_noise_level(self);
             break;
 
-        case PROCESS_DATA:
-        case CMD_START:
-        case CMD_STOP:
-        case NOTIFY_USER_REQUEST_QUIT:
-        case CMD_RESET_ALL:
-        case CMD_RESET_TRANSMITTER:
-        case CMD_RESET_RECEIVER:
-        case CMD_SET_TRANSMIT_CHANNEL:
-        case CMD_SET_RECEIVE_CHANNEL:
-        case NOTIFY_PLL_RESET:
-        case NOTIFY_PACKET_HEADER_DETECTED:
-        case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
-        case NOTIFY_DATA_RECEIVED:
-            WARNING("Not Implemented...\n");
+        case CMD_TEST_PSK8_SIG_GEN:
+            cmd_test(self, (RadioMsgType) k);
+            break;
+
         default:
+            WARNING("Not Implemented...\n");
             break;
     }
 }
