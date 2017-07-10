@@ -16,6 +16,7 @@
 #include "../WavSink/WavSink.h"
 #include "../Memory/Memory.h"
 #include "../Autogain/Autogain.h"
+#include "../Autogain/PlottableAutogain.h"
 #include "../PortAudio/PortAudioSimulator.h"
 #include "../PortAudio/PortAudioStdin.h"
 #include "../Attenuator/Attenuator.h"
@@ -51,10 +52,15 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
     #endif
     SuppressPrint * rx_end;
     QPSK      * rx_deco;
+    #ifdef QT_ENABLE
+    PlottableAutogain * rx_gain;
+    #else
     Autogain  * rx_gain;
+    #endif
     BandPass  * rx_bpif;
     Modulator * rx_modu;
     BandPass  * rx_bprf;
+    Attenuator * rx_aten;
 
     /* Transmitter Section */
     double fm = fc - fif;
@@ -65,6 +71,7 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
     tx_data = new QPSK_StdinSource(tx_memory, transceiver_callback, this);
     //tx_pref = new QPSK_Prefix (tx_memory, transceiver_callback, this);
     //tx_enco = new QPSK_Encode (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
+    cycles_per_bit = 20;
     tx_wave = new PSK8_SigGen(tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
 
     /* Channel + Transducer Section */
@@ -80,10 +87,16 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
     #endif
 
     rx_deco = new QPSK     (rx_memory, transceiver_callback, this, fs, fif);
+    #ifdef QT_ENABLE
+    rx_gain = new PlottableAutogain(rx_memory, transceiver_callback, this, fs, 1024);
+    #else
     rx_gain = new Autogain (rx_memory, transceiver_callback, this, fs);
+    #endif
     rx_bpif = new BandPass (rx_memory, transceiver_callback, this, fs, fif, bw, order);
     rx_modu = new Modulator(rx_memory, transceiver_callback, this, fs, fm);
     rx_bprf = new BandPass (rx_memory, transceiver_callback, this, fs, fc , bw, order);
+
+    rx_aten = new Attenuator(rx_memory, transceiver_callback, this, 0.1);
 
     Module * chain[] =
     {
@@ -95,6 +108,7 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
         tx_mdrf, //RF MODULATOR
         tx_bprf, //RF BANDPASS FILTER
         rf_chan, //RF CHANNEL
+        rx_aten, //ATTENUATION
         rx_view, //VIEW THE WAVEFORM
         rx_bprf, //RF BANDPASS FILTER
         rx_modu, //RF MODULATOR
@@ -122,7 +136,7 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
     #ifdef QT_ENABLE
     controller->add_plot(rx_view);
     controller->add_plot(rx_plot);
-    //controller->add_plot(rx_spec);
+    controller->add_plot(rx_gain);
     #endif
 }
 

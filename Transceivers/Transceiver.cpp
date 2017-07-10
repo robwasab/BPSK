@@ -34,7 +34,7 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, double fs, dou
     fc(fc),
     fif(fif),
     bw(bw),
-    order(8),
+    order(6),
     cycles_per_bit(10),
     spectrum_size(1 << 10)
 {

@@ -3,6 +3,7 @@
 
 #include "../Module/Module.h"
 #include "CostasLoop.h"
+#include "../Filter/BandPass.h"
 
 class QPSK : public CostasLoop
 {
@@ -24,6 +25,8 @@ public:
         double * qu_phase,
         double * lock);
 
+    ~QPSK();
+
 private:
     double vco_offset_2;
     double vco_offset_3;
@@ -34,6 +37,8 @@ private:
 
     //override
     Block * process(Block * block);
+
+    BandPass * bp;
 };
 
 #endif

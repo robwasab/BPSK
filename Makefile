@@ -64,7 +64,7 @@ SpectrumAnalyzer_paths=$(addprefix SpectrumAnalyzer/,$(SpectrumAnalyzer_objects)
 Constellation_objects=Constellation.o
 Constellation_paths=$(addprefix Constellation/,$(Constellation_objects))
 
-Autogain_objects=Autogain.o
+Autogain_objects=Autogain.o PlottableAutogain.o
 Autogain_paths=$(addprefix Autogain/,$(Autogain_objects))
 
 PortAudio_objects=PortAudioSimulator.o PortAudioStdin.o

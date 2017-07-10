@@ -3,6 +3,7 @@
 
 #include "../Module/Module.h"
 #include "../CostasLoop/RC_LowPass.h"
+#include "../PlotController/DataSource.h"
 #include <math.h>
 
 class AutogainParams
@@ -12,9 +13,10 @@ public:
         max_gain(max_gain),
         thresh(thresh)
     {
-        peak_rc = new RC_LowPass(0.005, fs);
+        peak_rc = new RC_LowPass(0.001, fs);
         cond_rc = new RC_LowPass(0.0075, fs);
-        comp_rc = new RC_LowPass(0.5, fs);
+        //comp_rc = new RC_LowPass(0.5, fs);
+        comp_rc = new RC_LowPass(0.1, fs);
         gain = 1.0;
     }
 
@@ -47,9 +49,14 @@ public:
             peak_out = peak_rc->work(0.0);
         }
 
-        cond_out = cond_rc->work(peak_out);
+        //cond_out = cond_rc->work(peak_out);
+        cond_out = peak_out;
 
-        if (cond_out < thresh)
+        bool drive;
+        drive = (cond_out < thresh) || ( (thresh * 2.0 < cond_out) && (cond_out < thresh * 3.0) );
+
+        //if (cond_out < thresh)
+        if (drive)
         {
             comp_out = max_gain;
         }
@@ -78,7 +85,7 @@ public:
     Autogain(Memory * memory, TransceiverCallback cb, void * trans, double fs);
     ~Autogain();
     const char * name();
-    float work(float val);
+    virtual float work(float val);
 
 private:
     AutogainParams autogain_c;

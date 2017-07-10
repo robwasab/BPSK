@@ -27,6 +27,14 @@ QPSK::QPSK(Memory * memory,
     double biqu_qual = 1.0/sqrt(2.0);
     lp2 = new Biquad_LowPass(biqu_qual, biqu_fcut, fs);
     lp4 = new Biquad_LowPass(biqu_qual, biqu_fcut, fs);
+    bp = new BandPass(memory, cb, trans, fs, fc, 4E3, 6); 
+}
+
+QPSK::~QPSK()
+{
+    delete lp2;
+    delete lp4;
+    delete bp;
 }
 
 Block * QPSK::process(Block * block) {
@@ -42,6 +50,17 @@ void QPSK::error_detector(float input,
     double vco_phase;
     double vco_1, vco_2, vco_3, vco_4;
     double o1, o2, o3, o4;
+
+    if (input >= 1.0)
+    {
+        input = 1.0;
+    }
+    else if (input <= -1.0)
+    {
+        input = -1.0;
+    }
+
+    input = bp->work(input) ;
 
     // Phase Generator
     // vco_phase is a constantly increasing phase value

@@ -57,6 +57,7 @@ public:
 
     void calculate()
     {
+        //LOG("%.3f / %.3f\n", *psk8_ampli, *psk8_phase);
         value = (float) ( *psk8_ampli * sin(*phase + *psk8_phase) );
     }
 
@@ -68,7 +69,7 @@ public:
             *psk8_phase -= 360.0;
         }
 
-        *psk8_ampli += 2.0 * (symbol & (1 << 3));
+        *psk8_ampli += 2.0 * (symbol & (1 << 2) ? 1.0 : 0.0);
         if (*psk8_ampli >= 4.0)
         {
             *psk8_ampli -= 4.0;
@@ -200,8 +201,34 @@ void PSK8_SigGen::dispatch(RadioMsg * msg)
     switch(msg->type)
     {
         case CMD_TEST_PSK8_SIG_GEN:
+        {
             LOG("Testing PSK8 Signal Generator!\n");
+
+            int num;
+            int k;
+            Block * b;
+            float ** iter;
+            uint8_t pattern[] = {4, 1, 4, 1, 4, 1, 4, 1};
+
+            num = 1600;
+            b = memory->allocate(num);
+            iter  = b->get_iterator();
+
+            LOG("Generating symbols...\n");
+
+            for (k = 0; k < num; k++)
+            {
+                **iter = (float) pattern[k % sizeof(pattern)];
+                b->next();
+            }
+
+            LOG("Processing symbols...\n");
+            b = process(b);
+
+            LOG("Handing off...\n");
+            handoff(b, 0);
             break;
+        }
         default:
             break;
     }
