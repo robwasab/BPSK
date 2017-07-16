@@ -21,7 +21,13 @@ BPSK::BPSK(Memory * memory,
     phase_per_bit = cycles_per_bit * 2.0 * M_PI;
 
     double bw = fc/cycles_per_bit * 2.0;
+    LOG("* BPSK Encoder Settings:\n");
+    LOG("* sampling rate     : %.0lf\n", fs);
+    LOG("* center frequency  : %.0lf\n", fc);
+    LOG("* samples per cycle : %f\n", samples_per_cycle);
+    LOG("* cycles per bit    : %d\n", cycles_per_bit);
     LOG("Estimated bandwidth: %.3f\n", bw);
+
 }
 
 class BPSKBlock : public Block

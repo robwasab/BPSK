@@ -12,7 +12,7 @@ public:
             TransceiverCallback cb, 
             void * transceiver, 
             double fs, 
-            size_t chunk);
+            size_t chunk=1024);
 
     /* DataSource Methods */
     size_t size();

@@ -49,14 +49,9 @@ public:
             peak_out = peak_rc->work(0.0);
         }
 
-        //cond_out = cond_rc->work(peak_out);
-        cond_out = peak_out;
+        cond_out = cond_rc->work(peak_out);
 
-        bool drive;
-        drive = (cond_out < thresh) || ( (thresh * 2.0 < cond_out) && (cond_out < thresh * 3.0) );
-
-        //if (cond_out < thresh)
-        if (drive)
+        if (cond_out < thresh)
         {
             comp_out = max_gain;
         }

@@ -19,7 +19,13 @@ void transceiver_callback(void * arg, RadioMsg * msg);
 class Transceiver : public SignaledThread<RadioMsg>
 {
 public:
-    Transceiver(TransceiverNotify notify_cb, void * obj, double fs=44.1E3, double fc=19E3, double fif=4E3, double bw=3E3);
+    Transceiver(TransceiverNotify notify_cb, void * obj, 
+            double fs=44.1E3, 
+            double ftx=19E3, 
+            double frx=19E3, 
+            double fif=5E3, 
+            double bw=3E3,
+            int cycles_per_bit=40);
 
     virtual void process(RadioMsg msg);
 
@@ -35,11 +41,12 @@ protected:
     TransceiverNotify notify_cb;
     void * obj;
     double fs;
-    double fc;
+    double ftx;
+    double frx;
     double fif;
     double bw;
-    int order;
     int cycles_per_bit;
+    int order;
     int spectrum_size;
     size_t prefix_len;
     bool * prefix;

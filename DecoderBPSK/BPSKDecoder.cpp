@@ -15,10 +15,8 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         bool * prefix,
         size_t prefix_len,
         int cycles_per_bit, 
-        bool first_bit,
         float threshold):
     Module(memory, cb, trans),
-    first_bit(first_bit),
     threshold(threshold)
 {
     int k, j;
@@ -34,6 +32,12 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         }
         j += 1;
     }
+
+    LOG("* BPSK Decoder Settings:\n");
+    LOG("*   sampling rate : %.0lf\n", fs);
+    LOG("*   center freq   : %.0lf\n", fc);
+    LOG("*   prefix_len    : %zu\n", prefix_len);
+    LOG("*   cycles_per_bit: %d\n", cycles_per_bit);
 
     /*
     GREEN;

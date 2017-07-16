@@ -18,8 +18,14 @@ QPSK::QPSK(Memory * memory,
         double fs,
         double fc,
         double biqu_fcut,
+        #ifdef DEBUG_CONSTELLATION
+        double loop_fnat,
+        size_t chunk):
+        Plottable_CostasLoop(memory, cb, trans, fs, fc, biqu_fcut, loop_fnat, 0.1, chunk),
+        #else
         double loop_fnat):
-    CostasLoop(memory, cb, trans, fs, fc, IN_PHASE_SIGNAL, biqu_fcut, loop_fnat, 0.1),
+        CostasLoop(memory, cb, trans, fs, fc, IN_PHASE_SIGNAL, biqu_fcut, loop_fnat, 0.1),
+        #endif
     vco_offset_2(M_PI/4.0),
     vco_offset_3(M_PI/2.0),
     vco_offset_4(M_PI*3.0/4.0)
@@ -27,6 +33,9 @@ QPSK::QPSK(Memory * memory,
     double biqu_qual = 1.0/sqrt(2.0);
     lp2 = new Biquad_LowPass(biqu_qual, biqu_fcut, fs);
     lp4 = new Biquad_LowPass(biqu_qual, biqu_fcut, fs);
+
+    in_lpf = new Biquad_LowPass(biqu_qual, biqu_fcut, fs);
+    qu_lpf = new Biquad_LowPass(biqu_qual, biqu_fcut, fs);
     bp = new BandPass(memory, cb, trans, fs, fc, 4E3, 6); 
 }
 
@@ -50,6 +59,10 @@ void QPSK::error_detector(float input,
     double vco_phase;
     double vco_1, vco_2, vco_3, vco_4;
     double o1, o2, o3, o4;
+
+    float old_input;
+
+    old_input = input;
 
     if (input >= 1.0)
     {
@@ -78,8 +91,12 @@ void QPSK::error_detector(float input,
     o3 = this->qlp->work(input*vco_3);
     o4 = this->lp4->work(input*vco_4);
 
-    *in_phase = o1;
-    *qu_phase = o3;
+    // Output Signal
+    //*in_phase = o1;
+    //*qu_phase = o3;
+
+    *in_phase = in_lpf->work(old_input*vco_1);
+    *qu_phase = qu_lpf->work(old_input*vco_3);
 
     *error = o1 * o2 * o3 * o4;
 

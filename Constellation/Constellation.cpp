@@ -20,7 +20,7 @@ Constellation::Constellation(Memory * memory,
     in_phase_queue((1 << 18)),
     qu_phase_queue((1 << 18))
 {
-    update_interval = (int) round(100.0*chunk/fs);
+    update_interval = (int) round(chunk/fs);
     in_phase_memory = new float[chunk];
     qu_phase_memory = new float[chunk];
     memset(in_phase_memory, 0, sizeof(float) * chunk);
@@ -40,7 +40,7 @@ Constellation::~Constellation()
 
 Block * Constellation::process(Block * in)
 {
-    static RC_LowPass no_lock_timer(0.25, fs);
+//    static RC_LowPass no_lock_timer(0.25, fs);
     static char errors[][25] = 
     {
         {"No Error"},
@@ -73,6 +73,7 @@ Block * Constellation::process(Block * in)
             goto fail;
         }
 
+        /*
         if (*lock_sig < 0.8)
         {
             no_lock_timer.work(1.0);
@@ -87,6 +88,7 @@ Block * Constellation::process(Block * in)
                 qpsk->costa->broadcast(&reset_notify);
             }
         }
+        */
         **ret_iter = *in_phase + *qu_phase;
     } while(qpsk->next());
 
@@ -121,16 +123,16 @@ void Constellation::next()
 Point Constellation::get_origin()
 {
     Point p;
-    p.x = -1.5;
-    p.y = -1.5;
+    p.x = -4;
+    p.y = -4;
     return p;
 }
 
 Point Constellation::get_lengths()
 {
     Point p;
-    p.x = 3.0;
-    p.y = 3.0;
+    p.x = 8.0;
+    p.y = 8.0;
     return p;
 }
 
@@ -146,3 +148,4 @@ bool Constellation::valid()
     }
     return true;
 }
+

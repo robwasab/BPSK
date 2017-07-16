@@ -10,11 +10,20 @@
 
 void * StdinSource_loop(void * args);
 
+#define READ 0
+#define WRITE 1
+#define MAX(x,y) ((x > y) ? x : y)
+
 StdinSource::StdinSource(Memory * memory, 
         TransceiverCallback cb,
         void * trans):
     Module(memory, cb, trans)
 {
+    int flags;
+
+    pipe(fd);
+    flags = fcntl(fd[WRITE], F_GETFL, 0);
+    fcntl(fd[WRITE], F_SETFL, flags | O_NONBLOCK);
 }
 
 void StdinSource::start(bool block)
@@ -25,60 +34,184 @@ void StdinSource::start(bool block)
     }
 }
 
+void StdinSource::stop()
+{
+    pthread_join(main, NULL);
+}
+
+void StdinSource::dispatch(RadioMsg * msg)
+{
+    static char quit[] = "quit\n";
+    RadioData * data;
+    Block * block;
+
+    data = (RadioData *) msg;
+
+    switch(msg->type)
+    {
+        case PROCESS_DATA:
+            block = data->get_block();
+
+            block = process(block);
+
+            if (block != NULL)
+            {
+                handoff(block, data->get_tid());
+            }
+            break;
+
+        case CMD_START:
+            start(false);
+            break;
+        case CMD_STOP:
+            LOG("WRITING TO PIPE!\n");
+            write(fd[WRITE], quit, sizeof(quit));
+            stop();
+            break;
+        case NOTIFY_USER_REQUEST_QUIT:
+        case CMD_RESET_ALL:
+        case CMD_RESET_TRANSMITTER:
+        case CMD_RESET_RECEIVER:
+        case CMD_SET_TRANSMIT_CHANNEL:
+        case CMD_SET_RECEIVE_CHANNEL:
+        case NOTIFY_PLL_RESET:
+        case NOTIFY_PACKET_HEADER_DETECTED:
+        case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
+        case NOTIFY_DATA_RECEIVED:
+            break;
+        default:
+            break;
+    }
+}
+
+static
+void cmd_set_noise_level(StdinSource * self)
+{
+    double noise_level_db = 0.0;
+    LOG("Enter noise level in dB: ");
+    scanf("%lf", &noise_level_db);
+    RadioMsg msg(CMD_SET_NOISE_LEVEL);
+    memcpy(msg.args, &noise_level_db, sizeof(double)); 
+    self->transceiver_cb(self->transceiver, &msg);
+}
+
+static
+void cmd_test(StdinSource * self, RadioMsgType msg_type)
+{
+    RadioMsg msg(msg_type);
+    self->transceiver_cb(self->transceiver, &msg);
+}
+
+static
+void handle_command(StdinSource * self)
+{
+    int k;
+    LOG("Enter in the number of the command to execute...\n");
+    for (k = 0; k < RADIO_MSG_TYPE_LEN; k++)
+    {
+        LOG("[%2d]: %s\n", k, RadioMsgString[k]);
+    }
+
+    LOG("Command Number: ");
+    scanf("%d", &k);
+
+    switch (k)
+    {
+        case CMD_SET_NOISE_LEVEL:
+            cmd_set_noise_level(self);
+            break;
+
+        case CMD_TEST_PSK8_SIG_GEN:
+            cmd_test(self, (RadioMsgType) k);
+            break;
+
+        default:
+            WARNING("Not Implemented...\n");
+            break;
+    }
+}
+
 void * StdinSource_loop(void * args)
 {
     char buffer[256] = {0};
+    int fd_stdin;
+    int result;
+    int n;
+
+    StdinSource * self;
     fd_set read_fds;
-    StdinSource * self = (StdinSource *) args;
+
+    self = (StdinSource *) args;
 
     FD_ZERO(&read_fds);
-    FD_SET(fileno(stdin), &read_fds);
-    int n = fileno(stdin) + 1;
+    fd_stdin = fileno(stdin);
 
-    int result;
+    FD_SET(fd_stdin, &read_fds);
+    FD_SET(self->fd[READ], &read_fds);
+
+    n = MAX(fd_stdin, self->fd[READ]) + 1;
+
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
-        result = select(n, &read_fds, NULL, NULL, NULL);
+        result = select(FD_SETSIZE, &read_fds, NULL, NULL, NULL);
         if (result == -1) 
         {
             perror("select");
         }
         else 
         {
-            if (FD_ISSET(fileno(stdin), &read_fds)) 
+            if (FD_ISSET(fd_stdin, &read_fds)) 
             {
-                read(fileno(stdin), buffer, sizeof(buffer));
-                BLUE;
-                printf("Read: ");
-                ENDC;
-                printf("%s", buffer);
-                if ( strcmp("quit\n", buffer) == 0 ) 
+                read(fd_stdin, buffer, sizeof(buffer));
+            }
+            else if (FD_ISSET(self->fd[READ], & read_fds))
+            {
+                LOG("Reading from pipe!\n");
+                read(self->fd[READ], buffer, sizeof(buffer));
+            }
+            else
+            {
+                continue;
+            }
+
+            BLUE;
+            printf("Read: ");
+            ENDC;
+            printf("%s", buffer);
+
+            if ( strcmp("cmd\n", buffer) == 0 )
+            {
+                handle_command(self);
+                continue;
+            }
+
+            else if ( strcmp("quit\n", buffer) == 0 ) 
+            {
+                LOG("quitting...\n");
+                RadioMsg msg(NOTIFY_USER_REQUEST_QUIT);
+                self->transceiver_cb(self->transceiver, &msg);
+                break;
+            }
+
+            size_t len = strlen(buffer) + 1;
+            Block * block = self->memory->allocate(len);
+
+            if (block)
+            {
+                float ** iter = block->get_iterator();
+
+                for (size_t n = 0; n < len; ++n)
                 {
-                    LOG("quitting...\n");
-                    break;
+                    **iter = (float) buffer[n];
+                    block->next();
                 }
-                size_t len = strlen(buffer) + 1;
-                Block * block = self->memory->allocate(len);
-
-                if (block)
-                {
-                    float ** iter = block->get_iterator();
-
-                    for (size_t n = 0; n < len; ++n)
-                    {
-                        **iter = (float) buffer[n];
-                        block->next();
-                    }
-
-                    block = self->process(block);
-
-                    self->handoff(block, 0);
-                }
-                else 
-                {
-                    ERROR("Could not allocate enough space!\n");
-                }
+                block = self->process(block);
+                self->handoff(block, 0);
+            }
+            else 
+            {
+                ERROR("Could not allocate enough space!\n");
             }
         }
     }

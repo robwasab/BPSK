@@ -30,7 +30,7 @@ public:
             double lock_thesh = 0.5);
 
     ~CostasLoop();
-    void work(float input, 
+    virtual void work(float input, 
             float * in_phase, 
             float * qu_phase,
             float * freq_ptr, 

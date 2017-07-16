@@ -2,7 +2,7 @@
 #include "PhaseEqualizer.h"
 #include <math.h>
 
-#define DEBUG
+//#define DEBUG
 
 const char __name__[] = "BandPass";
 

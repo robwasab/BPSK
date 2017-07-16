@@ -6,7 +6,13 @@
 class TransceiverPSK8 : public Transceiver
 {
 public:
-    TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double fs, double fc);
+    TransceiverPSK8(TransceiverNotify notify_cb, void * obj, 
+            double fs, 
+            double ftx, 
+            double frx, 
+            double fif,
+            double bw, 
+            int cycles_per_bit);
 
 private:
 };

@@ -3,8 +3,8 @@
 CostasLoopBlock::CostasLoopBlock(Block * block,
         CostasLoop * costa, SignalType type):
     type(type),
-    block(block),
-    costa(costa)
+    costa(costa),
+    block(block)
 {
     in_phase_sig = 0.0;
     qu_phase_sig = 0.0;
@@ -23,8 +23,8 @@ CostasLoopBlock::CostasLoopBlock(Block * block,
 
     block->reset();
     costa->work(**block_iter, 
-            &in_phase_sig,
-            NULL,
+            in_phase_ptr,
+            qu_phase_ptr,
             freq_est_ptr, 
             lock_ptr, 
             error_ptr);

@@ -1,6 +1,6 @@
 #include "Transceiver.h"
 
-//#include "../MaximumLength/generator.h"
+#include "../MaximumLength/generator.h"
 
 
 #define MAX_MODULES 32
@@ -26,19 +26,26 @@ void Transceiver::debug(RadioMsg msg)
     signal();
 }
 
-Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, double fs, double fc, double fif, double bw):
+Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, 
+        double fs,
+        double ftx, 
+        double frx, 
+        double fif, 
+        double bw,
+        int cycles_per_bit):
     SignaledThread(128),
     notify_cb(notify_cb),
     obj(obj),
     fs(fs),
-    fc(fc),
+    ftx(ftx),
+    frx(frx),
     fif(fif),
     bw(bw),
+    cycles_per_bit(cycles_per_bit),
     order(6),
-    cycles_per_bit(10),
     spectrum_size(1 << 10)
 {
-    //generate_ml_sequence(&prefix_len, &prefix);
+    generate_ml_sequence(&prefix_len, &prefix);
 
     /* Initialize Objects */
     tx_memory = new Memory();

@@ -96,6 +96,7 @@ void CostasLoop::work(float input,
         float * lock_ptr, 
         float * error_ptr) 
 {
+    static RC_LowPass no_lock_timer(0.25, fs);
     double error;
     double in_phase;
     double qu_phase;
@@ -106,17 +107,20 @@ void CostasLoop::work(float input,
     // Update Loop Integrators
     error_detector(input, &error, &in_phase, &qu_phase, &lock);
 
-    if (in_phase_ptr) {
+    if (in_phase_ptr) 
+    {
         *in_phase_ptr = in_phase;
     }
 
-    if (qu_phase_ptr) {
+    if (qu_phase_ptr) 
+    {
         *qu_phase_ptr = qu_phase;
     }
 
     double s2 = error;
 
-    if (error_ptr) {
+    if (error_ptr) 
+    {
         *error_ptr = s2;
     }
 
@@ -126,7 +130,8 @@ void CostasLoop::work(float input,
     double s6 = s3 + s5;
     this->vco->work(this->inc + s6);
 
-    if (lock_ptr) {
+    if (lock_ptr) 
+    {
         *lock_ptr = this->lock_rc->work(lock);
     }
 
@@ -134,11 +139,32 @@ void CostasLoop::work(float input,
 
     phase_der = (vco_phase - this->last_vco_phase) * this->HZ_PER_RAD;
 
-    if (freq_ptr) {
+    if (freq_ptr) 
+    {
         *freq_ptr = this->freq_filter->work(phase_der);
     }
 
     this->last_vco_phase = vco_phase;
+
+    if (!lock_ptr)
+    {
+        return;
+    }
+
+    if (*lock_ptr < 0.8)
+    {
+        no_lock_timer.work(1.0);
+
+        if (no_lock_timer.value() > 0.99)
+        {
+            LOG("Hard Resetting %s...\n", name());
+            reset();
+            no_lock_timer.reset();
+
+            RadioMsg reset_notify(NOTIFY_PLL_RESET);
+            broadcast(&reset_notify);
+        }
+    }
 }
 
 /*

@@ -52,10 +52,12 @@ double db_noise(double db)
 
 void Channel::set_noise_level(double noise_level_db)
 {
+#ifdef SIMULATE
     std::normal_distribution<double> new_distribution(0.0, db_noise(noise_level_db));
     pthread_mutex_lock(&mutex);
     distribution = new_distribution;
     pthread_mutex_unlock(&mutex);
+#endif
 }
 
 Channel::Channel(Memory * memory, TransceiverCallback cb, void * transceiver):
@@ -99,9 +101,11 @@ void Channel::dispatch(RadioMsg * msg)
             break;
 
         case CMD_SET_NOISE_LEVEL:
+            #ifdef SIMULATE
             memcpy(&noise_level_db, msg->args, sizeof(double));
             LOG("Setting noise level to %.3lf dB\n", noise_level_db);
             set_noise_level(noise_level_db);
+            #endif
             break;
 
         case CMD_RESET_ALL:

@@ -35,7 +35,7 @@ typedef void (*StateMachine)(TestEvent t);
 class TestFramework : public SignaledThread<TestEvent>
 {
 public:
-    TestFramework(TransceiverType type, StateMachine sm);
+    TestFramework(TransceiverType type, StateMachine sm, double ftx, double frx, double fif, double bw, int cycles_per_bit);
     ~TestFramework();
     void smStart(StateMachine sm, TestEvent te);
     void smReturn(TestEvent te);

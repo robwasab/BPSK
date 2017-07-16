@@ -1,4 +1,5 @@
 #include "TestFramework.h"
+#include "../Transceivers/TransceiverBPSK.h"
 #include "../Transceivers/TransceiverQPSK.h"
 #include "../Transceivers/TransceiverPSK8.h"
 #include <assert.h>
@@ -39,22 +40,37 @@ void TestFramework_cb(void * obj, RadioMsg * msg)
 }
 
 
-TestFramework::TestFramework(TransceiverType type, StateMachine sm):
+TestFramework::TestFramework(TransceiverType type, StateMachine sm, double ftx, double frx, double fif, double bw, int cycles_per_bit):
     SignaledThread(128),
     sm_stack(MAX_STATE_MACHINE)
 {
     switch(type)
     {
         case PSK2:
-            assert(false);
+            transceiver = new TransceiverBPSK(TestFramework_cb, this, 44.1E3, 
+                    ftx, 
+                    frx,
+                    fif,
+                    bw,
+                    cycles_per_bit);
             break;
 
         case PSK4:
-            transceiver = new TransceiverQPSK(TestFramework_cb, this, 44.1E3, 18E3);
+            transceiver = new TransceiverQPSK(TestFramework_cb, this, 44.1E3, 
+                    ftx,
+                    frx,
+                    fif,
+                    bw,
+                    cycles_per_bit);
             break;
 
         case PSK8:
-            transceiver = new TransceiverPSK8(TestFramework_cb, this, 44.1E3, 18E3);
+            transceiver = new TransceiverPSK8(TestFramework_cb, this, 44.1E3,
+                    ftx,
+                    frx,
+                    fif,
+                    bw,
+                    cycles_per_bit);
             break;
 
         case PSK16:

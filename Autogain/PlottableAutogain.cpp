@@ -12,7 +12,7 @@ PlottableAutogain::PlottableAutogain(
     chunk(chunk),
     queue((1 << 18))
 {
-    update_interval = (int) round(100.0*chunk/fs);
+    update_interval = (int) round(chunk/fs);
     plot_memory = new float[chunk];
     memset(plot_memory, 0, sizeof(float) * chunk);
 }

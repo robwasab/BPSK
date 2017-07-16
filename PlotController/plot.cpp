@@ -66,7 +66,7 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     }
 
     // Assign a title
-    setTitle( "Testing Refresh Rates" );
+    setTitle( "" );
 
     QwtPlotCanvas *canvas = new QwtPlotCanvas();
     canvas->setFrameStyle( QFrame::Box | QFrame::Plain );
@@ -89,8 +89,6 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     d_curve->setData( new DataSourceWrapper( source ) );
     d_curve->attach( this );
 
-    set_updateInterval(50);
-
     // Axis
     Point origin = source->get_origin();
     Point length = source->get_lengths();
@@ -103,8 +101,8 @@ Plot::Plot( QWidget * parent, DataSource * source ):
 
     d_clock.start();
 
-    d_settings.updateInterval = 50;
-    d_settings.curve.numPoints = 1024;
+    d_settings.updateInterval = source->get_updateInterval();
+    d_settings.curve.numPoints = source->size();
     d_settings.canvas.useBackingStore = false;
 
     alignScales();

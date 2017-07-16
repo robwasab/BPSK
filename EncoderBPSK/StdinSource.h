@@ -11,11 +11,13 @@ class StdinSource: public Module
 public:
     StdinSource(Memory * memory, TransceiverCallback cb, void * trans);
     void start(bool block = true);
+    void stop();
     Block * process(Block * block);
-    using Module::name;
+    void dispatch(RadioMsg * msg);
     const char * name() {
         return _STDIN_SOURCE_NAME_; 
     }
+    int fd[2];
 private:
     pthread_t main;
 };

@@ -28,13 +28,19 @@
 #include "../PlotController/PlotController.h"
 #endif
 
-TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double fs, double fc):
-    Transceiver(notify_cb, obj, fs, fc)
+TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, 
+        double fs, 
+        double ftx, 
+        double frx, 
+        double fif, 
+        double bw, 
+        int cycles_per_bit):
+    Transceiver(notify_cb, obj, fs, ftx, frx, fif, bw, cycles_per_bit)
 {
     /* Transmitter variables */
-    BandPass * tx_bpif;
+    BandPass  * tx_bpif;
     Modulator * tx_mdrf;
-    BandPass * tx_bprf;
+    BandPass  * tx_bprf;
 
     QPSK_StdinSource * tx_data;
     //QPSK_Prefix * tx_pref;
@@ -63,15 +69,14 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
     Attenuator * rx_aten;
 
     /* Transmitter Section */
-    double fm = fc - fif;
+    double fm = ftx - fif;
     tx_mdrf = new Modulator(tx_memory, transceiver_callback, this, fs, fm);
     tx_bpif = new BandPass (tx_memory, transceiver_callback, this, fs, fif, bw, order);
-    tx_bprf = new BandPass (tx_memory, transceiver_callback, this, fs, fc, bw, order);
+    tx_bprf = new BandPass (tx_memory, transceiver_callback, this, fs, ftx, bw, order);
 
     tx_data = new QPSK_StdinSource(tx_memory, transceiver_callback, this);
     //tx_pref = new QPSK_Prefix (tx_memory, transceiver_callback, this);
     //tx_enco = new QPSK_Encode (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
-    cycles_per_bit = 20;
     tx_wave = new PSK8_SigGen(tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
 
     /* Channel + Transducer Section */
@@ -93,8 +98,9 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
     rx_gain = new Autogain (rx_memory, transceiver_callback, this, fs);
     #endif
     rx_bpif = new BandPass (rx_memory, transceiver_callback, this, fs, fif, bw, order);
+    fm = frx - fif;
     rx_modu = new Modulator(rx_memory, transceiver_callback, this, fs, fm);
-    rx_bprf = new BandPass (rx_memory, transceiver_callback, this, fs, fc , bw, order);
+    rx_bprf = new BandPass (rx_memory, transceiver_callback, this, fs, frx , bw, order);
 
     rx_aten = new Attenuator(rx_memory, transceiver_callback, this, 0.1);
 
@@ -108,7 +114,9 @@ TransceiverPSK8::TransceiverPSK8(TransceiverNotify notify_cb, void * obj, double
         tx_mdrf, //RF MODULATOR
         tx_bprf, //RF BANDPASS FILTER
         rf_chan, //RF CHANNEL
+        #ifdef SIMULATE
         rx_aten, //ATTENUATION
+        #endif
         rx_view, //VIEW THE WAVEFORM
         rx_bprf, //RF BANDPASS FILTER
         rx_modu, //RF MODULATOR
