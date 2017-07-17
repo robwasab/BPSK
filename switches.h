@@ -14,4 +14,7 @@
     #define DEBUG_CONSTELLATION
 #endif
 
+/* Use FIR Filters only */
+#define USE_FIR
+
 #endif

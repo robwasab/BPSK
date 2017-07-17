@@ -40,7 +40,7 @@ EncoderQPSK_paths=$(addprefix EncoderQPSK/,$(EncoderQPSK_objects))
 EncoderPSK8_objects=PSK8_SigGen.o
 EncoderPSK8_paths=$(addprefix EncoderPSK8/,$(EncoderPSK8_objects))
 
-Filter_objects=BandPass.o PhaseEqualizer.o
+Filter_objects=BandPass.o FirFilter.o math.o FirLowPass.o PlottableFirFilter.o
 Filter_paths=$(addprefix Filter/,$(Filter_objects))
 
 CostasLoop_objects=CostasLoop.o Biquad_LowPass.o CostasLoopBlock.o Plottable_CostasLoop.o

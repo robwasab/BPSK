@@ -14,10 +14,10 @@ int main(int argc, char ** argv)
 
     pthread_mutex_init(&log_mutex, NULL);
 
-    double ftx = 17E3;
-    double frx = 17E3;
+    double ftx = 20E3;
+    double frx = 20E3;
     double fif = 3E3;
-    double bw = 4E3;
+    double bw = 2E3;
     int cycles_per_bit = 10;
     TestFramework testbench(PSK2, simple, ftx, frx, fif, bw, cycles_per_bit); 
     testbench.main_loop();
