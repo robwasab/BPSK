@@ -96,6 +96,7 @@ void TestFramework::smReturn(TestEvent te)
 
 TestFramework::~TestFramework()
 {
+    delete transceiver;
 }
 
 void TestFramework::start(bool block)

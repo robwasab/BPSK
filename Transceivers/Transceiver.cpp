@@ -146,7 +146,7 @@ Transceiver::~Transceiver()
     {
         if (modules[k] != NULL)
         {
-            LOG("Deleting Module #%d...\n", k);
+            LOG("Deleting Module #%2d... %s\n", k, modules[k]->name());
             delete modules[k];
         }
     }
