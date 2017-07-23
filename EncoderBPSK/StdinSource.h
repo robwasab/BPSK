@@ -10,7 +10,10 @@ const char _STDIN_SOURCE_NAME_[] = "StdinSource";
 class StdinSource: public ByteInterface
 {
 public:
-    StdinSource(Memory * memory, TransceiverCallback cb, void * trans);
+    StdinSource(Memory * memory, 
+            TransceiverCallback cb, 
+            void * trans, 
+            const uint16_t crc_table[]);
     void start(bool block = true);
     void stop();
     void dispatch(RadioMsg * msg);

@@ -1,7 +1,11 @@
 #include "ByteInterface.h"
 
-ByteInterface::ByteInterface(Memory * memory, TransceiverCallback cb, void * trans):
-    Module(memory, cb, trans)
+ByteInterface::ByteInterface(Memory * memory, 
+        TransceiverCallback cb, 
+        void * trans, 
+        const uint16_t crc_table[]):
+    Module(memory, cb, trans),
+    crc_table(crc_table)
 {
 
 }

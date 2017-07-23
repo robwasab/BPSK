@@ -16,8 +16,9 @@ void * StdinSource_loop(void * args);
 
 StdinSource::StdinSource(Memory * memory, 
         TransceiverCallback cb,
-        void * trans):
-    ByteInterface(memory, cb, trans)
+        void * trans,
+        const uint16_t crc_table[]):
+    ByteInterface(memory, cb, trans, crc_table)
 {
     int flags;
 

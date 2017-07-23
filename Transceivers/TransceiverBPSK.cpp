@@ -76,7 +76,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     SuppressPrint * rx_end;
 
     /* Transmitter Section */
-    tx_data = new StdinSource(tx_memory, transceiver_callback, this);
+    tx_data = new StdinSource(tx_memory, transceiver_callback, this, crc_table);
     tx_pref = new Prefix     (tx_memory, transceiver_callback, this, prefix, prefix_len);
     tx_enco = new BPSK       (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
 

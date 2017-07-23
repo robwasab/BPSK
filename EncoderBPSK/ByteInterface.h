@@ -8,13 +8,17 @@ const char _BYTE_INTERFACE_NAME_[] = "StdinSource";
 class ByteInterface: public Module
 {
 public:
-    ByteInterface(Memory * memory, TransceiverCallback cb, void * trans);
+    ByteInterface(Memory * memory, 
+            TransceiverCallback cb, 
+            void * trans, 
+            const uint16_t crc_table[]);
     Block * process(Block * block);
     void process_msg(const uint8_t msg[], size_t len);
     const char * name() {
         return _BYTE_INTERFACE_NAME_;
     }
 private:
+    const uint16_t * crc_table;
 };
 
 #endif
