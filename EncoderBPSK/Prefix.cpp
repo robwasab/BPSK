@@ -14,18 +14,6 @@ Prefix::Prefix(Memory * memory,
     this->prefix_len = prefix_len;
 }
 
-void Prefix::encode_helper(Block * encode, bool inv)
-{
-    int n;
-    float ** iter = encode->get_iterator();
-
-    for (n = 0; n < prefix_len; ++n)
-    {
-        **iter = inv ^ prefix[n];
-        encode->next();
-    }
-}
-
 Block * Prefix::process(Block * bits)
 {
     float ** bits_iter;
@@ -33,9 +21,9 @@ Block * Prefix::process(Block * bits)
     uint8_t size;
     int n;
 
-    // prefix + size of data contained in a byte + data + zero byte
+    // prefix + data + 2 zero bytes
     size = bits->get_size()/8;
-    Block * encode = memory->allocate( prefix_len + 8 + bits->get_size() + 16);
+    Block * encode = memory->allocate( prefix_len + bits->get_size() + 16);
     
     if (!encode) {
         goto fail;
@@ -48,21 +36,7 @@ Block * Prefix::process(Block * bits)
 
     for (n = 0; n < prefix_len; ++n)
     {
-        //encode_helper(encode, rand[n]); 
         **encode_iter = prefix[n];
-        encode->next();
-    }
-
-    /*
-    do
-    {
-        encode_helper(encode, **bits_iter);
-    } while(bits->next());
-    */
-
-    for (n = 0; n < 8; ++n)
-    {
-        **encode_iter = (size & (1 << n)) ? 1.0 : 0.0;
         encode->next();
     }
 

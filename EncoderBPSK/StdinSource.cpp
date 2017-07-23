@@ -195,24 +195,9 @@ void * StdinSource_loop(void * args)
             }
 
             size_t len = strlen(buffer) + 1; // +1 to hold the size of the message +1 for the string terminator
-            Block * block = self->memory->allocate(len);
 
-            if (block)
-            {
-                float ** iter = block->get_iterator();
+            self->process_msg((uint8_t *) buffer, len);
 
-                for (size_t n = 0; n < len; ++n)
-                {
-                    **iter = (float) buffer[n];
-                    block->next();
-                }
-                block = self->process(block);
-                self->handoff(block, 0);
-            }
-            else 
-            {
-                ERROR("Could not allocate enough space!\n");
-            }
         }
     }
     return NULL;
