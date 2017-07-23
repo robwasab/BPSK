@@ -33,17 +33,6 @@ Block * Prefix::process(Block * bits)
     uint8_t size;
     int n;
 
-    /* STEP 1: Prefix the data with maximal length pseudo random header
-     * STEP 2: replace each '1' bit with the same pseudo random header,
-     *         replace each '0' bit with an inversed header.
-     * STORY : Encode each bit with a sudo random sequence, but you must
-     *         prefix the data with another sudo random sequence in order to 
-     *         mark the start of the packet. We are just reusing the same
-     *         pseudo random sequence. 
-     */
-
-    //Block * encode = memory->allocate((bits->get_size() + RAND_LEN) * RAND_LEN);
-
     // prefix + size of data contained in a byte + data + zero byte
     size = bits->get_size()/8;
     Block * encode = memory->allocate( prefix_len + 8 + bits->get_size() + 16);
