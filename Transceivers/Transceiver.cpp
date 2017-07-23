@@ -1,6 +1,6 @@
 #include "Transceiver.h"
-
 #include "../MaximumLength/generator.h"
+#include "../CRC-16/crc.h"
 
 
 #define MAX_MODULES 32
@@ -46,6 +46,8 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     spectrum_size(1 << 10)
 {
     generate_ml_sequence(&prefix_len, &prefix);
+
+    crc_table = compute_crc_table(); 
 
     /* Initialize Objects */
     tx_memory = new Memory();
@@ -156,6 +158,9 @@ Transceiver::~Transceiver()
 
     LOG("delete rx_memory...\n");
     delete rx_memory;
+
+    LOG("delete crc_table...\n");
+    delete crc_table;
 
     #ifdef QT_ENABLE
     LOG("delete controller...\n");

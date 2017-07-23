@@ -50,6 +50,7 @@ protected:
     int spectrum_size;
     size_t prefix_len;
     bool * prefix;
+    uint16_t * crc_table;
 
     /* Holds Modules */
     Module ** modules;
