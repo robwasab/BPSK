@@ -129,7 +129,7 @@ $(EncoderPSK8_paths):%.o: %.cpp %.h Colors/Colors.h switches.h Module/Module.h
 $(Filter_paths):%.o: %.cpp %.h Module/Module.h switches.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h
+$(CostasLoop_paths):%.o: %.cpp %.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h Queue/Queue.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(QPSK_paths):%.o: %.cpp %.h CostasLoop/CostasLoop.h CostasLoop/CostasLoopBlock.h CostasLoop/Integrator.h CostasLoop/LockDetector.h CostasLoop/RC_LowPass.h switches.h Module/Module.h switches.h

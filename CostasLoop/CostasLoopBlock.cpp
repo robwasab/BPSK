@@ -2,8 +2,8 @@
 
 CostasLoopBlock::CostasLoopBlock(Block * block,
         CostasLoop * costa, SignalType type):
-    type(type),
     costa(costa),
+    type(type),
     block(block)
 {
     in_phase_sig = 0.0;
