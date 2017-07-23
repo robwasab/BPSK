@@ -17,7 +17,7 @@ void * StdinSource_loop(void * args);
 StdinSource::StdinSource(Memory * memory, 
         TransceiverCallback cb,
         void * trans):
-    Module(memory, cb, trans)
+    ByteInterface(memory, cb, trans)
 {
     int flags;
 
@@ -194,7 +194,7 @@ void * StdinSource_loop(void * args)
                 break;
             }
 
-            size_t len = strlen(buffer) + 1;
+            size_t len = strlen(buffer) + 1; // +1 to hold the size of the message +1 for the string terminator
             Block * block = self->memory->allocate(len);
 
             if (block)
@@ -214,75 +214,6 @@ void * StdinSource_loop(void * args)
                 ERROR("Could not allocate enough space!\n");
             }
         }
-    }
-    return NULL;
-}
-
-float mask(float value, int shift)
-{
-    uint8_t byte = (uint8_t) value;
-    byte &= ( ( 1 << ( 1 + shift * 2 ) ) + ( 1 << ( shift * 2 ) ) );
-    byte >>= 2*shift;
-    return (float) byte;
-}
-
-Block * StdinSource::process(Block * msg)
-{
-    static char errors[][100] = {
-        {"No error"},
-        {"Memory allocate error"},
-        {"Iterator error"} };
-    int error = 0;
-    size_t line = 0;
-
-    int n = 0;
-    uint8_t byte = 0;
-    Block * bit = NULL;
-    float ** msg_iter = NULL;
-    float ** bit_iter = NULL;
-
-    size_t len = msg->get_size() * 8;
-
-    bit = memory->allocate(len);
-
-    if (!bit) {
-        line = __LINE__;
-        error = 1;
-        goto fail;
-    }
-
-    msg_iter = msg->get_iterator();
-    bit_iter = bit->get_iterator();
-
-    msg->reset();
-
-    do
-    {
-        byte = (uint8_t) **msg_iter;
-        for (n = 0; n < 8; ++n)
-        {
-            **bit_iter = byte & (1 << n) ? 1.0 : 0.0;
-            bit->next();
-        }
-    } while(msg->next());
-
-    if (msg->next() || bit->next()) {
-        line = __LINE__;
-        error = 2;
-        goto fail;
-    }
-
-    msg->free();
-    return bit;
-
-
-fail:
-    RED;
-    fprintf(stderr, "[%zu]: %s\n", line, errors[error]);
-    ENDC;
-    msg->free();
-    if (bit) {
-        bit->free();
     }
     return NULL;
 }

@@ -123,7 +123,7 @@ void Transceiver::start(bool block)
     SignaledThread::start(false);
 
     /* start the plot controller */
-    int ret = controller->run();
+    (void) controller->run();
 #else 
     SignaledThread::start(block);
 #endif

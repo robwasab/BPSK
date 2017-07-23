@@ -31,7 +31,7 @@ TaskScheduler_paths=$(addprefix TaskScheduler/,$(TaskScheduler_objects))
 Memory_objects=Memory.o
 Memory_paths=$(addprefix Memory/,$(Memory_objects))
 
-EncoderBPSK_objects=StdinSource.o Prefix.o BPSK.o
+EncoderBPSK_objects=StdinSource.o Prefix.o BPSK.o ByteInterface.o
 EncoderBPSK_paths=$(addprefix EncoderBPSK/,$(EncoderBPSK_objects))
 
 EncoderQPSK_objects=QPSK_StdinSource.o QPSK_Prefix.o QPSK_Encode.o

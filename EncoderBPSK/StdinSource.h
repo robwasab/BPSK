@@ -3,16 +3,16 @@
 
 #include <pthread.h>
 #include "../Module/Module.h"
+#include "ByteInterface.h"
 
 const char _STDIN_SOURCE_NAME_[] = "StdinSource";
 
-class StdinSource: public Module
+class StdinSource: public ByteInterface
 {
 public:
     StdinSource(Memory * memory, TransceiverCallback cb, void * trans);
     void start(bool block = true);
     void stop();
-    Block * process(Block * block);
     void dispatch(RadioMsg * msg);
     const char * name() {
         return _STDIN_SOURCE_NAME_; 
