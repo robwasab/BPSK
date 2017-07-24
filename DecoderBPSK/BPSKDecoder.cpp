@@ -234,26 +234,23 @@ void BPSKDecoder::plot_debug_signal(float signal)
 
 Block * BPSKDecoder::process(Block * block)
 {
-
-    CostasLoopBlock * demod = (CostasLoopBlock *) block;
-    float * lock = demod->get_pointer(LOCK_SIGNAL);
-    //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
-    float * data = demod->get_pointer(IN_PHASE_SIGNAL);
-
     #ifdef RESET_SIG_DB
     Block * reset_signal =  memory->allocate(block->get_size());
     float ** reset_iter = reset_signal->get_iterator();
     #endif
 
     #ifdef HIGH_PASS_DB
-    Block * hp = memory->allocate(demod->get_size());
+    Block * hp = memory->allocate(block->get_size());
     float ** hp_iter = hp->get_iterator();
     #endif
 
-    float ac_couple;
+    float ac_couple; /* High Pass filter variable */
+    float ** iter;   /* block iterator */
     bool bit;
 
-    demod->reset();
+    iter = block->get_iterator();
+
+    block->reset();
 
     do 
     {
@@ -278,9 +275,9 @@ Block * BPSKDecoder::process(Block * block)
         reset_signal->next();
         #endif
 
-        add_level( (*data > 0.0) ? true : false );
+        add_level( (**iter > 0.0) ? true : false );
         
-        ac_couple = filter.work(*data);
+        ac_couple = filter.work(**iter);
 
         #ifdef HIGH_PASS_DB
         **hp_iter = ac_couple;
@@ -452,17 +449,17 @@ Block * BPSKDecoder::process(Block * block)
                             msg_iter = NULL;
 
                             #if defined(RESET_SIG_DB)
-                            demod->free();
+                            block->free();
                             ret->free();
                             return reset_signal;
 
                             #elif defined(HIGH_PASS_DB)
-                            demod->free();
+                            block->free();
                             ret->free();
                             return hp;
                             #else
 
-                            demod->free();
+                            block->free();
                             return ret;
                             #endif
                         }
@@ -476,17 +473,17 @@ Block * BPSKDecoder::process(Block * block)
             default:
                 break;
         }
-    } while(demod->next());
+    } while(block->next());
 
     #if defined(RESET_SIG_DB)
-    demod->free();
+    block->free();
     return reset_signal;
 
     #elif defined(HIGH_PASS_DB)
-    demod->free();
+    block->free();
     return hp;
     #else
-    demod->free();
+    block->free();
     return NULL;
     #endif
 }
