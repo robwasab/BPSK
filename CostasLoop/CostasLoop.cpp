@@ -151,18 +151,43 @@ void CostasLoop::work(float input,
         return;
     }
 
+    static bool sent_lock_notify = false;
+    static bool sent_lost_lock_notify = false;
+
     if (*lock_ptr < 0.8)
     {
+        sent_lock_notify = false;
+
+        if (!sent_lost_lock_notify)
+        {
+            RadioMsg lost_lock_notify(NOTIFY_PLL_LOST_LOCK);
+            broadcast(&lost_lock_notify);
+            sent_lost_lock_notify = true;
+            //LOG("Broadcasting notification: %s lost lock\n", name());
+        }
+
         no_lock_timer.work(1.0);
 
         if (no_lock_timer.value() > 0.99)
         {
-            LOG("Hard Resetting %s...\n", name());
+            //LOG("Broadcasting notification: %s reset\n", name());
             reset();
             no_lock_timer.reset();
 
             RadioMsg reset_notify(NOTIFY_PLL_RESET);
             broadcast(&reset_notify);
+        }
+    }
+    else
+    {
+        sent_lost_lock_notify = false;
+
+        if (!sent_lock_notify)
+        {
+            RadioMsg lock_notify(NOTIFY_PLL_LOCK);
+            broadcast(&lock_notify);
+            sent_lock_notify = true;
+            //LOG("Broadcasting notification: %s regained lock\n", name());
         }
     }
 }

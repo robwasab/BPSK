@@ -7,6 +7,14 @@
 #define AND &&
 #define OR ||
 
+char state_names[][64] =
+{
+    [ACQUIRE] = "ACQUIRE",
+    [LOOK_FOR_HEADER] = "LOOK_FOR_HEADER",
+    [READ_SIZE] = "READ_SIZE",
+    [COLLECT_BITS] = "COLLECT_BITS",
+};
+
 BPSKDecoder::BPSKDecoder(Memory * memory, 
         TransceiverCallback cb,
         void * trans,
@@ -17,7 +25,18 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         int cycles_per_bit, 
         float threshold):
     Module(memory, cb, trans),
-    threshold(threshold)
+    threshold(threshold),
+    state(ACQUIRE),
+    msg(NULL),
+    timer(0.25, fs),
+    filter(0.005, fs),
+    shift_register(0),
+    count(0),
+    last_bit(false),
+    k(0),
+    byte(0),
+    msg_iter(NULL),
+    byte_msg()
 {
     int k, j;
     prefix_mask = (1 << (prefix_len))-1;
@@ -145,79 +164,49 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
     printf("\n");
 }
 
-class HighPass
-{
-public:
-    HighPass(float tau, float fs)
-    {
-        k = tau * fs / (tau * fs + 1);
-        in_last = 0.0;
-        out_last = 0.0;
-    }
-
-    float work(float in) {
-        float out;
-        out = k * (in - in_last + out_last);
-        out_last = out;
-        in_last = in;
-        return out;
-    }
-
-    double value() {
-        return out_last;
-    }
-
-    void reset() {
-        in_last = 0.0;
-        out_last = 0.0;
-    }
-
-private:
-    float k;
-    float in_last;
-    float out_last;
-};
-
 #define RESET_SIG_DB
 //#define HIGH_PASS_DB
 
-Block * BPSKDecoder::process(Block * block)
+bool isChar(char c, const char check[])
 {
-    static HighPass filter(0.005, fs);
-    static RC_LowPass timer(0.25, fs);
-    static RC_LowPass no_lock_timer(0.25, fs);
-    static uint32_t shift_register = 0;
-    static int count = 0;
-    static bool last_bit = false;
-    static enum {ACQUIRE, LOOK_FOR_HEADER, READ_SIZE, COLLECT_BITS} state = ACQUIRE;
-    static uint8_t k = 0;
-    static uint8_t byte = 0;
-    static Block * msg = NULL;
-    static float ** msg_iter = NULL;
-
-    CostasLoopBlock * demod = (CostasLoopBlock *) block;
-    float * lock = demod->get_pointer(LOCK_SIGNAL);
-    //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
-    float * data = demod->get_pointer(IN_PHASE_SIGNAL);
-
-#ifdef RESET_SIG_DB
-    Block * reset_signal =  memory->allocate(block->get_size());
-    float ** reset_iter = reset_signal->get_iterator();
-#elif defined(HIGH_PASS_DB)
-    Block * hp = memory->allocate(demod->get_size());
-    float ** hp_iter = hp->get_iterator();
-#endif
-
-    float ac_couple;
-    bool bit;
-
-
-    demod->reset();
-
-    do 
+    int k;
+    for (k = 0; check[k] != '\0'; k++)
     {
-        if (*lock < 0.8) 
+        if (c == check[k])
         {
+            return true;
+        }
+    }
+    return false;
+}
+
+void BPSKDecoder::dispatch(RadioMsg * radio_msg)
+{
+    RadioData * data;
+    Block * block;
+
+    data = (RadioData *) radio_msg;
+
+    switch(radio_msg->type)
+    {
+        case PROCESS_DATA:
+            block = data->get_block();
+
+            block = process(block);
+
+            if (block != NULL)
+            {
+                handoff(block, data->get_tid());
+            }
+            break;
+
+        case NOTIFY_PLL_RESET:
+            break;
+
+        case NOTIFY_PLL_LOCK:
+            break;
+
+        case NOTIFY_PLL_LOST_LOCK:
             if (state != ACQUIRE) 
             {
                 if (msg) 
@@ -227,61 +216,84 @@ Block * BPSKDecoder::process(Block * block)
                     msg_iter = NULL;
                 }
                 timer.reset();
-                LOG("Lost lock. state->ACQUIRE\n");
+                LOG("Lost lock. %s->ACQUIRE\n", state_names[state]);
                 state = ACQUIRE;
             }
             timer.reset();
-            no_lock_timer.work(1.0);
+            break;
 
-            if (no_lock_timer.value() > 0.99) 
+        default:
+            break;
+    }
+}
+
+void BPSKDecoder::plot_debug_signal(float signal)
+{
+
+}
+
+Block * BPSKDecoder::process(Block * block)
+{
+
+    CostasLoopBlock * demod = (CostasLoopBlock *) block;
+    float * lock = demod->get_pointer(LOCK_SIGNAL);
+    //float * freq = demod->get_pointer(FREQUENCY_EST_SIGNAL);
+    float * data = demod->get_pointer(IN_PHASE_SIGNAL);
+
+    #ifdef RESET_SIG_DB
+    Block * reset_signal =  memory->allocate(block->get_size());
+    float ** reset_iter = reset_signal->get_iterator();
+    #endif
+
+    #ifdef HIGH_PASS_DB
+    Block * hp = memory->allocate(demod->get_size());
+    float ** hp_iter = hp->get_iterator();
+    #endif
+
+    float ac_couple;
+    bool bit;
+
+    demod->reset();
+
+    do 
+    {
+
+        if (state != ACQUIRE) 
+        {
+            timer.work(1.0);
+
+            if (timer.value() > 0.99) 
             {
-                LOG("Hard resetting costas loop...\n");
-                demod->hard_reset();
-                no_lock_timer.reset();
+                LOG("watchdog timer. %s->ACQUIRE\n", state_names[state]);
+                state = ACQUIRE;
+                timer.reset();
             }
-#ifdef RESET_SIG_DB
-            **reset_iter = timer.work(0.0);
-            **reset_iter = 0.0;
-            reset_signal->next();
-#endif
         }
         else 
         {
-            no_lock_timer.reset();
-            if (state != ACQUIRE) 
-            {
-                timer.work(1.0);
-
-                if (timer.value() > 0.99) {
-                    state = ACQUIRE;
-                    LOG("watchdog timer. state->ACQUIRE\n");
-                    timer.reset();
-                }
-            }
-            else {
-                timer.reset();
-            }
-#ifdef RESET_SIG_DB
-            **reset_iter = timer.value();
-            reset_signal->next();
-#endif
+            timer.reset();
         }
+        #ifdef RESET_SIG_DB
+        **reset_iter = timer.value();
+        reset_signal->next();
+        #endif
 
         add_level( (*data > 0.0) ? true : false );
         
         ac_couple = filter.work(*data);
 
-#ifdef HIGH_PASS_DB
+        #ifdef HIGH_PASS_DB
         **hp_iter = ac_couple;
         hp->next();
-#endif
+        #endif
 
         switch (state)
         {
             case ACQUIRE:
-                if (*lock >= 0.8 && fabs(ac_couple) > threshold) 
+                if (fabs(ac_couple) > threshold) 
                 {
-                    LOG("Detected start of packet. state->LOOK_FOR_HEADER\n");
+                    LOG("Detected start of packet. %s->LOOK_FOR_HEADER\n",
+                            state_names[state]);
                     timer.reset();
                     state = LOOK_FOR_HEADER;
                     count = 0;
@@ -316,7 +328,7 @@ Block * BPSKDecoder::process(Block * block)
 
                     if ((shift_register & prefix_mask) == prefix) 
                     {
-                        LOG("Found prefix! state->READ_SIZE\n");
+                        LOG("Found prefix! %s->READ_SIZE\n", state_names[state]);
                         k = 0;
                         byte = 0;
                         state = READ_SIZE;
@@ -341,8 +353,9 @@ Block * BPSKDecoder::process(Block * block)
 
                     if (k >= 8) 
                     {
-                        LOG("Got size: %hhu state->COLLECT_BITS\n", byte);
-                        msg = memory->allocate(byte);
+                        LOG("Got size: %hhu + CRC\n", byte);
+                        LOG("%s->COLLECT_BITS\n",state_names[state]);
+                        msg = memory->allocate(byte + 2);
                         msg_iter = msg->get_iterator();
                         k = 0;
                         byte = 0;
@@ -361,10 +374,6 @@ Block * BPSKDecoder::process(Block * block)
                     {
                         byte |= (1 << k);
                         timer.reset();
-                        //printf("1 ");
-                    }
-                    else {
-                        //printf("0 ");
                     }
                     k += 1;
 
@@ -373,60 +382,89 @@ Block * BPSKDecoder::process(Block * block)
 
                     if (k >= 8)
                     {
-                        /*
-                        GREEN;
-                        printf("%c", byte);
-                        ENDC;
-                        */
-
                         **msg_iter = byte;
+
                         if (!msg->next()) 
                         {
-                            // print the message:
+                            /* Read all the bytes we are done! */
+
+                            memset(byte_msg, 0, sizeof(byte_msg));
+
+                            /* Print the message */
                             LOG("Received: ");
                             GREEN;
                             msg->reset();
+                            
                             char c;
+                            int index = 0;
+
                             do 
                             {
                                 c = (char) **msg_iter;
+                                byte_msg[index++] = (uint8_t) c;
+
+                                /* Print the message in a nice format */
                                 if (c == '\n') 
                                 {
                                     printf("\\n");
                                 }
-                                printf("%c", c);
+                                else if ((c >= 'a' && c <= 'z') ||
+                                         (c >= 'A' && c <= 'Z'))
+                                {
+                                    printf("%c", c);
+                                }
+                                else if (isChar(c, " !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
+                                {
+                                    printf("%c", c);
+                                }
+                                else if (c == '\0')
+                                {
+                                    printf("█");
+                                }
+                                else
+                                {
+                                    printf("?");
+                                }
 
                             } while(msg->next());
                             printf("\n");
+
                             ENDC;
 
-#if defined(RESET_SIG_DB)
+                            /* finish off the reset signal with zeros */
+                            #if defined(RESET_SIG_DB)
                             do
                             {
                                 **reset_iter = 0.0;
                             } while(reset_signal->next());
-#elif defined(HIGH_PASS_DB)
+
+                            /* finish off the high pass signal with zeros */
+                            #elif defined(HIGH_PASS_DB)
                             do
                             {
                                 **hp_iter = 0.0;
                             } while(hp->next());
-#endif
+                            #endif
 
                             state = ACQUIRE;
                             Block * ret = msg;
                             msg = NULL;
                             msg_iter = NULL;
-#if defined(RESET_SIG_DB)
+
+                            #if defined(RESET_SIG_DB)
                             demod->free();
                             ret->free();
                             return reset_signal;
-#elif defined(HIGH_PASS_DB)
+
+                            #elif defined(HIGH_PASS_DB)
                             demod->free();
                             ret->free();
                             return hp;
-#else
+                            #else
+
+                            demod->free();
                             return ret;
-#endif
+                            #endif
                         }
 
                         byte = 0;
@@ -440,15 +478,16 @@ Block * BPSKDecoder::process(Block * block)
         }
     } while(demod->next());
 
-#if defined(RESET_SIG_DB)
+    #if defined(RESET_SIG_DB)
     demod->free();
     return reset_signal;
 
-#elif defined(HIGH_PASS_DB)
+    #elif defined(HIGH_PASS_DB)
     demod->free();
     return hp;
-#else
-    return demod;
-#endif
+    #else
+    demod->free();
+    return NULL;
+    #endif
 }
 

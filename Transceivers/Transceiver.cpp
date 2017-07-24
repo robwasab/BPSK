@@ -95,6 +95,8 @@ void Transceiver::process(RadioMsg msg)
         case CMD_SET_NOISE_LEVEL:
         case CMD_TEST_PSK8_SIG_GEN:
         case NOTIFY_PLL_RESET:
+        case NOTIFY_PLL_LOCK:
+        case NOTIFY_PLL_LOST_LOCK:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
         case NOTIFY_DATA_RECEIVED:
@@ -103,7 +105,7 @@ void Transceiver::process(RadioMsg msg)
             k = 0;
             while (modules[k] != NULL)
             {
-                LOG("[%2d]: %s->%s\n", k, RadioMsgString[msg.type], modules[k]->name());
+                //LOG("[%2d]: %s->%s\n", k, RadioMsgString[msg.type], modules[k]->name());
                 modules[k]->dispatch(&msg);
                 k++;
             }
