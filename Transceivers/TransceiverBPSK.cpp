@@ -108,7 +108,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     #else
     rx_cost = new CostasLoop (rx_memory, transceiver_callback, this, fs, fif);
     #endif
-    rx_deco = new BPSKDecoder(rx_memory, transceiver_callback, this, fs, fif, prefix, prefix_len, cycles_per_bit);
+    rx_deco = new BPSKDecoder(rx_memory, transceiver_callback, this, fs, fif, prefix, prefix_len, cycles_per_bit, 0.75, crc_table);
 
     rx_end = new SuppressPrint;
 

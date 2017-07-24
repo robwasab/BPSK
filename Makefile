@@ -117,7 +117,7 @@ $(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h switches.h Mo
 $(Memory_paths):%.o:%.cpp %.h Memory/Block.h Colors/Colors.h switches.h Module/Module.h Queue/Queue.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(EncoderBPSK_paths):%.o: %.cpp %.h Colors/Colors.h PlotController/DataSource.h switches.h Module/Module.h
+$(EncoderBPSK_paths):%.o: %.cpp %.h Colors/Colors.h PlotController/DataSource.h switches.h Module/Module.h CRC-16/crc.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(EncoderQPSK_paths):%.o: %.cpp %.h Colors/Colors.h switches.h Module/Module.h
@@ -138,7 +138,7 @@ $(QPSK_paths):%.o: %.cpp %.h CostasLoop/CostasLoop.h CostasLoop/CostasLoopBlock.
 $(WavSink_paths):%.o: %.cpp %.h Module/Module.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(DecoderBPSK_paths):%.o: %.cpp %.h Module/Module.h switches.h
+$(DecoderBPSK_paths):%.o: %.cpp %.h Module/Module.h switches.h CRC-16/crc.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(generator_paths):%.o: %.cpp %.h switches.h Module/Module.h switches.h

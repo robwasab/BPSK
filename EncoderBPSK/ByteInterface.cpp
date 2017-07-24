@@ -1,4 +1,5 @@
 #include "ByteInterface.h"
+#include "../CRC-16/crc.h"
 
 ByteInterface::ByteInterface(Memory * memory, 
         TransceiverCallback cb, 
@@ -36,10 +37,14 @@ void ByteInterface::process_msg(const uint8_t msg[], size_t len)
             block->next();
         }
 
-        **iter = 0.0f;
+        uint16_t crc;
+
+        crc = crc_16(crc_table, msg, len);
+
+        **iter = (float) ( (crc & 0xff00) >> 8 );
         block->next();
 
-        **iter = 0.0f;
+        **iter = (float) (crc & 0xff);
         block->next();
 
         block = process(block);

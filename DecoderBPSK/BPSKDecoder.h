@@ -25,7 +25,8 @@ public:
             bool * prefix,
             size_t prefix_len,
             int cycles_per_bit,
-            float threshold = 0.75);
+            float threshold,
+            const uint16_t crc_table[]);
 
     /* Module Methods */
     const char * name();
@@ -58,6 +59,7 @@ private:
     uint8_t byte;
     float ** msg_iter;
     uint8_t byte_msg[256];
+    const uint16_t * crc_table;
 
     /* Private Methods */
     bool majority_vote();

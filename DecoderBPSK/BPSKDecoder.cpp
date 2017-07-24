@@ -2,6 +2,7 @@
 #include "BPSKDecoder.h"
 #include "../CostasLoop/CostasLoopBlock.h"
 #include "../CostasLoop/RC_LowPass.h"
+#include "../CRC-16/crc.h"
 
 #include <math.h>
 #define AND &&
@@ -23,7 +24,8 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
         bool * prefix,
         size_t prefix_len,
         int cycles_per_bit, 
-        float threshold):
+        float threshold,
+        const uint16_t crc_table[]):
     Module(memory, cb, trans),
     threshold(threshold),
     state(ACQUIRE),
@@ -36,7 +38,8 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
     k(0),
     byte(0),
     msg_iter(NULL),
-    byte_msg()
+    byte_msg(),
+    crc_table(crc_table)
 {
     int k, j;
     prefix_mask = (1 << (prefix_len))-1;
@@ -424,9 +427,30 @@ Block * BPSKDecoder::process(Block * block)
                                 }
 
                             } while(msg->next());
-                            printf("\n");
 
+                            printf("\n");
                             ENDC;
+
+                            uint16_t crc;
+                            uint16_t corrupt_crc;
+                            
+                            crc = crc_16(crc_table, byte_msg, msg->get_size());
+                            LOG("CRC: %04x\n", crc);
+
+                            LOG("Corrupting message: byte_msg[0] += 1\n");
+                            byte_msg[0] += 1;
+
+                            corrupt_crc = crc_16(crc_table, byte_msg, msg->get_size());
+                            LOG("New CRC: %04x\n", corrupt_crc);
+
+                            byte_msg[0] -= 1;
+
+                            if (crc == 0x0000)
+                            {
+                                RadioMsg lost_lock_notify(NOTIFY_PLL_LOST_LOCK);
+                                broadcast(&lost_lock_notify);
+                                sent_lost_lock_notify = true;
+                            }
 
                             /* finish off the reset signal with zeros */
                             #if defined(RESET_SIG_DB)
