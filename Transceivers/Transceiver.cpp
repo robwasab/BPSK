@@ -88,8 +88,9 @@ void Transceiver::process(RadioMsg msg)
             }
             break;
 
+        case NOTIFY_DATA_START:
+        case NOTIFY_DATA_BODY:
         case NOTIFY_USER_REQUEST_QUIT:
-            LOG("Notifying that user is requesting quit...\n");
             notify_cb(obj, &msg);
             break;
 
@@ -107,7 +108,6 @@ void Transceiver::process(RadioMsg msg)
         case NOTIFY_PLL_LOST_LOCK:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
-        case NOTIFY_DATA_RECEIVED:
 
             Log("BROADCASTING: %s\n", RadioMsgString[msg.type]);
             k = 0;

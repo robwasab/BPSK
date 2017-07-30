@@ -62,24 +62,18 @@ void StdinSource::dispatch(RadioMsg * msg)
             break;
 
         case CMD_START:
+            LOG("starting %s thread...", name());
             start(false);
             break;
+
         case CMD_STOP:
-            LOG("WRITING TO PIPE!\n");
+            LOG("stopping %s thread...", name());
+
+            LOG("Writing ""quit"" to pipe...\n");
             write(fd[WRITE], quit, sizeof(quit));
             stop();
             break;
-        case NOTIFY_USER_REQUEST_QUIT:
-        case CMD_RESET_ALL:
-        case CMD_RESET_TRANSMITTER:
-        case CMD_RESET_RECEIVER:
-        case CMD_SET_TRANSMIT_CHANNEL:
-        case CMD_SET_RECEIVE_CHANNEL:
-        case NOTIFY_PLL_RESET:
-        case NOTIFY_PACKET_HEADER_DETECTED:
-        case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
-        case NOTIFY_DATA_RECEIVED:
-            break;
+
         default:
             break;
     }

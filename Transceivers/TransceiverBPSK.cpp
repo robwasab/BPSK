@@ -125,8 +125,6 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     rx_deco = new BPSKDecoder(rx_memory, transceiver_callback, this, fs, fif, prefix, prefix_len, cycles_per_bit, 0.75, crc_table);
     #endif
 
-    rx_end = new SuppressPrint;
-
     Module * chain[] =
     {
         tx_data, //STANDARD INPUT
@@ -143,7 +141,6 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         rx_gain, //AUTO GAIN
         rx_cost, //COSTAS LOOP
         rx_deco, //BPSK DECODER
-        //rx_end,  //END
         NULL,
     };
 

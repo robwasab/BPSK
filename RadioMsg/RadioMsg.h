@@ -20,7 +20,22 @@ enum RadioMsgType
     NOTIFY_PLL_LOCK,
     NOTIFY_PACKET_HEADER_DETECTED,
     NOTIFY_RECEIVER_RESET_CONDITION_DETECTED,
-    NOTIFY_DATA_RECEIVED,
+    
+    /* The following enumerations
+     * - NOTIFY_DATA_START
+     * - NOTIFY_DATA_BODY
+     * Represent the mechanism in which the Transciever returns valid received data.
+     * In order to avoid calls to the OS to allocate data, the received data will be broken
+     * into chunks of RADIO_ARG_SIZE.
+     * 
+     * NOTIFY_DATA_START shall contain the length of the message in bytes, which will not exceed
+     * 256 bytes. The first byte of RadioMsg.args shall contain this length.
+     * 
+     * NOTIFY_DATA_BODY will contain the data. The implementation receiving the data will need to keep
+     * track of how much data to read using the length indicated initially by the NOTIFY_DATA_START message.
+     */
+    NOTIFY_DATA_START,
+    NOTIFY_DATA_BODY,  
     NOTIFY_USER_REQUEST_QUIT,
     RADIO_MSG_TYPE_LEN,
 };

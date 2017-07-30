@@ -15,25 +15,19 @@ void TestFramework_cb(void * obj, RadioMsg * msg)
     switch (msg->type)
     {
         case NOTIFY_USER_REQUEST_QUIT:
+            LOG("User has requested to quit\n");
             te.type = TestEvent::EVENT_KILL;
             self->notify(te);
             break;
             
-        case NOTIFY_PLL_RESET:
-        case NOTIFY_PACKET_HEADER_DETECTED:
-        case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
-        case NOTIFY_DATA_RECEIVED:
+        case NOTIFY_DATA_START:
+            LOG("Incomming data: %hhu\n", msg->args[0]);
             break;
 
-        case PROCESS_DATA:
-        case CMD_START:
-        case CMD_STOP:
-        case CMD_RESET_ALL:
-        case CMD_RESET_TRANSMITTER:
-        case CMD_RESET_RECEIVER:
-        case CMD_SET_TRANSMIT_CHANNEL:
-        case CMD_SET_RECEIVE_CHANNEL:
+        case NOTIFY_DATA_BODY:
+            LOG("Received data body!\n");
             break;
+
         default:
             break;
     }

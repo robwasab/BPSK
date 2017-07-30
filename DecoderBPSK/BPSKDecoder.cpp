@@ -393,12 +393,12 @@ Block * BPSKDecoder::process(Block * block)
                             msg->reset();
                             
                             char c;
-                            int index = 0;
+                            int byte_index = 0;
 
                             do 
                             {
                                 c = (char) **msg_iter;
-                                byte_msg[index++] = (uint8_t) c;
+                                byte_msg[byte_index++] = (uint8_t) c;
 
                                 /* Print the message in a nice format */
                                 if (c == '\n') 
@@ -410,7 +410,7 @@ Block * BPSKDecoder::process(Block * block)
                                 {
                                     printf("%c", c);
                                 }
-                                else if (isChar(c, "1234567890 !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
+                                else if (isChar(c, " !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
                                 {
                                     printf("%c", c);
                                 }
@@ -452,6 +452,7 @@ Block * BPSKDecoder::process(Block * block)
 
                             if (crc == 0x0000)
                             {
+                                broadcast_msg(byte_msg, byte_index - 2);
                                 return ret;
                             }
                             else
@@ -473,5 +474,32 @@ Block * BPSKDecoder::process(Block * block)
 
     block->free();
     return NULL;
+}
+
+void BPSKDecoder::broadcast_msg(uint8_t msg[], uint8_t size)
+{
+    int k;
+    RadioMsg radio_msg(NOTIFY_DATA_START);
+    memset(radio_msg.args, 0, RADIO_ARG_SIZE);
+    radio_msg.args[0] = size;
+
+    LOG("Broadcasting Received Data of size: %hhu\n", size);
+    broadcast(&radio_msg);
+
+    radio_msg.type = NOTIFY_DATA_BODY;
+
+    for (k = 0; k < size; k += RADIO_ARG_SIZE)
+    {
+        memset(radio_msg.args, 0, RADIO_ARG_SIZE);
+        if ((size - k) >= RADIO_ARG_SIZE)
+        {
+            memcpy(radio_msg.args, &msg[k], RADIO_ARG_SIZE);
+        }
+        else
+        {
+            memcpy(radio_msg.args, &msg[k], size - k);
+        }
+        broadcast(&radio_msg);
+    }
 }
 

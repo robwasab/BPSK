@@ -66,6 +66,7 @@ private:
     bool majority_vote();
     void add_level(bool level);
     void print_shift_register(uint32_t shift_register);
+    void broadcast_msg(uint8_t msg[], uint8_t size);
 };
 
 #endif
