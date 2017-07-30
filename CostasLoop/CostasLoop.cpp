@@ -38,6 +38,7 @@ CostasLoop::CostasLoop(Memory * memory,
     // Lock Detector
     lock_detector = new LockDetector(fs, lock_thresh);
     lock_rc = new RC_LowPass(0.01, fs);
+    no_lock_timer = new RC_LowPass(0.25, fs);
 
     reset();
 }
@@ -49,6 +50,7 @@ CostasLoop::~CostasLoop()
     delete freq_filter;
     delete lock_detector;
     delete lock_rc;
+    delete no_lock_timer;
 }
 
 void CostasLoop::reset() {
@@ -59,6 +61,7 @@ void CostasLoop::reset() {
     freq_filter->reset();
     lock_detector->reset();
     lock_rc->reset();
+    no_lock_timer->reset();
 }
 
 void CostasLoop::error_detector(float input, 
@@ -96,7 +99,6 @@ void CostasLoop::work(float input,
         float * lock_ptr, 
         float * error_ptr) 
 {
-    static RC_LowPass no_lock_timer(0.25, fs);
     double error;
     double in_phase;
     double qu_phase;
@@ -166,13 +168,13 @@ void CostasLoop::work(float input,
             //LOG("Broadcasting notification: %s lost lock\n", name());
         }
 
-        no_lock_timer.work(1.0);
+        no_lock_timer->work(1.0);
 
-        if (no_lock_timer.value() > 0.99)
+        if (no_lock_timer->value() > 0.99)
         {
             //LOG("Broadcasting notification: %s reset\n", name());
             reset();
-            no_lock_timer.reset();
+            no_lock_timer->reset();
 
             RadioMsg reset_notify(NOTIFY_PLL_RESET);
             broadcast(&reset_notify);

@@ -75,5 +75,8 @@ private:
 
     // RC circuit that charges up when lock is true
     RC_LowPass * lock_rc;
+
+    // RC circuit that charges up when there is no lock
+    RC_LowPass * no_lock_timer;
 };
 #endif
