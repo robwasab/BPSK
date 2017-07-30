@@ -13,6 +13,7 @@
 #include "../CostasLoop/Plottable_CostasLoop.h"
 //#include "../CostasLoop/QPSK.h"
 #include "../DecoderBPSK/BPSKDecoder.h"
+#include "../DecoderBPSK/Plottable_BPSKDecoder.h"
 #include "../Modulator/Modulator.h"
 #include "../PlotSink/PlotSink.h"
 #include "../SpectrumAnalyzer/SpectrumAnalyzer.h"
@@ -67,12 +68,19 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     //BandPass    * rx_bpif;
     FirBandPass * rx_bpif;
     Autogain    * rx_gain;
+
     #ifdef DEBUG_CONSTELLATION
     Plottable_CostasLoop * rx_cost;
     #else
     CostasLoop  * rx_cost;
     #endif
+
+    #ifdef DEBUG_DECODER
+    Plottable_BPSKDecoder * rx_deco;
+    #else
     BPSKDecoder * rx_deco;
+    #endif
+
     SuppressPrint * rx_end;
 
     /* Transmitter Section */
@@ -108,7 +116,14 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     #else
     rx_cost = new CostasLoop (rx_memory, transceiver_callback, this, fs, fif);
     #endif
+
+    #ifdef DEBUG_DECODER
+    rx_deco = new Plottable_BPSKDecoder(rx_memory, transceiver_callback, this, fs, fif, prefix, prefix_len, cycles_per_bit, 0.75, crc_table,
+            //PLOTTABLE_BPSK_DECODER_RESET_SIGNAL);
+           PLOTTABLE_BPSK_DECODER_HIGH_PASS_SIGNAL);
+    #else
     rx_deco = new BPSKDecoder(rx_memory, transceiver_callback, this, fs, fif, prefix, prefix_len, cycles_per_bit, 0.75, crc_table);
+    #endif
 
     rx_end = new SuppressPrint;
 
@@ -128,7 +143,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         rx_gain, //AUTO GAIN
         rx_cost, //COSTAS LOOP
         rx_deco, //BPSK DECODER
-        rx_end,  //END
+        //rx_end,  //END
         NULL,
     };
 
@@ -144,9 +159,15 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
 
     #ifdef QT_ENABLE
     controller->add_plot(rx_view);
+
     #ifdef DEBUG_CONSTELLATION
     controller->add_plot(rx_cost);
     #endif
+
+    #ifdef DEBUG_DECODER
+    controller->add_plot(rx_deco);
+    #endif
+
     #endif
 }
 

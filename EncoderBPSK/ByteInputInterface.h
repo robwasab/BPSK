@@ -1,21 +1,21 @@
-#ifndef __BYTE_INTERFACE_H__
-#define __BYTE_INTERFACE_H__
+#ifndef __BYTE_INPUT_INTERFACE_H__
+#define __BYTE_INPUT_INTERFACE_H__
 
 #include "../Module/Module.h"
 
-const char _BYTE_INTERFACE_NAME_[] = "StdinSource";
+const char _BYTE_INPUT_INTERFACE_NAME_[] = "ByteInputInterface";
 
-class ByteInterface: public Module
+class ByteInputInterface: public Module
 {
 public:
-    ByteInterface(Memory * memory, 
+    ByteInputInterface(Memory * memory, 
             TransceiverCallback cb, 
             void * trans, 
             const uint16_t crc_table[]);
     Block * process(Block * block);
     void process_msg(const uint8_t msg[], size_t len);
     const char * name() {
-        return _BYTE_INTERFACE_NAME_;
+        return _BYTE_INPUT_INTERFACE_NAME_;
     }
 private:
     const uint16_t * crc_table;

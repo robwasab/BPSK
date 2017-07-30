@@ -89,3 +89,8 @@ float PlottableAutogain::work(float val)
     return val;
 }
 
+const char * PlottableAutogain::name()
+{
+    return Autogain::name();
+}
+

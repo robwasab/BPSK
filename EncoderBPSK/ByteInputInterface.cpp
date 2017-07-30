@@ -1,7 +1,7 @@
-#include "ByteInterface.h"
+#include "ByteInputInterface.h"
 #include "../CRC-16/crc.h"
 
-ByteInterface::ByteInterface(Memory * memory, 
+ByteInputInterface::ByteInputInterface(Memory * memory, 
         TransceiverCallback cb, 
         void * trans, 
         const uint16_t crc_table[]):
@@ -11,7 +11,7 @@ ByteInterface::ByteInterface(Memory * memory,
 
 }
 
-void ByteInterface::process_msg(const uint8_t msg[], size_t len)
+void ByteInputInterface::process_msg(const uint8_t msg[], size_t len)
 {
     /* plus 1 for the message size */
     /* plus 2 for the crc */
@@ -57,7 +57,7 @@ void ByteInterface::process_msg(const uint8_t msg[], size_t len)
 }
 
 
-Block * ByteInterface::process(Block * msg)
+Block * ByteInputInterface::process(Block * msg)
 {
     static char errors[][100] = {
         {"No error"},

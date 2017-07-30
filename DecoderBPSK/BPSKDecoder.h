@@ -34,7 +34,8 @@ public:
     void dispatch(RadioMsg * msg);
 
     /* BPSKDecoder Overridable Method */
-    virtual void plot_debug_signal(float signal);
+    virtual void fwrdResetSignal(float signal);
+    virtual void fwrdHighPassSignal(float signal);
 
 private:
     /* BPSK Decoder Vars */

@@ -21,6 +21,8 @@ public:
     Point get_lengths();
     bool valid();
     int get_updateInterval();
+    const char * name();
+
 private:
     float max;
     float min;

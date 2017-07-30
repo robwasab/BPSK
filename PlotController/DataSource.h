@@ -27,6 +27,20 @@ public:
     {
         return 50;
     }
+
+    virtual const char * name() = 0;
+
+    virtual const char * xlabel()
+    {
+        static char text[] = "Index";
+        return text;
+    }
+
+    virtual const char * ylabel()
+    {
+        static char text[] = "Amplitude";
+        return text;
+    }
 };
 
 #endif

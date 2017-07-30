@@ -78,6 +78,14 @@ void Transceiver::process(RadioMsg msg)
             {
                 modules[data->get_id() + 1]->dispatch(&msg);
             }
+            else
+            {
+                if (data->get_block() != NULL)
+                {
+                    LOG("No module to handle block...\n");
+                    data->get_block()->free();
+                }
+            }
             break;
 
         case NOTIFY_USER_REQUEST_QUIT:

@@ -31,7 +31,7 @@ TaskScheduler_paths=$(addprefix TaskScheduler/,$(TaskScheduler_objects))
 Memory_objects=Memory.o
 Memory_paths=$(addprefix Memory/,$(Memory_objects))
 
-EncoderBPSK_objects=StdinSource.o Prefix.o BPSK.o ByteInterface.o
+EncoderBPSK_objects=StdinSource.o Prefix.o BPSK.o ByteInputInterface.o
 EncoderBPSK_paths=$(addprefix EncoderBPSK/,$(EncoderBPSK_objects))
 
 EncoderQPSK_objects=QPSK_StdinSource.o QPSK_Prefix.o QPSK_Encode.o
@@ -52,7 +52,7 @@ QPSK_paths=$(addprefix CostasLoop/,$(QPSK_objects))
 WavSink_objects=WavSink.o
 WavSink_paths=$(addprefix WavSink/,$(WavSink_objects))
 
-DecoderBPSK_objects=BPSKDecoder.o
+DecoderBPSK_objects=BPSKDecoder.o Plottable_BPSKDecoder.o
 DecoderBPSK_paths=$(addprefix DecoderBPSK/,$(DecoderBPSK_objects))
 
 Modulator_objects=Modulator.o

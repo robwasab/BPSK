@@ -212,7 +212,7 @@ void BPSKDecoder::dispatch(RadioMsg * radio_msg)
         case NOTIFY_PLL_LOST_LOCK:
             if (state != ACQUIRE) 
             {
-                if (msg) 
+                if (msg != NULL) 
                 {
                     msg->free();
                     msg = NULL;
@@ -230,23 +230,18 @@ void BPSKDecoder::dispatch(RadioMsg * radio_msg)
     }
 }
 
-void BPSKDecoder::plot_debug_signal(float signal)
+void BPSKDecoder::fwrdResetSignal(float signal)
+{
+
+}
+
+void BPSKDecoder::fwrdHighPassSignal(float signal)
 {
 
 }
 
 Block * BPSKDecoder::process(Block * block)
 {
-    #ifdef RESET_SIG_DB
-    Block * reset_signal =  memory->allocate(block->get_size());
-    float ** reset_iter = reset_signal->get_iterator();
-    #endif
-
-    #ifdef HIGH_PASS_DB
-    Block * hp = memory->allocate(block->get_size());
-    float ** hp_iter = hp->get_iterator();
-    #endif
-
     float ac_couple; /* High Pass filter variable */
     float ** iter;   /* block iterator */
     bool bit;
@@ -267,25 +262,26 @@ Block * BPSKDecoder::process(Block * block)
                 LOG("watchdog timer. %s->ACQUIRE\n", state_names[state]);
                 state = ACQUIRE;
                 timer.reset();
+
+                if (msg != NULL)
+                {
+                    msg->free();
+                    msg = NULL;
+                }
             }
         }
         else 
         {
             timer.reset();
         }
-        #ifdef RESET_SIG_DB
-        **reset_iter = timer.value();
-        reset_signal->next();
-        #endif
+
+        fwrdResetSignal(timer.value());
 
         add_level( (**iter > 0.0) ? true : false );
         
         ac_couple = filter.work(**iter);
 
-        #ifdef HIGH_PASS_DB
-        **hp_iter = ac_couple;
-        hp->next();
-        #endif
+        fwrdHighPassSignal(ac_couple);
 
         switch (state)
         {
@@ -335,6 +331,7 @@ Block * BPSKDecoder::process(Block * block)
                     }
                 }
                 break;
+
 
             case READ_SIZE:
                 count += 1;
@@ -413,7 +410,7 @@ Block * BPSKDecoder::process(Block * block)
                                 {
                                     printf("%c", c);
                                 }
-                                else if (isChar(c, " !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
+                                else if (isChar(c, "1234567890 !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
                                 {
                                     printf("%c", c);
                                 }
@@ -445,49 +442,24 @@ Block * BPSKDecoder::process(Block * block)
 
                             byte_msg[0] -= 1;
 
-                            if (crc == 0x0000)
-                            {
-                                RadioMsg lost_lock_notify(NOTIFY_PLL_LOST_LOCK);
-                                broadcast(&lost_lock_notify);
-                                sent_lost_lock_notify = true;
-                            }
-
-                            /* finish off the reset signal with zeros */
-                            #if defined(RESET_SIG_DB)
-                            do
-                            {
-                                **reset_iter = 0.0;
-                            } while(reset_signal->next());
-
-                            /* finish off the high pass signal with zeros */
-                            #elif defined(HIGH_PASS_DB)
-                            do
-                            {
-                                **hp_iter = 0.0;
-                            } while(hp->next());
-                            #endif
-
                             state = ACQUIRE;
                             Block * ret = msg;
+
                             msg = NULL;
                             msg_iter = NULL;
 
-                            #if defined(RESET_SIG_DB)
                             block->free();
-                            ret->free();
-                            return reset_signal;
 
-                            #elif defined(HIGH_PASS_DB)
-                            block->free();
-                            ret->free();
-                            return hp;
-                            #else
-
-                            block->free();
-                            return ret;
-                            #endif
+                            if (crc == 0x0000)
+                            {
+                                return ret;
+                            }
+                            else
+                            {
+                                ret->free();
+                                return NULL;
+                            }
                         }
-
                         byte = 0;
                         k = 0;
                     }
@@ -499,16 +471,7 @@ Block * BPSKDecoder::process(Block * block)
         }
     } while(block->next());
 
-    #if defined(RESET_SIG_DB)
-    block->free();
-    return reset_signal;
-
-    #elif defined(HIGH_PASS_DB)
-    block->free();
-    return hp;
-    #else
     block->free();
     return NULL;
-    #endif
 }
 

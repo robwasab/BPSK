@@ -118,3 +118,8 @@ void Plottable_CostasLoop::work(float val,
     }
 }
 
+const char * Plottable_CostasLoop::name()
+{
+    return CostasLoop::name();
+}
+

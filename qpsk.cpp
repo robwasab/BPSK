@@ -14,8 +14,8 @@ int main(int argc, char ** argv)
 
     pthread_mutex_init(&log_mutex, NULL);
 
-    double ftx = 16E3;
-    double frx = 16E3;
+    double ftx = 19E3;
+    double frx = 19E3;
     double fif = 3E3;
     double bw = 2E3;
     int cycles_per_bit = 10;

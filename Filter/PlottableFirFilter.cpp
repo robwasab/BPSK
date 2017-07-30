@@ -77,3 +77,8 @@ int PlottableFirFilter::get_updateInterval()
     return 1000;
 }
 
+const char * PlottableFirFilter::name()
+{
+    return FirFilter::name();
+}
+

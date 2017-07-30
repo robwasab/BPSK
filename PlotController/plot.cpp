@@ -66,7 +66,7 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     }
 
     // Assign a title
-    setTitle( "" );
+    setTitle( source->name() );
 
     QwtPlotCanvas *canvas = new QwtPlotCanvas();
     canvas->setFrameStyle( QFrame::Box | QFrame::Plain );
@@ -93,10 +93,10 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     Point origin = source->get_origin();
     Point length = source->get_lengths();
 
-    setAxisTitle( QwtPlot::xBottom, "index" );
+    setAxisTitle( QwtPlot::xBottom, source->xlabel() );
     setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
 
-    setAxisTitle( QwtPlot::yLeft, "Values" );
+    setAxisTitle( QwtPlot::yLeft, source->ylabel() );
     setAxisScale( QwtPlot::yLeft, origin.y, origin.y + length.y );
 
     d_clock.start();

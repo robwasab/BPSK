@@ -27,6 +27,17 @@ public:
     Point get_lengths();
     bool valid();
     int get_updateInterval();
+    const char * name();
+    const char * xlabel()
+    {
+        static const char text[] = "Real";
+        return text;
+    }
+    const char * ylabel()
+    {
+        static const char text[] = "Imaginary";
+        return text;
+    }
 
     /* CostasLoop Methods */
     virtual void work(float input, 

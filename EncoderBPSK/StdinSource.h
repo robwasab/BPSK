@@ -3,11 +3,11 @@
 
 #include <pthread.h>
 #include "../Module/Module.h"
-#include "ByteInterface.h"
+#include "ByteInputInterface.h"
 
 const char _STDIN_SOURCE_NAME_[] = "StdinSource";
 
-class StdinSource: public ByteInterface
+class StdinSource: public ByteInputInterface
 {
 public:
     StdinSource(Memory * memory, 
