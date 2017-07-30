@@ -26,6 +26,7 @@ public:
 private:
     float max;
     float min;
+    bool mvalid;
 };
 
 #endif

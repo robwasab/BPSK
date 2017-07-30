@@ -40,6 +40,9 @@ CostasLoop::CostasLoop(Memory * memory,
     lock_rc = new RC_LowPass(0.01, fs);
     no_lock_timer = new RC_LowPass(0.25, fs);
 
+    sent_lock_notify = false;
+    sent_lost_lock_notify = false;
+
     reset();
 }
 
@@ -152,9 +155,6 @@ void CostasLoop::work(float input,
     {
         return;
     }
-
-    static bool sent_lock_notify = false;
-    static bool sent_lost_lock_notify = false;
 
     if (*lock_ptr < 0.8)
     {

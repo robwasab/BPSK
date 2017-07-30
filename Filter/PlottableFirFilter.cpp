@@ -24,6 +24,8 @@ PlottableFirFilter::PlottableFirFilter(Memory * memory,
             min = coefs[k];
         }
     }
+
+    mvalid = false;
 }
 
 size_t PlottableFirFilter::size()
@@ -62,11 +64,9 @@ Point PlottableFirFilter::get_lengths()
 
 bool PlottableFirFilter::valid()
 {
-    static bool valid = false;
-
-    if (valid == false)
+    if (mvalid == false)
     {
-        valid = true;
+        mvalid = true;
         return false;
     }
     return true;

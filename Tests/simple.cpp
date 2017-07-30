@@ -2,6 +2,8 @@
 #include "../TestFramework/TestFramework.h"
 #include "../Log/Log.h"
 
+#define TE TestEvent
+
 void simple(TestEvent e)
 {
     static TestFramework * test_frame;
@@ -9,13 +11,17 @@ void simple(TestEvent e)
 
     switch (e.type)
     {
-        case TestEvent::EVENT_START:
+        case EVENT_START:
             test_frame = (TestFramework *) e.data;
             break;
 
-        case TestEvent::EVENT_KILL:
+        case EVENT_KILL:
             LOG("EVENT_KILL\n");
             test_frame->smReturn(e);
+            break;
+
+        case EVENT_RECEIVE_DATA:
+            LOG("Got data!\n");
             break;
 
         default:

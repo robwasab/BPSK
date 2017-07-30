@@ -78,5 +78,8 @@ private:
 
     // RC circuit that charges up when there is no lock
     RC_LowPass * no_lock_timer;
+
+    bool sent_lock_notify;
+    bool sent_lost_lock_notify;
 };
 #endif

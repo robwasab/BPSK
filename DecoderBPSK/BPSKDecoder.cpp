@@ -170,6 +170,7 @@ void BPSKDecoder::print_shift_register(uint32_t shift_register)
 #define RESET_SIG_DB
 //#define HIGH_PASS_DB
 
+static
 bool isChar(char c, const char check[])
 {
     int k;
@@ -410,7 +411,7 @@ Block * BPSKDecoder::process(Block * block)
                                 {
                                     printf("%c", c);
                                 }
-                                else if (isChar(c, " !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
+                                else if (isChar(c, "1234567890 !@#$%^&*()_-+={}[]|:;<>,.?/""'"))
                                 {
                                     printf("%c", c);
                                 }
