@@ -41,8 +41,9 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         double frx,
         double fif,
         double bw,
-        int cycles_per_bit):
-    Transceiver(notify_cb, obj, fs, ftx, frx, fif, bw, cycles_per_bit)
+        int cycles_per_bit,
+        PlotController * controller):
+    Transceiver(notify_cb, obj, fs, ftx, frx, fif, bw, cycles_per_bit, controller)
 {
     double fm;
     /* Transmitter Variables */
@@ -134,7 +135,9 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         tx_mdrf, //RF MODULATOR
         tx_bprf, //RF BANDPASS FILTER
         rf_chan, //RF CHANNEL
+        #ifdef QT_ENABLE
         rx_view, //VIEW THE WAVEFORM
+        #endif
         rx_bprf, //RF BANDPASS FILTER
         rx_modu, //RF MODULATOR
         rx_bpif, //IF BANDPASS FILTER
@@ -164,7 +167,6 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     #ifdef DEBUG_DECODER
     controller->add_plot(rx_deco);
     #endif
-
     #endif
 }
 

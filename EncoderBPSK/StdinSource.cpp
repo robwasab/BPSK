@@ -42,7 +42,8 @@ void StdinSource::stop()
 
 void StdinSource::dispatch(RadioMsg * msg)
 {
-    static char quit[] = "quit\n";
+    static char buf[256] = {0};
+    static const char quit[] = "652833810";
     RadioData * data;
     Block * block;
 
@@ -67,10 +68,12 @@ void StdinSource::dispatch(RadioMsg * msg)
             break;
 
         case CMD_STOP:
-            LOG("stopping %s thread...", name());
+            LOG("stopping %s thread...\n", name());
 
-            LOG("Writing ""quit"" to pipe...\n");
-            write(fd[WRITE], quit, sizeof(quit));
+            LOG("Writing secret random number ""652833810"" to pipe...\n");
+            memset(buf, 0, sizeof(buf));
+            memcpy(buf, quit, sizeof(quit));
+            write(fd[WRITE], buf, sizeof(buf));
             stop();
             break;
 
@@ -149,7 +152,7 @@ void * StdinSource_loop(void * args)
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
-        result = select(FD_SETSIZE, &read_fds, NULL, NULL, NULL);
+        result = select(n, &read_fds, NULL, NULL, NULL);
         if (result == -1) 
         {
             perror("select");
@@ -160,7 +163,7 @@ void * StdinSource_loop(void * args)
             {
                 read(fd_stdin, buffer, sizeof(buffer));
             }
-            else if (FD_ISSET(self->fd[READ], & read_fds))
+            else if (FD_ISSET(self->fd[READ], &read_fds))
             {
                 LOG("Reading from pipe!\n");
                 read(self->fd[READ], buffer, sizeof(buffer));
@@ -189,11 +192,19 @@ void * StdinSource_loop(void * args)
                 break;
             }
 
+            else if ( strcmp("652833810", buffer) == 0 ) 
+            {
+                LOG("qt quit...\n");
+                break;
+            }
+
             size_t len = strlen(buffer) + 1; // +1 to hold the size of the message +1 for the string terminator
 
             self->process_msg((uint8_t *) buffer, len);
 
         }
+        FD_SET(fd_stdin, &read_fds);
+        FD_SET(self->fd[READ], &read_fds);
     }
     return NULL;
 }

@@ -76,7 +76,7 @@ PortAudioDriver_paths=$(addprefix PortAudioDriver/,$(PortAudioDriver_objects))
 Channel_objects=Channel.o
 Channel_paths=$(addprefix Channel/,$(Channel_objects))
 
-Transceivers_objects=TransceiverQPSK.o Transceiver.o TransceiverPSK8.o TransceiverBPSK.o
+Transceivers_objects= Transceiver.o TransceiverBPSK.o
 Transceivers_paths=$(addprefix Transceivers/,$(Transceivers_objects))
 
 TestFramework_objects=TestFramework.o

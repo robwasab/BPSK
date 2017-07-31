@@ -7,10 +7,7 @@
 #include "../SignaledThread/SignaledThread.h"
 #include "../Module/Module.h"
 #include "../main.h"
-
-#ifdef QT_ENABLE
 #include "../PlotController/PlotController.h"
-#endif
 
 typedef void (*TransceiverNotify)(void * obj, RadioMsg * msg);
 
@@ -25,7 +22,8 @@ public:
             double frx=19E3, 
             double fif=5E3, 
             double bw=3E3,
-            int cycles_per_bit=40);
+            int cycles_per_bit=40,
+            PlotController * controller=NULL);
 
     virtual void process(RadioMsg msg);
 
@@ -48,6 +46,7 @@ protected:
     int cycles_per_bit;
     int order;
     int spectrum_size;
+    PlotController * controller;
     size_t prefix_len;
     bool * prefix;
     uint16_t * crc_table;
@@ -58,10 +57,5 @@ protected:
     /* Memory */
     Memory * tx_memory;
     Memory * rx_memory;
-
-#ifdef QT_ENABLE
-    PlotController * controller;
-#endif
-
 };
 #endif

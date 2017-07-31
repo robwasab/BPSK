@@ -12,15 +12,6 @@ void transceiver_callback(void * arg, RadioMsg * msg)
     self->notify(*msg);
 }
 
-void plotcontroller_close_callback(void * arg)
-{
-    Transceiver * self = (Transceiver *) arg;
-
-    RadioMsg window_close(NOTIFY_USER_REQUEST_QUIT);
-
-    self->notify(window_close);
-}
-
 void Transceiver::debug(RadioMsg msg)
 {
     signal();
@@ -32,7 +23,8 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
         double frx, 
         double fif, 
         double bw,
-        int cycles_per_bit):
+        int cycles_per_bit,
+        PlotController * controller):
     SignaledThread(128),
     notify_cb(notify_cb),
     obj(obj),
@@ -43,7 +35,8 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     bw(bw),
     cycles_per_bit(cycles_per_bit),
     order(6),
-    spectrum_size(1 << 10)
+    spectrum_size(1 << 10),
+    controller(controller)
 {
     generate_ml_sequence(&prefix_len, &prefix);
 
@@ -59,11 +52,6 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     {
         modules[k] = NULL;
     }
-
-    #ifdef QT_ENABLE
-    controller = new PlotController(_argc, _argv);
-    controller->set_close_cb(plotcontroller_close_callback, this);
-    #endif
 }
 
 void Transceiver::process(RadioMsg msg)
@@ -123,20 +111,11 @@ void Transceiver::process(RadioMsg msg)
     }
 }
 
-
-
 void Transceiver::start(bool block)
 {
     RadioMsg msg(CMD_START);
     this->notify(msg);
-#ifdef QT_ENABLE
-    SignaledThread::start(false);
-
-    /* start the plot controller */
-    (void) controller->run();
-#else 
     SignaledThread::start(block);
-#endif
 }
 
 void Transceiver::stop()
@@ -150,13 +129,11 @@ Transceiver::~Transceiver()
 {
     int k;
     
-    stop();
-
     for (k = 0; k < MAX_MODULES; k++)
     {
         if (modules[k] != NULL)
         {
-            LOG("Deleting Module #%2d... %s\n", k, modules[k]->name());
+            LOG("[%2d]: Deleting Module %s\n", k, modules[k]->name());
             delete modules[k];
         }
     }
@@ -171,9 +148,5 @@ Transceiver::~Transceiver()
 
     LOG("delete crc_table...\n");
     delete crc_table;
-
-    #ifdef QT_ENABLE
-    LOG("delete controller...\n");
-    delete controller;
-    #endif
 }
+

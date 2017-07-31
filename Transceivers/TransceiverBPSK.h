@@ -12,7 +12,8 @@ public:
             double frx,
             double fif,
             double bw,
-            int cycles_per_bit);
+            int cycles_per_bit,
+            PlotController * controller);
 
 private:
 };
