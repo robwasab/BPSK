@@ -2,12 +2,22 @@
 #define __PORT_AUDIO_DRIVER_H__
 
 #include "../Memory/Block.h"
+#include "PortAudioChannel.h"
 
-typedef void (*PortAudioOnReceive)(void * obj, const float rx_buffer[], unsigned long frames);
+/* Initialize Port Audio with a channel. Subsequent calls will simply add the channel pointer
+ * to an array that will be called when there is audio data available to rx and tx
+ *
+ * returns the handle so you can stop the channel later.
+ */
+int PortAudio_init(PortAudioChannel * channel);
 
-void PortAudio_add(Block * block);
-void PortAudio_init(void * arg, PortAudioOnReceive cb);
+/* Can be called multiple times. However, subsequent calls do nothing */ 
 void PortAudio_start();
-void PortAudio_stop();
+
+/*
+ * Stop the current channel i.e., no data will be passed to the channel. Once all the channels
+ * are stopped, Port Audio gets destroyed.
+ */
+void PortAudio_stop(int handle);
 
 #endif

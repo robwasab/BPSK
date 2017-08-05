@@ -64,7 +64,7 @@ Autogain_paths=$(addprefix Autogain/,$(Autogain_objects))
 PortAudio_objects=PortAudioSimulator.o PortAudioStdin.o
 PortAudio_paths=$(addprefix PortAudio/,$(PortAudio_objects))
 
-PortAudioDriver_objects=PortAudioDriver.o
+PortAudioDriver_objects=PortAudioDriver.o PortAudioChannel.o
 PortAudioDriver_paths=$(addprefix PortAudioDriver/,$(PortAudioDriver_objects))
 
 Channel_objects=Channel.o

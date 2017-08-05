@@ -17,7 +17,7 @@ int main(int argc, char ** argv)
     double ftx = 19E3;
     double frx = 19E3;
     double fif = 3E3;
-    double bw = 2E3;
+    double bw = 1E3;
     int cycles_per_bit = 10;
     TestFramework testbench(simple, ftx, frx, fif, bw, cycles_per_bit); 
     testbench.main_loop();

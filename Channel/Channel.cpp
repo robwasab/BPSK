@@ -6,40 +6,37 @@
 #include <pthread.h>
 #endif
 
-static void on_receive(void * arg, const float rx_buffer[], unsigned long frames)
+ 
+void Channel::process_rx_buffer(const float rx_buffer[], size_t len)
 {
-    Channel * self;
     Block * rx_block;
     float ** rx_iter;
-    unsigned long n;
+    size_t n;
     RadioData msg;
 
-    self = (Channel *) arg;
-
-
-    rx_block = self->memory->allocate(frames);
+    rx_block = memory->allocate(len);
     rx_iter  = rx_block->get_iterator();
 
 #ifdef SIMULATE
-    pthread_mutex_lock(&self->mutex);
+    pthread_mutex_lock(&mutex);
 #endif
 
-    for (n = 0; n < frames; n++)
+    for (n = 0; n < len; n++)
     {
         **rx_iter = rx_buffer[n];
 #ifdef SIMULATE
-        **rx_iter += self->distribution(self->generator);
+        **rx_iter += distribution(generator);
 #endif
         rx_block->next();
     }
 
 #ifdef SIMULATE
-    pthread_mutex_unlock(&self->mutex);
+    pthread_mutex_unlock(&mutex);
 #endif
 
     rx_block->reset();
 
-    self->handoff(rx_block, 0);
+    handoff(rx_block, 0);
 }
 
 
@@ -61,12 +58,13 @@ void Channel::set_noise_level(double noise_level_db)
 }
 
 Channel::Channel(Memory * memory, TransceiverCallback cb, void * transceiver):
-    Module(memory, cb, transceiver)
+    Module(memory, cb, transceiver),
+    PortAudioChannel()
 #ifdef SIMULATE
     ,distribution(0.0, db_noise(-20.0))
 #endif
 {
-    PortAudio_init(this, on_receive);
+    handle = PortAudio_init(this);
 
 #ifdef SIMULATE
     pthread_mutex_init(&mutex, NULL);
@@ -89,15 +87,16 @@ void Channel::dispatch(RadioMsg * msg)
     switch(msg->type)
     {
         case PROCESS_DATA:
-            PortAudio_add(data->get_block());
+            add(data->get_block());
             break;
 
         case CMD_START:
+            LOG("starting %s...\n", name());
             PortAudio_start();
             break;
 
         case CMD_STOP:
-            PortAudio_stop();
+            PortAudio_stop(handle);
             break;
 
         case CMD_SET_NOISE_LEVEL:

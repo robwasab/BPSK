@@ -11,14 +11,17 @@
 #include "../switches.h"
 
 #include "PortAudioDriver.h"
+#include "PortAudioChannel.h"
+#define MAX_CHANNELS 10
 
-static void * _arg;
-static PortAudioOnReceive receive_cb = NULL;
+static int occupied_channels = 0;
+
 static PaStream * stream = NULL;
+static PortAudioChannel * channels[MAX_CHANNELS] = {NULL};
 
-static Queue<Block *> source(64);
 static pthread_mutex_t mutex;
 static bool quit = false;
+
 #ifdef SIMULATE
 static pthread_t thread;
 static void * PortAudioSimulator_loop(void * arg);
@@ -27,17 +30,31 @@ static void * PortAudioSimulator_loop(void * arg);
 static
 int PortAudio_callback( const void *input, void *output, unsigned long frames, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void * arg );
 
-void PortAudio_init(void * arg, PortAudioOnReceive cb)
+/*
+ * Initialize Port Audio with a channel.
+ * returns the handle number.
+ * returns -1 if no more available channles.
+ */
+int PortAudio_init(PortAudioChannel * channel)
 {
-    assert(cb != NULL);
-    _arg = arg;
-    receive_cb = cb;
-    pthread_mutex_init(&mutex, NULL);
-}
+    if (occupied_channels < 1)
+    {
+        pthread_mutex_init(&mutex, NULL);
+        occupied_channels = 1;
+    }
+    else if (occupied_channels >= MAX_CHANNELS)
+    {
+        return -1;
+    }
+    else
+    {
+        occupied_channels++;
+    }
+    channels[occupied_channels - 1] = channel;
 
-void PortAudio_add(Block * block)
-{
-    source.add(block);
+    LOG("Port Audio handle: %d\n", occupied_channels-1);
+
+    return occupied_channels - 1;
 }
 
 static
@@ -73,10 +90,22 @@ PaError print_device(PaDeviceIndex index)
 
 void PortAudio_start()
 {
-#ifdef SIMULATE
+    static bool started = false;
+
+    if (started)
+    {
+        LOG("Port Audio already started\n");
+        return;
+    }
+    else
+    {
+        LOG("Starting Port Audio!\n");
+        started = true;
+    }
+    #ifdef SIMULATE
     pthread_create(&thread, NULL, PortAudioSimulator_loop, NULL);
     return;
-#else
+    #else
     PaStreamParameters input_params;
     PaStreamParameters outpu_params;
     double input_fs;
@@ -136,6 +165,8 @@ void PortAudio_start()
         WARNING("outpu fs %.3lf != 44.1kHz\n", outpu_fs);
     }
 
+    LOG("Opening stream!\n");
+
     error = Pa_OpenStream(
             &stream,
             &input_params,
@@ -164,14 +195,41 @@ fail:
 #endif
 }
 
-void PortAudio_stop()
+void PortAudio_stop(int handle)
 {
+    if (handle >= occupied_channels || handle < 0)
+    {
+        LOG("Invalid Handle %d...\n", handle);
+        return;
+    }
+
+    pthread_mutex_lock(&mutex);
+
+    if (channels[handle] != NULL)
+    {
+        channels[handle] = NULL;
+        occupied_channels--;
+    }
+
+    pthread_mutex_unlock(&mutex);
+
+    if (occupied_channels > 0)
+    {
+        return;
+    }
+    else
+    {
+        LOG("Shutting down Port Audio!\n");
+    }
+        
     pthread_mutex_lock(&mutex);
     quit = true;
     pthread_mutex_unlock(&mutex);
+
 #ifdef SIMULATE
     pthread_join(thread, NULL);
 #else
+
     PaError err;
 
     if (Pa_IsStreamActive(stream) == 1)
@@ -270,12 +328,10 @@ int PortAudio_callback(
     void * arg )
 {
     /* assume mono playback */
-    static Block * tx_block = NULL;
-    static float scale = 1.0;
     float * tx_buffer = (float *) output;
     const float * rx_buffer = (const float *) input;
-    float ** tx_iter;
-    size_t start;
+    size_t k;
+    double load;
 
     /* Parse Error Messages TODO */
     /*
@@ -288,56 +344,47 @@ int PortAudio_callback(
     printf("output time: %lf\n", outpu_time);
     */
 
-    if (statusFlags & paInputUnderflow) {
+    if (statusFlags & paInputUnderflow) 
+    {
         LOG("Input Underflow, not enough input data.\n");
     }
-    else if (statusFlags & paInputOverflow) {
+    else if (statusFlags & paInputOverflow) 
+    {
         LOG("Input Overflow, callback taking too much time.\n");
     }
-    else if (statusFlags & paOutputUnderflowed) {
+    else if (statusFlags & paOutputUnderflowed) 
+    {
         LOG("Output Underflow, callback taking too much time.\n");
     }
-    else if (statusFlags & paOutputOverflow) {
+    else if (statusFlags & paOutputOverflow) 
+    {
         LOG("Output Overflow, too much output data.\n");
     }
-    else if (statusFlags & paPrimingOutput) {
+    else if (statusFlags & paPrimingOutput) 
+    {
         LOG("Priming the stream.\n");
     }
 
-    start = 0;
-    if (source.size() > 0)
-    {
-        Block * block;
-        source.get(&block);
-        if (tx_block) 
-        {
-            tx_iter = tx_block->get_iterator();
-            tx_buffer[0] = **tx_iter * scale;
-            start = 1;
-            tx_block->free();
-        }
-        tx_block = block;
-        tx_block->reset();
-        LOG("tx_block size: %zu\n", tx_block->get_size());
-    }
-
-    if (tx_block) 
-    {
-        tx_iter = tx_block->get_iterator();
-
-        for (size_t n = start; n < frames; ++n)
-        {
-            tx_buffer[n] = **tx_iter * scale; 
-            tx_block->next();
-        }
-        receive_cb(_arg, rx_buffer, frames);
-    }
-    else 
-    {
-        memset(tx_buffer, 0, sizeof(float) * frames);
-    }
-
     pthread_mutex_lock(&mutex);
+
+    double scale = 0.0;
+    for (k = 0; k < MAX_CHANNELS; k++)
+    {
+        if (channels[k] != NULL)
+        {
+            channels[k]->callback(tx_buffer, rx_buffer, frames);
+            scale += 1.0;
+        }
+    }
+
+    if (scale > 1.0)
+    {
+        for (k = 0; k < frames; k++)
+        {
+            tx_buffer[k] /= scale;
+        }
+    }
+
     if (quit) 
     {
         pthread_mutex_unlock(&mutex);
@@ -345,8 +392,9 @@ int PortAudio_callback(
     }
     pthread_mutex_unlock(&mutex);
 
-    if (stream) {
-        double load = Pa_GetStreamCpuLoad(stream);
+    if (stream) 
+    {
+        load = Pa_GetStreamCpuLoad(stream);
         LOG("CPU load: %.3lf\r", 100.0 * load);
     }
     return paContinue;
