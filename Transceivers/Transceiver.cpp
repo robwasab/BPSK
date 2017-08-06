@@ -46,11 +46,13 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     tx_memory = new Memory();
     rx_memory = new Memory();
     modules = new Module*[MAX_MODULES];
+    sources = new DataSource*[MAX_MODULES];
 
     int k;
     for (k = 0; k < MAX_MODULES; k++)
     {
         modules[k] = NULL;
+        sources[k] = NULL;
     }
 }
 
@@ -128,6 +130,18 @@ void Transceiver::stop()
 Transceiver::~Transceiver()
 {
     int k;
+
+    for (k = 0; k < MAX_MODULES; k++)
+    {
+        if (sources[k] != NULL)
+        {
+            LOG("[%2d]: Removing Source %s\n", k, sources[k]->name());
+            controller->remove_plot(sources[k]);
+        }
+    }
+
+    LOG("delete [] sources...\n");
+    delete [] sources;
     
     for (k = 0; k < MAX_MODULES; k++)
     {

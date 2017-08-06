@@ -8,6 +8,7 @@
 #include "../Module/Module.h"
 #include "../main.h"
 #include "../PlotController/PlotController.h"
+#include "../PlotController/DataSource.h"
 
 typedef void (*TransceiverNotify)(void * obj, RadioMsg * msg);
 
@@ -53,6 +54,9 @@ protected:
 
     /* Holds Modules */
     Module ** modules;
+
+    /* Holds DataSources */
+    DataSource ** sources;
 
     /* Memory */
     Memory * tx_memory;

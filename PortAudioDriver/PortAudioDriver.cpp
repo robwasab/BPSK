@@ -377,6 +377,7 @@ int PortAudio_callback(
         }
     }
 
+    /*
     if (scale > 1.0)
     {
         for (k = 0; k < frames; k++)
@@ -384,6 +385,7 @@ int PortAudio_callback(
             tx_buffer[k] /= scale;
         }
     }
+    */
 
     if (quit) 
     {

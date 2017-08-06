@@ -117,11 +117,13 @@ void plotcontroller_close_callback(void * arg)
 }
 
 
-TestFramework::TestFramework(StateMachine sm, double ftx, double frx, double fif, double bw, int cycles_per_bit):
+TestFramework::TestFramework(StateMachine sm):
     SignaledThread(128),
     sm_stack(MAX_STATE_MACHINE),
-    controller(NULL)
+    controller(NULL),
+    transceiver_count(0)
 {
+    memset(transceivers, 0, sizeof(transceivers));
     memset(receive_data, 0, sizeof(receive_data));
     receive_data_len = 0;
     receive_data_count = 0;
@@ -133,16 +135,44 @@ TestFramework::TestFramework(StateMachine sm, double ftx, double frx, double fif
     controller = NULL;
     #endif
 
-    transceiver = new TransceiverBPSK(TestFramework_cb, this, 44.1E3, 
-            ftx, 
-            frx,
-            fif,
-            bw,
-            cycles_per_bit,
-            controller);
-
     TestEvent te = {EVENT_START, this, 0};
     smStart(sm, te);
+}
+
+int TestFramework::newTransceiver(double ftx, double frx, double fif, double bw, int cycles_per_bit)
+{
+    if (transceiver_count >= MAX_TRANSCEIVERS)
+    {
+        return -1;
+    }
+
+    transceivers[transceiver_count] = 
+    new TransceiverBPSK(TestFramework_cb, this, 44.1E3, ftx, frx, fif, bw, cycles_per_bit, controller);
+
+    transceivers[transceiver_count]->start(false);
+
+    return transceiver_count++;
+}
+
+void TestFramework::stopTransceiver(int handle)
+{
+    if (handle < 0 || handle >= transceiver_count)
+    {
+        return;
+    }
+    if (transceivers[handle] != NULL)
+    {
+        LOG("Killing transceiver #%d...\n", handle);
+        LOG("Begining top down thread killing...\n");
+        transceivers[handle]->stop();
+        //delete transceivers[handle];
+        //transceivers[handle] = NULL;
+    }
+}
+
+void TestFramework::send(int id, uint8_t msg[], uint8_t len)
+{
+
 }
 
 void TestFramework::smStart(StateMachine sm, TestEvent te)
@@ -165,14 +195,20 @@ TestFramework::~TestFramework()
         delete controller;
     }
 
-    delete transceiver;
+    for (int k = 0; k < MAX_TRANSCEIVERS; k++)
+    {
+        if (transceivers[k] != NULL)
+        {
+            delete transceivers[k];
+        }
+    }
 }
 
+/* Don't call manualy, this is called in main_loop */
 void TestFramework::start(bool block)
 {
     #ifdef QT_ENABLE
     SignaledThread::start(false);
-    transceiver->start(false);
 
     /* start the plot controller */
     if (controller != NULL)
@@ -181,7 +217,6 @@ void TestFramework::start(bool block)
     }
     #else 
     SignaledThread::start(false);
-    transceiver->start(block);
     #endif
 }
 
@@ -210,8 +245,6 @@ void TestFramework::process(TestEvent t)
         switch (t.type)
         {
             case EVENT_KILL:
-                LOG("Beginning top down thread killing...\n");
-                transceiver->stop();
                 lock();
                 quit = true;
                 unlock();

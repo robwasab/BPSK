@@ -63,9 +63,16 @@ void StdinSource::dispatch(RadioMsg * msg)
             break;
 
         case CMD_START:
-            LOG("starting %s thread...", name());
+        {
+            LOG("starting %s thread...\n", name());
             start(false);
+
+            LOG("adding dummy data...\n");
+            uint8_t dummy[] = {0};
+
+            process_msg(dummy, 1);
             break;
+        }
 
         case CMD_STOP:
             LOG("stopping %s thread...\n", name());

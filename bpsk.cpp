@@ -14,12 +14,7 @@ int main(int argc, char ** argv)
 
     pthread_mutex_init(&log_mutex, NULL);
 
-    double ftx = 19E3;
-    double frx = 19E3;
-    double fif = 3E3;
-    double bw = 1E3;
-    int cycles_per_bit = 10;
-    TestFramework testbench(simple, ftx, frx, fif, bw, cycles_per_bit); 
+    TestFramework testbench(simple); 
     testbench.main_loop();
     return 0;
 }

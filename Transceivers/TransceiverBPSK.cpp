@@ -87,9 +87,9 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     tx_enco = new BPSK       (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
 
     fm = ftx - fif;
-    tx_bpif = new FirBandPass(tx_memory, transceiver_callback, this, fs, fif, bw, 8); 
+    tx_bpif = new FirBandPass(tx_memory, transceiver_callback, this, fs, fif, bw, 7); 
     tx_mdrf = new Modulator  (tx_memory, transceiver_callback, this, fs, fm);
-    tx_bprf = new FirBandPass(tx_memory, transceiver_callback, this, fs, ftx, bw, 8); 
+    tx_bprf = new FirBandPass(tx_memory, transceiver_callback, this, fs, ftx, bw, 7); 
     //tx_bpif = new BandPass (tx_memory, transceiver_callback, this, fs, fif, bw, order);
     //tx_bprf = new BandPass (tx_memory, transceiver_callback, this, fs, ftx, bw, order);
 
@@ -102,9 +102,9 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     #endif
 
     fm = frx - fif;
-    rx_bprf = new FirBandPass(rx_memory, transceiver_callback, this, fs, frx, bw, 8);
+    rx_bprf = new FirBandPass(rx_memory, transceiver_callback, this, fs, frx, bw, 7);
     rx_modu = new Modulator  (rx_memory, transceiver_callback, this, fs, fm);
-    rx_bpif = new FirBandPass(rx_memory, transceiver_callback, this, fs, fif, bw, 8);
+    rx_bpif = new FirBandPass(rx_memory, transceiver_callback, this, fs, fif, bw, 7);
     rx_gain = new Autogain   (rx_memory, transceiver_callback, this, fs);
     //rx_bprf = new BandPass (rx_memory, transceiver_callback, this, fs, frx, bw, order);
     //rx_bpif = new BandPass (rx_memory, transceiver_callback, this, fs, fif, bw, order);
@@ -155,15 +155,19 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     }
 
     #ifdef QT_ENABLE
-    controller->add_plot(rx_view);
+    DataSource * views[] =
+    {
+        rx_view,
+        rx_cost,
+        rx_deco,
+        NULL,
+    };
 
-    #ifdef DEBUG_CONSTELLATION
-    controller->add_plot(rx_cost);
-    #endif
-
-    #ifdef DEBUG_DECODER
-    controller->add_plot(rx_deco);
-    #endif
+    for (k = 0; views[k] != NULL; k++)
+    {
+        sources[k] = views[k];
+        controller->add_plot(views[k]);
+    }
     #endif
 }
 

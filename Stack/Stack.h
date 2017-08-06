@@ -16,7 +16,7 @@ public:
 
     ~Stack()
     {
-        printf("Deleteing stack data...\n");
+        printf("Deleting stack data...\n");
         delete [] _data;
     }
 
