@@ -367,7 +367,10 @@ int PortAudio_callback(
 
     pthread_mutex_lock(&mutex);
 
+    memset(tx_buffer, 0, sizeof(float) * frames);
+
     double scale = 0.0;
+
     for (k = 0; k < MAX_CHANNELS; k++)
     {
         if (channels[k] != NULL)
@@ -377,15 +380,12 @@ int PortAudio_callback(
         }
     }
 
-    /*
-    if (scale > 1.0)
+    scale *= 4.0;
+
+    for (k = 0; k < frames; k++)
     {
-        for (k = 0; k < frames; k++)
-        {
-            tx_buffer[k] /= scale;
-        }
+        tx_buffer[k] /= scale;
     }
-    */
 
     if (quit) 
     {

@@ -8,7 +8,6 @@ ByteInputInterface::ByteInputInterface(Memory * memory,
     Module(memory, cb, trans),
     crc_table(crc_table)
 {
-
 }
 
 void ByteInputInterface::process_msg(const uint8_t msg[], size_t len)
@@ -53,6 +52,39 @@ void ByteInputInterface::process_msg(const uint8_t msg[], size_t len)
     else 
     {
         ERROR("Could not allocate enough space!\n");
+    }
+}
+
+void ByteInputInterface::dispatch(RadioMsg * msg)
+{
+    RadioData * data;
+    Block * block;
+
+    data = (RadioData *) msg;
+
+    switch(msg->type)
+    {
+        case PROCESS_DATA:
+            block = data->get_block();
+
+            block = process(block);
+
+            if (block != NULL)
+            {
+                handoff(block, data->get_tid());
+            }
+            break;
+
+        case CMD_START:
+        {
+            uint8_t dummy[] = {0};
+
+            process_msg(dummy, 1);
+            break;
+        }
+
+        default:
+            break;
     }
 }
 

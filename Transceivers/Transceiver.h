@@ -34,6 +34,8 @@ public:
 
     virtual ~Transceiver();
 
+    virtual void send(const uint8_t data[], uint8_t len) = 0;
+
     void debug(RadioMsg msg);
 
 protected:

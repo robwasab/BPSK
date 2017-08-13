@@ -32,6 +32,16 @@
 #include "../PlotController/PlotController.h"
 #endif
 
+void TransceiverBPSK::send(const uint8_t data[], uint8_t len)
+{
+    /* This is kind of ugly */
+    if (modules[0] != NULL)
+    {
+        ByteInputInterface * tx_data = (ByteInputInterface *) modules[0];
+        tx_data->process_msg(data, len);
+    }
+}
+
 TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj, 
         double fs, 
         double ftx, 
@@ -44,7 +54,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
 {
     double fm;
     /* Transmitter Variables */
-    StdinSource * tx_data;
+    ByteInputInterface * tx_data;
     Prefix      * tx_pref;
     BPSK        * tx_enco;
     //BandPass    * tx_bpif;
@@ -82,7 +92,8 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     SuppressPrint * rx_end;
 
     /* Transmitter Section */
-    tx_data = new StdinSource(tx_memory, transceiver_callback, this, crc_table);
+    //tx_data = new StdinSource(tx_memory, transceiver_callback, this, crc_table);
+    tx_data = new ByteInputInterface(tx_memory, transceiver_callback, this, crc_table);
     tx_pref = new Prefix     (tx_memory, transceiver_callback, this, prefix, prefix_len);
     tx_enco = new BPSK       (tx_memory, transceiver_callback, this, fs, fif, cycles_per_bit, 50);
 

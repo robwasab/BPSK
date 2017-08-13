@@ -29,7 +29,7 @@ public:
     }
 
     /* start the thread */
-    void start(bool block)
+    virtual void start(bool block)
     {
         pthread_create(&main, NULL, task_loop, this);
         if (block) 
@@ -39,7 +39,7 @@ public:
     }
 
     /* stop the thread */
-    void stop()
+    virtual void stop()
     {
         lock();
         quit = true;

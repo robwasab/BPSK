@@ -5,6 +5,15 @@
 
 #define MAX_STATE_MACHINE 128
 
+char test_event_strings[][64] = 
+{
+    [EVENT_START] = "EVENT_START",
+    [EVENT_DONE]  = "EVENT_DONE",
+    [EVENT_KILL]  = "EVENT_KILL",
+    [EVENT_RECEIVE_DATA] = "EVENT_RECEIVE_DATA",
+    [EVENT_USER_INPUT] = "EVENT_USER_INPUT",
+};
+
 static
 bool isChar(char c, const char check[])
 {
@@ -53,7 +62,6 @@ void print_msg(const uint8_t msg[], uint8_t size)
     ENDC;
 }
 
-static
 void TestFramework_cb(void * obj, RadioMsg * msg)
 {
     TestFramework * self = (TestFramework *) obj;
@@ -170,9 +178,13 @@ void TestFramework::stopTransceiver(int handle)
     }
 }
 
-void TestFramework::send(int id, uint8_t msg[], uint8_t len)
+void TestFramework::send(int handle, const uint8_t msg[], uint8_t len)
 {
-
+    if (handle < 0 || handle >= transceiver_count)
+    {
+        return;
+    }
+    transceivers[handle]->send(msg, len);
 }
 
 void TestFramework::smStart(StateMachine sm, TestEvent te)
@@ -253,6 +265,7 @@ void TestFramework::process(TestEvent t)
             case EVENT_START:
             case EVENT_DONE:
             case EVENT_RECEIVE_DATA:
+            case EVENT_USER_INPUT:
                 LOG("No state machine to handle event!\n");
                 break;
         }

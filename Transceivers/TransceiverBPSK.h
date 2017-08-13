@@ -15,6 +15,8 @@ public:
             int cycles_per_bit,
             PlotController * controller);
 
+    void send(const uint8_t data[], uint8_t len);
+
 private:
 };
 #endif

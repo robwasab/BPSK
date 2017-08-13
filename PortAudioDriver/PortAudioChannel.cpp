@@ -8,6 +8,7 @@ PortAudioChannel::PortAudioChannel():
 
 void PortAudioChannel::add(Block * block)
 {
+    LOG("Adding block!\n");
     source.add(block);
 }
 
@@ -45,7 +46,7 @@ void PortAudioChannel::callback(float tx_buffer[], const float rx_buffer[], size
 
         for (n = start; n < len; ++n)
         {
-            tx_buffer[n] = **tx_iter; 
+            tx_buffer[n] += **tx_iter; 
             tx_block->next();
         }
     }

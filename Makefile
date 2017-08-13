@@ -73,7 +73,7 @@ Channel_paths=$(addprefix Channel/,$(Channel_objects))
 Transceivers_objects= Transceiver.o TransceiverBPSK.o
 Transceivers_paths=$(addprefix Transceivers/,$(Transceivers_objects))
 
-TestFramework_objects=TestFramework.o
+TestFramework_objects=TestFramework.o TestFrameworkStdin.o
 TestFramework_paths=$(addprefix TestFramework/,$(TestFramework_objects))
 
 Tests_objects=simple.o
@@ -148,7 +148,7 @@ $(PortAudioDriver_paths):%.o: %.cpp %.h Module/Module.h switches.h
 $(Channel_paths):%.o: %.cpp %.h Module/Module.h RadioMsg/RadioMsg.h switches.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(Transceivers_paths):%.o: %.cpp %.h Module/Module.h switches.h Transceivers/Transceiver.h Signaledthread/Signaledthread.h Queue/Queue.h CRC-16/crc.h
+$(Transceivers_paths):%.o: %.cpp %.h Module/Module.h switches.h Transceivers/Transceiver.h Signaledthread/Signaledthread.h Queue/Queue.h CRC-16/crc.h PlotSink/PlotSink.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
 $(TestFramework_paths):%.o: %.cpp %.h switches.h Stack/Stack.h Transceivers/Transceiver.h Notify/Notify.h SignaledThread/SignaledThread.h Module/Module.h Queue/Queue.h

@@ -12,6 +12,8 @@
 #include "../PlotController/PlotController.h"
 #endif
 
+#define SM_MSG LOG("%s\n", test_event_strings[e.type])
+
 #define MAX_TRANSCEIVERS 10
 
 typedef enum 
@@ -20,7 +22,10 @@ typedef enum
     EVENT_DONE,
     EVENT_KILL,
     EVENT_RECEIVE_DATA,
+    EVENT_USER_INPUT,
 } TestEventType;
+
+extern char test_event_strings[][64];
 
 struct TestEvent 
 {
@@ -34,6 +39,7 @@ typedef struct TestEvent TestEvent;
 typedef void (*StateMachine)(TestEvent t);
 
 extern void print_msg(const uint8_t msg[], uint8_t size);
+extern void TestFramework_cb(void * obj, RadioMsg * msg);
 
 class TestFramework : public SignaledThread<TestEvent>
 {
@@ -44,7 +50,7 @@ public:
     /* Application functions */
     void smStart(StateMachine sm, TestEvent te);
     void smReturn(TestEvent te);
-    void send(int id, uint8_t msg[], uint8_t len);
+    void send(int id, const uint8_t msg[], uint8_t len);
     int newTransceiver(double ftx, double frx, double fif, double bw, int cycles_per_bit);
     void stopTransceiver(int handle);
 

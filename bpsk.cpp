@@ -1,4 +1,5 @@
 #include "TestFramework/TestFramework.h"
+#include "TestFramework/TestFrameworkStdin.h"
 #include "Tests/simple.h"
 
 int _argc = 0;
@@ -14,7 +15,7 @@ int main(int argc, char ** argv)
 
     pthread_mutex_init(&log_mutex, NULL);
 
-    TestFramework testbench(simple); 
+    TestFrameworkStdin testbench(simple); 
     testbench.main_loop();
     return 0;
 }

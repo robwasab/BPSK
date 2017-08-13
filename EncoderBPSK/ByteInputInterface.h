@@ -14,7 +14,9 @@ public:
             const uint16_t crc_table[]);
     Block * process(Block * block);
     void process_msg(const uint8_t msg[], size_t len);
-    const char * name() {
+    void dispatch(RadioMsg * msg);
+    const char * name() 
+    {
         return _BYTE_INPUT_INTERFACE_NAME_;
     }
 private:
