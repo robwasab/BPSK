@@ -110,6 +110,15 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     setSettings( d_settings );
 }
 
+Plot::~Plot()
+{
+    if (source != NULL)
+    {
+        source->acknowledge_quit();
+    }
+}
+
+
 //
 //  Set a plain canvas frame and align the scales to it
 //
@@ -215,7 +224,14 @@ void Plot::timerEvent( QTimerEvent * )
     //buffer->setReferenceTime( d_clock.elapsed() / 100.0 );
     if (source != NULL)
     {
-        if (!source->valid()) {
+        if (source->quit_requested())
+        {
+            source->acknowledge_quit();
+            source = NULL;
+            return;
+        }
+        else if (!source->valid()) 
+        {
             Point origin = source->get_origin();
             Point length = source->get_lengths();
             float pad = 0.1 * length.y;
@@ -226,17 +242,23 @@ void Plot::timerEvent( QTimerEvent * )
             updateAxes();
         }
         source->next();
-    }
 
-    if ( d_settings.updateType == Settings::RepaintCanvas )
-    {
-        // the axes in this example doesn't change. So all we need to do
-        // is to repaint the canvas.
+        if ( d_settings.updateType == Settings::RepaintCanvas )
+        {
+            // the axes in this example doesn't change. So all we need to do
+            // is to repaint the canvas.
 
-        QMetaObject::invokeMethod( canvas(), "replot", Qt::DirectConnection );
-    }
-    else
-    {
-        replot();
+            QMetaObject::invokeMethod( canvas(), "replot", Qt::DirectConnection );
+        }
+        else
+        {
+            replot();
+        }
     }
 }
+
+void Plot::closeEvent(QCloseEvent * event)
+{
+    printf("Closing Plot!\n");
+}
+

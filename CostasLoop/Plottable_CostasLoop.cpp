@@ -123,3 +123,21 @@ const char * Plottable_CostasLoop::name()
     return CostasLoop::name();
 }
 
+void Plottable_CostasLoop::dispatch(RadioMsg * msg)
+{
+    CostasLoop::dispatch(msg);
+    switch(msg->type)
+    {
+        case CMD_STOP:
+            LOG("request_quit()\n");
+            requeust_quit();
+            LOG("join()\n");
+            join();
+            LOG("join successful...\n");
+            break;
+
+        default:
+            break;
+    }
+}
+

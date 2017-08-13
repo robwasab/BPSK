@@ -107,3 +107,23 @@ const char * Plottable_BPSKDecoder::name()
 {
     return BPSKDecoder::name();
 }
+
+void Plottable_BPSKDecoder::dispatch(RadioMsg * msg)
+{
+    BPSKDecoder::dispatch(msg);
+
+    switch(msg->type)
+    {
+        case CMD_STOP:
+            LOG("request_quit()\n");
+            requeust_quit();
+            LOG("join()\n");
+            join();
+            LOG("join successful...\n");
+            break;
+
+        default:
+            break;
+    }
+}
+

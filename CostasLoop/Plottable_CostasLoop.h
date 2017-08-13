@@ -3,6 +3,7 @@
 
 #include "CostasLoop.h"
 #include "../PlotController/DataSource.h"
+#include "../PlotController/PlotController.h"
 #include "../Queue/Queue.h"
 
 class Plottable_CostasLoop : public CostasLoop, public DataSource
@@ -46,6 +47,8 @@ public:
             float * freq_ptr, 
             float * lock_ptr, 
             float * error);
+
+    void dispatch(RadioMsg * msg);
 
     ~Plottable_CostasLoop();
 

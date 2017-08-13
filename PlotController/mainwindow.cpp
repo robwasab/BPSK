@@ -41,6 +41,14 @@ void MainWindow::closeEvent( QCloseEvent * event )
     {
         cb(obj);
     }
+    list<Plot *>::iterator it;
+    for (it = plots.begin(); it != plots.end(); ++it)
+    {
+        if ((*it)->source != NULL) 
+        {
+            (*it)->source->acknowledge_quit();
+        }
+    }
     QMainWindow::closeEvent(event);
 }
 
@@ -81,6 +89,7 @@ void MainWindow::__add_plot__( DataSource * source )
 
 void MainWindow::__remove_plot__( DataSource * source )
 {
+    /*
     list<Plot *>::iterator it;
     for (it = plots.begin(); it != plots.end(); ++it)
     {
@@ -89,8 +98,10 @@ void MainWindow::__remove_plot__( DataSource * source )
             layout->removeWidget(*it);
             (*it)->deleteLater();
             plots.erase(it);
+            (*it)->source = NULL;
         }
     }
+    */
 }
 
 void MainWindow::timerEvent( QTimerEvent * event )

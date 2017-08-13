@@ -7,7 +7,7 @@ PlottableAutogain::PlottableAutogain(
             TransceiverCallback cb, 
             void * transceiver, 
             double fs, 
-            size_t chunk) :
+            size_t chunk):
     Autogain(memory, cb, transceiver, fs),
     chunk(chunk),
     queue((1 << 18))
@@ -31,7 +31,6 @@ size_t PlottableAutogain::size()
 {
     return chunk;
 }
-
 
 Point PlottableAutogain::get_data(size_t index)
 {
@@ -92,5 +91,23 @@ float PlottableAutogain::work(float val)
 const char * PlottableAutogain::name()
 {
     return Autogain::name();
+}
+
+void PlottableAutogain::dispatch(RadioMsg * msg)
+{
+    Autogain::dispatch(msg);
+    switch(msg->type)
+    {
+        case CMD_STOP:
+            LOG("request_quit()\n");
+            requeust_quit();
+            LOG("join()\n");
+            join();
+            LOG("join successful...\n");
+            break;
+
+        default:
+            break;
+    }
 }
 

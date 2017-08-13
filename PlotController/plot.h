@@ -15,6 +15,7 @@ class Plot: public QwtPlot
 
 public:
     Plot( QWidget* = NULL, DataSource * source = NULL);
+    ~Plot();
     DataSource * source;
 
 public Q_SLOTS:
@@ -22,6 +23,9 @@ public Q_SLOTS:
 
 protected:
     virtual void timerEvent( QTimerEvent *e );
+
+    /* Override QWidget closeEvent */
+    void closeEvent(QCloseEvent * event);
 
 private:
     void alignScales();

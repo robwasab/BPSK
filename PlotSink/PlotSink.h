@@ -12,7 +12,9 @@ const char __PLOT_SINK_NAME__[] = "PlotSink";
 class PlotSink : public Module, public DataSource
 {
 public:
-    PlotSink(Memory * memory, TransceiverCallback transceiver_cb, void * transceiver) :
+    PlotSink(Memory * memory, 
+            TransceiverCallback transceiver_cb, 
+            void * transceiver):
     Module(memory, transceiver_cb, transceiver)
     {
         block = NULL;
@@ -155,6 +157,25 @@ public:
         p.y = width;
         return p;
     }
+
+    void dispatch(RadioMsg * msg)
+    {
+        Module::dispatch(msg);
+        switch(msg->type)
+        {
+            case CMD_STOP:
+                LOG("request_quit()\n");
+                requeust_quit();
+                LOG("join()\n");
+                join();
+                LOG("join successful...\n");
+                break;
+
+            default:
+                break;
+        }
+    }
+
 
 private:
     bool processing;

@@ -3,6 +3,7 @@
 
 #include "BPSKDecoder.h"
 #include "../PlotController/DataSource.h"
+#include "../PlotController/PlotController.h"
 
 #define PLOTTABLE_BPSK_DECODER_RESET_SIGNAL 0
 #define PLOTTABLE_BPSK_DECODER_HIGH_PASS_SIGNAL 1
@@ -28,6 +29,7 @@ public:
     /* BPSKDecoder Overridable Methods */
     void fwrdResetSignal(float signal);
     void fwrdHighPassSignal(float signal);
+    void dispatch(RadioMsg * msg);
 
     /* Data Source Methods */
     size_t size();

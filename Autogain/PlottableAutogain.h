@@ -2,6 +2,7 @@
 #define __PLOTTABLE_AUTOGAIN_H__
 #include "Autogain.h"
 #include "../PlotController/DataSource.h"
+#include "../PlotController/PlotController.h"
 #include "../Queue/Queue.h"
 
 class PlottableAutogain : public Autogain, public DataSource
@@ -26,6 +27,7 @@ public:
 
     /* Autogain Methods */
     float work(float val);
+    void dispatch(RadioMsg * msg);
 
     ~PlottableAutogain();
 
