@@ -213,17 +213,20 @@ void Plot::timerEvent( QTimerEvent * )
 {
     //CircularBuffer *buffer = static_cast<CircularBuffer *>( d_curve->data() );
     //buffer->setReferenceTime( d_clock.elapsed() / 100.0 );
-    if (!source->valid()) {
-        Point origin = source->get_origin();
-        Point length = source->get_lengths();
-        float pad = 0.1 * length.y;
-        setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
-        setAxisScale( QwtPlot::yLeft, origin.y - pad, origin.y + length.y + pad);
+    if (source != NULL)
+    {
+        if (!source->valid()) {
+            Point origin = source->get_origin();
+            Point length = source->get_lengths();
+            float pad = 0.1 * length.y;
+            setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
+            setAxisScale( QwtPlot::yLeft, origin.y - pad, origin.y + length.y + pad);
 
-        set_updateInterval(source->get_updateInterval());
-        updateAxes();
+            set_updateInterval(source->get_updateInterval());
+            updateAxes();
+        }
+        source->next();
     }
-    source->next();
 
     if ( d_settings.updateType == Settings::RepaintCanvas )
     {
