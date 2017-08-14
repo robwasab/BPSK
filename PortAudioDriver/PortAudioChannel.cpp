@@ -4,6 +4,7 @@ PortAudioChannel::PortAudioChannel():
     source(64),
     tx_block(NULL)
 {
+    load_block = true;
 }
 
 void PortAudioChannel::add(Block * block)
@@ -24,8 +25,10 @@ void PortAudioChannel::callback(float tx_buffer[], const float rx_buffer[], size
     size_t n;
 
     start = 0;
-    if (source.size() > 0)
+
+    if (source.size() > 0 && load_block == true)
     {
+        load_block = false;
         Block * block;
         source.get(&block);
         if (tx_block) 
@@ -51,5 +54,10 @@ void PortAudioChannel::callback(float tx_buffer[], const float rx_buffer[], size
         }
     }
     process_rx_buffer(rx_buffer, len);
+}
+
+void PortAudioChannel::load()
+{
+    load_block = true;
 }
 

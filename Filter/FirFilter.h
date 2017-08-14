@@ -17,6 +17,7 @@ public:
     const char * name();
     float work(float input);
     void reset();
+    float value;
 protected:
     const double * coefs;
     size_t n;

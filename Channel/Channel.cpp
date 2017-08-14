@@ -107,6 +107,11 @@ void Channel::dispatch(RadioMsg * msg)
             #endif
             break;
 
+        case NOTIFY_MSG_EXHAUSTED:
+            /* indicate that it is ok to load new message */
+            load();
+            break;
+
         default:
             break;
     }

@@ -16,11 +16,12 @@ public:
 
     Block * process(Block * block);
     const char * name();
-private:
+
     double fs;
     double fc;
     int cycles_per_bit;
     int training_bits;
+    double inv;
     double inc;
     double phase;
     double one_eighty;

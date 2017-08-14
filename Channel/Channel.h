@@ -26,6 +26,7 @@ public:
 #endif
     /* Implement PortAudioChannel receive callback */
     void process_rx_buffer(const float rx_buffer[], size_t len);
+
 private:
     Block * process(Block * block);
     int handle;

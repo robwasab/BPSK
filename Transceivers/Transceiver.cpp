@@ -98,6 +98,7 @@ void Transceiver::process(RadioMsg msg)
         case NOTIFY_PLL_LOST_LOCK:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
+        case NOTIFY_MSG_EXHAUSTED:
 
             Log("BROADCASTING: %s\n", RadioMsgString[msg.type]);
             k = 0;
@@ -109,6 +110,7 @@ void Transceiver::process(RadioMsg msg)
             }
             break;
         default:
+            Log("Unknown message type: %s\n", RadioMsgString[msg.type]);
             break;
     }
 }

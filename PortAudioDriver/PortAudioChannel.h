@@ -18,9 +18,12 @@ public:
     /* Needs to implement */
     virtual void process_rx_buffer(const float rx_buffer[], size_t len);
 
+    void load();
+
 private:
     Queue<Block *> source;
     Block * tx_block;
+    bool load_block;
 };
 
 #endif

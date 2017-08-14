@@ -14,6 +14,7 @@ BPSK::BPSK(Memory * memory,
     cycles_per_bit(cycles_per_bit),
     training_bits(training_bits)
 {
+    inv = 1.0;
     inc = 2.0*M_PI*fc/fs;
     phase = 0;
     one_eighty = M_PI;
@@ -34,27 +35,21 @@ class BPSKBlock : public Block
 {
 public:
     BPSKBlock(Block * bits, 
-            double * phase,
-            int training_bits,
-            int cycles_per_bit,
-            double fc,
-            double fs):
+            BPSK * bpsk):
         bits(bits),
-        phase(phase),
-        training_bits(training_bits)
+        bpsk(bpsk)
     {
-        samples_per_cycle = fs/fc;
-
-        len = (size_t) ((training_bits + bits->get_size()) * cycles_per_bit * samples_per_cycle);
-        phase_per_bit = cycles_per_bit * 2.0 * M_PI;
-        inc = 2.0*M_PI*fc/fs;
+        len = (size_t) round(
+            (bpsk->training_bits + bits->get_size()) * bpsk->cycles_per_bit * bpsk->samples_per_cycle);
 
         ptr = &value;
-        inv = 1.0;
-        *phase += inc;
-        value = (float) inv * sin(*phase);
+        value = (float) ((bpsk->inv) * sin(bpsk->phase));
+        bpsk->phase += bpsk->inc;
+
         reset();
         bits_iter = bits->get_iterator();
+
+        notify_sent = false;
     }
 
     ~BPSKBlock() {}
@@ -83,13 +78,13 @@ public:
 
     bool next() 
     {
-        if (*phase > phase_per_bit) 
+        if (bpsk->phase > bpsk->phase_per_bit) 
         {
-            *phase -= phase_per_bit;
+            bpsk->phase -= bpsk->phase_per_bit;
 
             if (n < len) 
             {
-                if (k >= training_bits) 
+                if (k >= bpsk->training_bits) 
                 {
                     state = LOAD_BIT;
                 }
@@ -101,30 +96,40 @@ public:
                         break;
 
                     case LOAD_BIT:
+                    {
+                        float bit;
                         bit = **bits_iter;
 
                         if (bit) 
                         {
-                            inv *= -1.0;
+                            bpsk->inv *= -1.0;
                         }
 
                         bits->next();
                         break;
+                    }
                 }
             }
         }
 
         if (n < len) 
         {
-            *phase += inc;
-            value = (float) inv * sin(*phase);
+            value = (float) ((bpsk->inv) * sin(bpsk->phase));
+            bpsk->phase += bpsk->inc;
             n += 1;
             return true;
         }
         else 
         {
-            *phase += inc;
-            value = (float) inv * sin(*phase);
+            value = (float) ((bpsk->inv) * sin(bpsk->phase));
+            bpsk->phase += bpsk->inc;
+
+            if (!notify_sent)
+            {
+                notify_sent = true;
+                RadioMsg msg(NOTIFY_MSG_EXHAUSTED);
+                bpsk->broadcast(&msg);
+            }
             return true;
         }
     }
@@ -133,7 +138,8 @@ public:
         return &ptr;
     }
 
-    void print() {
+    void print() 
+    {
         printf("BPSK Block {\n");
         bits->print();
         printf("}\n");
@@ -141,25 +147,19 @@ public:
 
 private:
     Block * bits;
-    double * phase;
-    unsigned int training_bits;
-    double phase_per_bit;
-    size_t len;
-    double samples_per_cycle;
+    BPSK * bpsk;
     float * ptr;
+    size_t len;
     float value;
-    double inc;
-    double inv;
-    //float last_bit;
     float ** bits_iter;
     enum {TRAIN, LOAD_BIT} state;
     unsigned int k,n;
-    float bit;
+    bool notify_sent;
 };
 
 Block * BPSK::process(Block * bits)
 {
-    Block * ret = new BPSKBlock(bits, &phase, training_bits, cycles_per_bit, fc, fs);
+    Block * ret = new BPSKBlock(bits, this);
     return ret;
 }
 
@@ -169,3 +169,4 @@ const char * BPSK::name()
 {
     return __name__;
 }
+
