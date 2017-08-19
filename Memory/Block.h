@@ -74,15 +74,8 @@ public:
 
     void reset()
     {
-        #ifdef DEBUG
-        printf("Block reset()\n");
-        printf("old ptr: 0x%p\n", ptr);
-        #endif
         ptr = &memory[head];
-        #ifdef DEBUG
-        printf("new ptr: 0x%p\n", ptr);
-        #endif
-        index = head;
+		index = head;
         counter = 1;
     }
 

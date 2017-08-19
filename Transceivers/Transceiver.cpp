@@ -132,7 +132,8 @@ void Transceiver::stop()
 Transceiver::~Transceiver()
 {
     int k;
-
+    
+    #ifdef QT_ENABLE
     for (k = 0; k < MAX_MODULES; k++)
     {
         if (sources[k] != NULL)
@@ -141,7 +142,8 @@ Transceiver::~Transceiver()
             controller->remove_plot(sources[k]);
         }
     }
-
+    #endif
+    
     LOG("delete [] sources...\n");
     delete [] sources;
     
