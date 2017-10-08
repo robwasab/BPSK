@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static double ftx1 = 17E3;
-static double frx1 = 17E3;
-static double ftx2 = 17E3;
-static double frx2 = 17E3;
-static double fif = 3E3;
-static double bw = 1E3;
-static int cycles_per_bit = 20;
+static double ftx1 = 18E3;
+static double frx1 = 18E3;
+static double ftx2 = 8E3;
+static double frx2 = 8E3;
+static double fif = 4E3;
+static double bw = 2E3;
+static int cycles_per_bit = 10;
 
 void simple(TestEvent e)
 {
@@ -31,15 +31,17 @@ void simple(TestEvent e)
         case EVENT_START:
             test_frame = (TestFramework *) e.data;
             handle_1 = test_frame->newTransceiver(ftx1, frx1, fif, bw, cycles_per_bit);
-            //handle_2 = test_frame->newTransceiver(ftx2, frx2, fif, bw, cycles_per_bit);
+            //handle_2 = test_frame->newTransceiver(ftx2, frx1, fif, bw, cycles_per_bit);
             break;
 
         case EVENT_KILL:
             LOG("killing transceiver %d\n", handle_1);
             test_frame->stopTransceiver(handle_1);
 
-            //LOG("killing transceiver %d\n", handle_2);
-            //test_frame->stopTransceiver(handle_2);
+            /*
+            LOG("killing transceiver %d\n", handle_2);
+            test_frame->stopTransceiver(handle_2);
+            */
 
             test_frame->smReturn(e);
             break;
