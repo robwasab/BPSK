@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1E1963251F48C9AD00E736C2"
+               BlueprintIdentifier = "1EC038FB1F8011F700A4D83A"
                BuildableName = "AudioFrequency"
                BlueprintName = "AudioFrequency"
                ReferencedContainer = "container:AudioFrequency.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1E1963251F48C9AD00E736C2"
+            BlueprintIdentifier = "1EC038FB1F8011F700A4D83A"
             BuildableName = "AudioFrequency"
             BlueprintName = "AudioFrequency"
             ReferencedContainer = "container:AudioFrequency.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1E1963251F48C9AD00E736C2"
+            BlueprintIdentifier = "1EC038FB1F8011F700A4D83A"
             BuildableName = "AudioFrequency"
             BlueprintName = "AudioFrequency"
             ReferencedContainer = "container:AudioFrequency.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1E1963251F48C9AD00E736C2"
+            BlueprintIdentifier = "1EC038FB1F8011F700A4D83A"
             BuildableName = "AudioFrequency"
             BlueprintName = "AudioFrequency"
             ReferencedContainer = "container:AudioFrequency.xcodeproj">
