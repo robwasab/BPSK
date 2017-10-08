@@ -29,7 +29,7 @@ SpectrumAnalyzer::SpectrumAnalyzer(Memory * memory,
 #endif
 
     fwrd = fftwf_plan_r2r_1d
-        (n, inpu, outp, FFTW_R2HC, FFTW_MEASURE);
+        ((int)n, inpu, outp, FFTW_R2HC, FFTW_MEASURE);
 
     for (size_t k = 0; k < n/2+1; ++k) 
     {
@@ -91,9 +91,9 @@ size_t SpectrumAnalyzer::size()
 
 #define sq(x) (x * x)
 
-Point SpectrumAnalyzer::get_data(size_t index) 
+AFPoint SpectrumAnalyzer::get_data(size_t index)
 {
-    Point p;
+    AFPoint p;
     p.x = freq[index];
 
     if (index == 0 || index == n/2) {
@@ -111,17 +111,17 @@ void SpectrumAnalyzer::next()
 {
 }
 
-Point SpectrumAnalyzer::get_origin() 
+AFPoint SpectrumAnalyzer::get_origin()
 {
-    Point p;
+    AFPoint p;
     p.x = 0.0;
     p.y = -60;
     return p;
 }
 
-Point SpectrumAnalyzer::get_lengths() 
+AFPoint SpectrumAnalyzer::get_lengths()
 {
-    Point p;
+    AFPoint p;
     p.x = freq[n/2];
     p.y = 60;
     return p;

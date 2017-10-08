@@ -52,8 +52,7 @@ Block * Constellation::process(Block * in)
 
     float * in_phase = qpsk->get_pointer(IN_PHASE_SIGNAL);
     float * qu_phase = qpsk->get_pointer(QU_PHASE_SIGNAL);
-    float * lock_sig = qpsk->get_pointer(LOCK_SIGNAL);
-
+    
     bool in_res;
     bool qu_res;
 
@@ -107,9 +106,9 @@ size_t Constellation::size()
     return chunk;
 }
 
-Point Constellation::get_data(size_t index)
+AFPoint Constellation::get_data(size_t index)
 {
-    Point p;
+    AFPoint p;
     p.x = in_phase_memory[index];
     p.y = qu_phase_memory[index];
     return p;
@@ -120,17 +119,17 @@ void Constellation::next()
 
 }
 
-Point Constellation::get_origin()
+AFPoint Constellation::get_origin()
 {
-    Point p;
+    AFPoint p;
     p.x = -4;
     p.y = -4;
     return p;
 }
 
-Point Constellation::get_lengths()
+AFPoint Constellation::get_lengths()
 {
-    Point p;
+    AFPoint p;
     p.x = 8.0;
     p.y = 8.0;
     return p;

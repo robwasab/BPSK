@@ -32,9 +32,9 @@ size_t PlottableAutogain::size()
     return chunk;
 }
 
-Point PlottableAutogain::get_data(size_t index)
+AFPoint PlottableAutogain::get_data(size_t index)
 {
-    Point p;
+    AFPoint p;
     p.x = index;
     p.y = plot_memory[index];
     return p;
@@ -45,17 +45,17 @@ void PlottableAutogain::next()
 
 }
 
-Point PlottableAutogain::get_origin()
+AFPoint PlottableAutogain::get_origin()
 {
-    Point p;
+    AFPoint p;
     p.x = 0;
     p.y = -4.0;
     return p;
 }
 
-Point PlottableAutogain::get_lengths()
+AFPoint PlottableAutogain::get_lengths()
 {
-    Point p;
+    AFPoint p;
     p.x = chunk;
     p.y = 8.0;
     return p;

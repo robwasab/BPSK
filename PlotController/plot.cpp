@@ -39,14 +39,14 @@ public:
     }
 
     virtual QPointF sample( size_t i ) const {
-        Point pnt = source->get_data(i);
+        AFPoint pnt = source->get_data(i);
         return QPointF(pnt.x, pnt.y);
     }
 
     virtual QRectF boundingRect() const {
         //return QRectF( -1.25, 0, 2.5, source->size() );
-        Point origin = source->get_origin();
-        Point length = source->get_lengths();
+        AFPoint origin = source->get_origin();
+        AFPoint length = source->get_lengths();
         return QRectF(origin.y, origin.x, length.y, length.x);
     }
 
@@ -90,8 +90,8 @@ Plot::Plot( QWidget * parent, DataSource * source ):
     d_curve->attach( this );
 
     // Axis
-    Point origin = source->get_origin();
-    Point length = source->get_lengths();
+    AFPoint origin = source->get_origin();
+    AFPoint length = source->get_lengths();
 
     setAxisTitle( QwtPlot::xBottom, source->xlabel() );
     setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
@@ -232,8 +232,8 @@ void Plot::timerEvent( QTimerEvent * )
         }
         else if (!source->valid()) 
         {
-            Point origin = source->get_origin();
-            Point length = source->get_lengths();
+            AFPoint origin = source->get_origin();
+            AFPoint length = source->get_lengths();
             float pad = 0.1 * length.y;
             setAxisScale( QwtPlot::xBottom, origin.x, origin.x + length.x );
             setAxisScale( QwtPlot::yLeft, origin.y - pad, origin.y + length.y + pad);

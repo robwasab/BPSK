@@ -33,9 +33,9 @@ size_t PlottableFirFilter::size()
     return n;
 }
 
-Point PlottableFirFilter::get_data(size_t index)
+AFPoint PlottableFirFilter::get_data(size_t index)
 {
-    Point p;
+    AFPoint p;
     p.x = index;
     p.y = coefs[index];
     return p;
@@ -46,17 +46,17 @@ void PlottableFirFilter::next()
 
 }
 
-Point PlottableFirFilter::get_origin()
+AFPoint PlottableFirFilter::get_origin()
 {
-    Point p;
+    AFPoint p;
     p.x = 0.0;
     p.y = min;
     return p;
 }
 
-Point PlottableFirFilter::get_lengths()
+AFPoint PlottableFirFilter::get_lengths()
 {
-    Point p;
+    AFPoint p;
     p.x = n;
     p.y = max - min;
     return p;
