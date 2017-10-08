@@ -18,12 +18,10 @@ QPSK::QPSK(Memory * memory,
         double fs,
         double fc,
         double biqu_fcut,
-        #ifdef DEBUG_CONSTELLATION
-        double loop_fnat,
-        size_t chunk):
-        Plottable_CostasLoop(memory, cb, trans, fs, fc, biqu_fcut, loop_fnat, 0.1, chunk),
-        #else
         double loop_fnat):
+        #ifdef DEBUG_CONSTELLATION
+        Plottable_CostasLoop(memory, cb, trans, fs, fc, biqu_fcut, loop_fnat, 0.1),
+        #else
         CostasLoop(memory, cb, trans, fs, fc, IN_PHASE_SIGNAL, biqu_fcut, loop_fnat, 0.1),
         #endif
     vco_offset_2(M_PI/4.0),

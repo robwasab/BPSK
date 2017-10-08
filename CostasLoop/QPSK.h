@@ -20,12 +20,7 @@ public:
             double fs,
             double fc,
             double biqu_fcut = 550.0,
-            #ifdef DEBUG_CONSTELLATION
-            double loop_fnat = 200.0,
-            size_t chunk = 1024);
-            #else
             double loop_fnat = 200.0);
-            #endif
 
     const char * name();
 

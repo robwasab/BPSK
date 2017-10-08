@@ -15,12 +15,26 @@ Plottable_BPSKDecoder::Plottable_BPSKDecoder(Memory * memory,
             int signal_type):
     BPSKDecoder(memory, cb, trans, fs, fc, prefix, prefix_len, cycles_per_bit, threshold, crc_table),
     signal_type(signal_type),
-    chunk(1024),
-    signal_queue(1 << 18)
+    frame_size(FRAME_SIZE(fs)),
+    signal_queue(BUFFER_SIZE(fs))
 {
-    update_interval = (int) round(chunk/fs);
-    signal_memory = new float[chunk];
-    memset(signal_memory, 0, sizeof(float) * chunk);
+    queue_full_warnings = 0;
+    update_interval = UPDATE_INTERVAL_MS;
+    signal_memory = new float[frame_size];
+    memset(signal_memory, 0, sizeof(float) * frame_size);
+}
+
+void Plottable_BPSKDecoder::addSignal(float signal)
+{
+    bool res = signal_queue.add(signal);
+
+    if (!res)
+    {
+        if (queue_full_warnings++ % 1000 == 0)
+        {
+            ERROR("Signal Queue Full!\n");
+        }
+    }
 }
 
 void Plottable_BPSKDecoder::fwrdResetSignal(float signal)
@@ -28,19 +42,20 @@ void Plottable_BPSKDecoder::fwrdResetSignal(float signal)
     switch (signal_type)
     {
         case PLOTTABLE_BPSK_DECODER_RESET_SIGNAL:
-            signal_queue.add(signal);
+            addSignal(signal);
             break;
         default:
             break;
     }
 }
 
+
 void Plottable_BPSKDecoder::fwrdHighPassSignal(float signal)
 {
     switch (signal_type)
     {
         case PLOTTABLE_BPSK_DECODER_HIGH_PASS_SIGNAL:
-            signal_queue.add(signal);
+            addSignal(signal);
             break;
         default:
             break;
@@ -59,12 +74,12 @@ Plottable_BPSKDecoder::~Plottable_BPSKDecoder()
 
 size_t Plottable_BPSKDecoder::size()
 {
-    return chunk;
+    return frame_size;
 }
 
-Point Plottable_BPSKDecoder::get_data(size_t index)
+AFPoint Plottable_BPSKDecoder::get_data(size_t index)
 {
-    Point p;
+    AFPoint p;
     p.x = index;
     p.y = signal_memory[index];
     return p;
@@ -75,29 +90,29 @@ void Plottable_BPSKDecoder::next()
 
 }
 
-Point Plottable_BPSKDecoder::get_origin()
+AFPoint Plottable_BPSKDecoder::get_origin()
 {
-    Point p;
+    AFPoint p;
     p.x = 0; 
     p.y = -1.5;
     return p;
 }
 
-Point Plottable_BPSKDecoder::get_lengths()
+AFPoint Plottable_BPSKDecoder::get_lengths()
 {
-    Point p;
-    p.x = chunk;
+    AFPoint p;
+    p.x = frame_size;
     p.y = 3.0;
     return p;
 }
 
 bool Plottable_BPSKDecoder::valid()
 {
-    bool valid = !(signal_queue.size() >= chunk);
+    bool readFromQueue = signal_queue.size() >= frame_size;
 
-    if (!valid)
+    if (readFromQueue)
     {
-        (void) signal_queue.get(signal_memory, chunk);
+        (void) signal_queue.get(signal_memory, frame_size);
         return false;
     }
     return true;
