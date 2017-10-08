@@ -1,8 +1,6 @@
 #include "FirLowPass.h"
 #include "math.h"
 
-#define DEBUG
-
 FirLowPass::FirLowPass(Memory * memory, 
         TransceiverCallback cb, 
         void * transceiver,
