@@ -28,7 +28,7 @@
 #include "../Channel/Channel.h"
 #include "../switches.h"
 
-#ifdef QT_ENABLE
+#ifdef GUI
 #include "../PlotController/PlotController.h"
 #endif
 
@@ -67,7 +67,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     Channel * rf_chan;
 
     /* Receiver Variables */
-    #ifdef QT_ENABLE
+    #ifdef GUI
     PlotSink    * rx_view;
     #endif
     //BandPass    * rx_bprf;
@@ -77,19 +77,17 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     FirBandPass * rx_bpif;
     Autogain    * rx_gain;
 
-    #ifdef DEBUG_CONSTELLATION
+    #ifdef GUI
     Plottable_CostasLoop * rx_cost;
     #else
     CostasLoop  * rx_cost;
     #endif
 
-    #ifdef DEBUG_DECODER
+    #ifdef GUI
     Plottable_BPSKDecoder * rx_deco;
     #else
     BPSKDecoder * rx_deco;
     #endif
-
-    SuppressPrint * rx_end;
 
     /* Transmitter Section */
     //tx_data = new StdinSource(tx_memory, transceiver_callback, this, crc_table);
@@ -108,8 +106,8 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     rf_chan = new Channel  (rx_memory, transceiver_callback, this);
 
     /* Receiver Section */
-    #ifdef QT_ENABLE
-    rx_view = new PlotSink   (rx_memory, transceiver_callback, this);
+    #ifdef GUI
+    rx_view = new PlotSink   (rx_memory, transceiver_callback, this, fs);
     #endif
 
     fm = frx - fif;
@@ -120,13 +118,13 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
     //rx_bprf = new BandPass (rx_memory, transceiver_callback, this, fs, frx, bw, order);
     //rx_bpif = new BandPass (rx_memory, transceiver_callback, this, fs, fif, bw, order);
 
-    #ifdef DEBUG_CONSTELLATION
+    #ifdef GUI
     rx_cost = new Plottable_CostasLoop(rx_memory, transceiver_callback, this, fs, fif);
     #else
     rx_cost = new CostasLoop (rx_memory, transceiver_callback, this, fs, fif);
     #endif
 
-    #ifdef DEBUG_DECODER
+    #ifdef GUI
     rx_deco = new Plottable_BPSKDecoder(rx_memory, transceiver_callback, this, fs, fif, prefix, prefix_len, cycles_per_bit, 0.75, crc_table,
             //PLOTTABLE_BPSK_DECODER_RESET_SIGNAL);
            PLOTTABLE_BPSK_DECODER_HIGH_PASS_SIGNAL);
@@ -143,7 +141,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         tx_mdrf, //RF MODULATOR
         tx_bprf, //RF BANDPASS FILTER
         rf_chan, //RF CHANNEL
-        #ifdef QT_ENABLE
+        #ifdef GUI
         rx_view, //VIEW THE WAVEFORM
         #endif
         rx_bprf, //RF BANDPASS FILTER
@@ -165,7 +163,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         modules[k]->dispatch(&msg);
     }
 
-    #ifdef QT_ENABLE
+    #ifdef GUI
     DataSource * views[] =
     {
         rx_view,

@@ -5,6 +5,9 @@
 
 #define MAX_MODULES 32
 
+/* Radio modules use this function, which is passed as a function pointer
+ * into their constructor, to send messages back to the transceiver.
+ */
 void transceiver_callback(void * arg, RadioMsg * msg)
 {
     Transceiver * self = (Transceiver *) arg;
@@ -12,6 +15,8 @@ void transceiver_callback(void * arg, RadioMsg * msg)
     self->notify(*msg);
 }
 
+/* Ignore, was used for debuging the signaling mechanism
+ */
 void Transceiver::debug(RadioMsg msg)
 {
     signal();
@@ -133,7 +138,7 @@ Transceiver::~Transceiver()
 {
     int k;
     
-    #ifdef QT_ENABLE
+    #ifdef GUI
     for (k = 0; k < MAX_MODULES; k++)
     {
         if (sources[k] != NULL)

@@ -28,12 +28,12 @@ TestFrameworkStdin::TestFrameworkStdin(StateMachine sm):
 void TestFrameworkStdin::start(bool block)
 {
     pthread_create(&main, NULL, TestFramework_loop, this);
-    #ifndef QT_ENABLE
+    #ifndef GUI
+    TestFramework::start(block);
     if (block)
     {
         pthread_join(main, NULL);
     }
-    TestFramework::start(block);
     #else
     TestFramework::start(false);
     #endif

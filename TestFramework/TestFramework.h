@@ -8,7 +8,7 @@
 #include "../Notify/Notify.h"
 #include "../switches.h"
 
-#ifdef QT_ENABLE
+#ifdef GUI
 #include "../PlotController/PlotController.h"
 #endif
 

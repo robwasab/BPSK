@@ -136,7 +136,7 @@ TestFramework::TestFramework(StateMachine sm):
     receive_data_len = 0;
     receive_data_count = 0;
 
-    #ifdef QT_ENABLE
+    #ifdef GUI
     controller = new PlotController(_argc, _argv);
     controller->set_close_cb(plotcontroller_close_callback, this);
     #else
@@ -219,7 +219,7 @@ TestFramework::~TestFramework()
 /* Don't call manualy, this is called in main_loop */
 void TestFramework::start(bool block)
 {
-    #ifdef QT_ENABLE
+    #ifdef GUI
     SignaledThread::start(false);
 
     /* start the plot controller */
@@ -228,7 +228,7 @@ void TestFramework::start(bool block)
         (void) controller->run();
     }
     #else 
-    SignaledThread::start(false);
+    SignaledThread::start(block);
     #endif
 }
 

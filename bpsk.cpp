@@ -1,3 +1,8 @@
+
+#include "switches.h"
+
+#ifdef TERMINAL_APP
+
 #include "TestFramework/TestFramework.h"
 #include "TestFramework/TestFrameworkStdin.h"
 #include "Tests/simple.h"
@@ -19,3 +24,5 @@ int main(int argc, char ** argv)
     testbench.main_loop();
     return 0;
 }
+
+#endif
