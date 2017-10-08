@@ -276,7 +276,7 @@ fail:
 void * PortAudioSimulator_loop(void * arg)
 {
     size_t size = 1024;
-    unsigned long sleep_time = (unsigned long) round(size/44.1E3*1E6);
+    unsigned int sleep_time = (unsigned int) round(size/44.1E3*1E6);
     //sleep_time = 1E5;
 
     //int count = 0;
@@ -380,8 +380,6 @@ int PortAudio_callback(
         }
     }
 
-    scale *= 4.0;
-
     for (k = 0; k < frames; k++)
     {
         tx_buffer[k] /= scale;
@@ -393,11 +391,14 @@ int PortAudio_callback(
         return paComplete;
     }
     pthread_mutex_unlock(&mutex);
-
-    if (stream) 
+	
+	#ifdef PRINT_CPU_LOAD
+    if (stream)
     {
         load = Pa_GetStreamCpuLoad(stream);
         LOG("CPU load: %.3lf\r", 100.0 * load);
     }
+	#endif
+	
     return paContinue;
 }
