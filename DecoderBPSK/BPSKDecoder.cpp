@@ -47,7 +47,7 @@ BPSKDecoder::BPSKDecoder(Memory * memory,
     this->prefix = 0;
 
     j = 0;
-    for (k = prefix_len - 1; k >= 0; --k)
+    for (k = (int)(prefix_len - 1); k >= 0; --k)
     {
         if (prefix[j]) {
             this->prefix |= (1 << k);
