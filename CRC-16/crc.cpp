@@ -35,7 +35,7 @@ uint16_t * compute_crc_table()
 uint16_t crc_16(const uint16_t table[], const uint8_t msg[], size_t len)
 {
     size_t k;
-    uint16_t reg;
+	uint16_t reg = 0;
 
     for (k = 0; k < len; k++)
     {
