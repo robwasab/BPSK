@@ -7,7 +7,7 @@ OPTIONS:=-lm -lfftw3f -lpthread -lportaudio
 OUTPUT:=main
 
 # QT Stuff
-PLOT_OBJECTS=PlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
+PLOT_OBJECTS=QTPlotController.o circularbuffer.o mainwindow.o moc_mainwindow.o moc_plot.o plot.o
 
 # Prepend PLOT_OBJECTS with PlotController/
 PLOT_PATHS=$(addprefix PlotController/,$(PLOT_OBJECTS))
@@ -97,7 +97,7 @@ bpsk.o: bpsk.cpp $(Transceivers_paths) $(TestFramework_paths) Colors/Colors.h Pl
 $(Module_paths):%.o:%.cpp %.h Module/Module.h
 	$(CC) -Wall $(FLAGS) $(INCLUDE) -c $< -o $@
 
-$(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp switches.h Module/Module.h
+$(PLOT_PATHS):%.o:PlotController/plot.h PlotController/plot.cpp PlotController/PlotController.h PlotController/QTPlotController.h switches.h Module/Module.h
 	make -C ./PlotController $(notdir $@)
 
 $(TaskScheduler_paths):%.o:%.cpp %.h Queue/Queue.h Colors/Colors.h switches.h Module/Module.h

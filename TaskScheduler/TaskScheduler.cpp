@@ -53,25 +53,25 @@ int TaskScheduler::add_module(Module * module, Block * block)
 
 void TaskScheduler::tic()
 {
-#ifdef TIMER
+    #ifdef TIMER
     clock_gettime(CLOCK_MONOTONIC_RAW, &time_start);
-#endif
+    #endif
 }
 
 void TaskScheduler::tok()
 {
-#ifdef TIMER
+    #ifdef TIMER
     clock_gettime(CLOCK_MONOTONIC_RAW, &time_stop);
-#endif
+    #endif
 }
 
 uint64_t TaskScheduler::get_time()
 {
-#ifdef TIMER
+    #ifdef TIMER
     return (time_stop.tv_sec - time_start.tv_sec)*1000000 + (time_stop.tv_nsec - time_start.tv_nsec)/1000.0;
-#else
+    #else
     return 0;
-#endif
+    #endif
 }
 
 int TaskScheduler::run_event()
@@ -91,10 +91,10 @@ int TaskScheduler::run_event()
         tic();
         Block * ret = e.module->process(e.block);
         tok();
-#ifdef TIMER
+        #ifdef TIMER
         uint64_t delta = get_time();
         LOG("%s %lu microseconds\n", e.module->name(), delta);
-#endif
+        #endif
 
         if (ret && e.module->next)
         {

@@ -52,13 +52,13 @@ SOURCES       = circularbuffer.cpp \
 		plot.cpp \
 		mainwindow.cpp \
 		main.cpp \
-		PlotController.cpp moc_plot.cpp \
+		QTPlotController.cpp moc_plot.cpp \
 		moc_mainwindow.cpp
 OBJECTS       = circularbuffer.o \
 		plot.o \
 		mainwindow.o \
 		main.o \
-		PlotController.o \
+		QTPlotController.o \
 		moc_plot.o \
 		moc_mainwindow.o
 DIST          = /usr/local/Cellar/qt5/5.7.0/mkspecs/features/spec_pre.prf \
@@ -226,7 +226,7 @@ DIST          = /usr/local/Cellar/qt5/5.7.0/mkspecs/features/spec_pre.prf \
 		plot.cpp \
 		mainwindow.cpp \
 		main.cpp \
-		PlotController.cpp
+		QTPlotController.cpp
 QMAKE_TARGET  = PlotController
 DESTDIR       = 
 #TARGET        = PlotController.app/Contents/MacOS/PlotController
@@ -595,7 +595,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents settings.h circularbuffer.h plot.h mainwindow.h PlotController.h DataSource.h $(DISTDIR)/
-	$(COPY_FILE) --parents circularbuffer.cpp plot.cpp mainwindow.cpp main.cpp PlotController.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents circularbuffer.cpp plot.cpp mainwindow.cpp main.cpp QTPlotController.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -806,13 +806,13 @@ main.o: main.cpp PlotController.h \
 		DataSource.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
-PlotController.o: PlotController.cpp /usr/local/Cellar/qt5/5.7.0/lib/QtWidgets.framework/Headers/qapplication.h \
+QTPlotController.o: QTPlotController.cpp /usr/local/Cellar/qt5/5.7.0/lib/QtWidgets.framework/Headers/qapplication.h \
 		PlotController.h \
 		DataSource.h \
 		mainwindow.h \
 		/usr/local/Cellar/qt5/5.7.0/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/usr/local/Cellar/qt5/5.7.0/lib/QtWidgets.framework/Headers/qlayout.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PlotController.o PlotController.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QTPlotController.o QTPlotController.cpp
 
 moc_plot.o: moc_plot.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_plot.o moc_plot.cpp

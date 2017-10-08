@@ -3,6 +3,10 @@
 #include <assert.h>
 #include <string.h>
 
+#ifdef GUI
+#include "../PlotController/QTPlotController.h"
+#endif
+
 #define MAX_STATE_MACHINE 128
 
 char test_event_strings[][64] = 
@@ -137,7 +141,7 @@ TestFramework::TestFramework(StateMachine sm):
     receive_data_count = 0;
 
     #ifdef GUI
-    controller = new PlotController(_argc, _argv);
+    controller = new QTPlotController(_argc, _argv);
     controller->set_close_cb(plotcontroller_close_callback, this);
     #else
     controller = NULL;
@@ -204,7 +208,7 @@ TestFramework::~TestFramework()
 {
     if (controller != NULL)
     {
-        delete controller;
+        delete (QTPlotController *) controller;
     }
 
     for (int k = 0; k < MAX_TRANSCEIVERS; k++)

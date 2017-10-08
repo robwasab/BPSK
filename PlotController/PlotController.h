@@ -8,14 +8,11 @@ typedef void (*OnCloseCallback)(void * obj);
 class PlotController
 {
 public:
-    PlotController(int argc, char ** argv);
-    void add_plot(DataSource * source);
-    void remove_plot(DataSource * source);
-    void set_close_cb(OnCloseCallback cb, void * obj);
-    int run();
-private:
-    void * main_window;
-    void * application;
+    virtual ~PlotController() {}
+    virtual void add_plot(DataSource * source) = 0;
+    virtual void remove_plot(DataSource * source) = 0;
+    virtual void set_close_cb(OnCloseCallback cb, void * obj) = 0;
+    virtual int run() = 0;
 };
 
 #endif
