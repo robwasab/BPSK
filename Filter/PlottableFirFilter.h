@@ -15,10 +15,10 @@ public:
 
     /* DataSource Methods */
     size_t size();
-    Point get_data(size_t index);
+    AFPoint get_data(size_t index);
     void next();
-    Point get_origin();
-    Point get_lengths();
+    AFPoint get_origin();
+    AFPoint get_lengths();
     bool valid();
     int get_updateInterval();
     const char * name();

@@ -3,9 +3,11 @@
 
 #include <stdint.h>
 #include <pthread.h>
+#include <string.h>
 #include <math.h>
 #include "../PlotController/DataSource.h"
 #include "../Memory/Block.h"
+#include "../Queue/Queue.h"
 
 const char __PLOT_SINK_NAME__[] = "PlotSink";
 
@@ -14,139 +16,109 @@ class PlotSink : public Module, public DataSource
 public:
     PlotSink(Memory * memory, 
             TransceiverCallback transceiver_cb, 
-            void * transceiver):
-    Module(memory, transceiver_cb, transceiver)
+            void * transceiver,
+            double fs):
+    Module(memory, transceiver_cb, transceiver),
+    queue(BUFFER_SIZE(fs))
     {
-        block = NULL;
-        data = NULL;
+        queue_full_warnings = 0;
+        frame_size = FRAME_SIZE(fs);
+        update_interval = UPDATE_INTERVAL_MS;
+        data = new float[frame_size];
+        memset(data, 0, sizeof(float) * frame_size);
         max = +1.0;
         min = -1.0;
-        len = 0;
-        _valid = true;
-        processing = false;
-        pthread_mutex_init(&mutex, NULL);
-        data_alloc = false;
     }
 
-    ~PlotSink() {
-        if (data_alloc) {
-            delete [] data;
-            data_alloc = false;
-        }
+    ~PlotSink() 
+    {
+        delete [] data;
     }
 
-    const char * name() {
+    const char * name() 
+    {
         return __PLOT_SINK_NAME__;
-    }
-
-    void lock() {
-        pthread_mutex_lock(&mutex);
-    }
-
-    void unlock() {
-        pthread_mutex_unlock(&mutex);
-    }
-
-    bool is_processing() {
-        bool ret;
-        lock();
-        ret = processing;
-        unlock();
-        return ret;
     }
 
     Block * process(Block * b) 
     {
         float ** iter;
-        size_t n;
 
-        lock();
-        processing = true;
-        unlock();
-
-        n = 0;
         iter = b->get_iterator();
-        len = b->get_size();
-
-        if (data_alloc) {
-            delete [] data;
-            data_alloc = false;
-        }
-
-        data = new float[len];
-        data_alloc = true;
 
         b->reset();
 
-        //b->print();
+        min = 1000;
+        max = -1000;
 
-        min = 100;
-        max = -100;
-
+        float sample;
+        bool res;
         do
         {
-            data[n] = **iter;
-            if (data[n] > max) {
-                max = data[n];
+            sample = **iter;
+            res = queue.add(sample);
+
+            if (!res)
+            {
+                if (queue_full_warnings++ % 1000 == 0)
+                {
+                    ERROR("Signal Queue Full\n");
+                }
             }
-            if (data[n] < min) {
-                min = data[n];
+
+            if (sample > max) 
+            {
+                max = sample;
             }
-            n += 1;
+            else if (sample < min) 
+            {
+                min = sample;
+            }
         } while(b->next());
-
-        _valid = false;
-
-        lock();
-        processing = false;
-        unlock();
 
         return b;
     }
 
     // DataSource
-    size_t size() {
-        size_t ret;
-        lock();
-        ret = len;
-        unlock();
-        return ret;
+    size_t size() 
+    {
+        return frame_size;
     }
 
-    Point get_data(size_t index) {
-        Point p;
-        while(is_processing());
+    AFPoint get_data(size_t index) 
+    {
+        AFPoint p;
         p.x = index;
         p.y = data[index];
         return p;
     }
 
-    void next() {
-        while(is_processing());
-        if (!_valid) {
-            _valid = true;
+    void next() 
+    {
+    }
+
+    bool valid() 
+    {
+        bool enough_data = queue.size() >= frame_size; 
+
+        if (enough_data)
+        {
+            queue.get(data, frame_size);
+            return false;
         }
+        return true;
     }
 
-    bool valid() {
-        bool ret;
-        while(is_processing());
-        ret = _valid;
-        return ret;
-    }
-
-    Point get_origin() {
-        Point p;
-        while(is_processing());
+    AFPoint get_origin() {
+        AFPoint p;
         p.x = 0;
         p.y = min;
         return p;
     }
 
-    Point get_lengths() {
-        Point p;
-        while(is_processing());
-        p.x = len;
+    AFPoint get_lengths() {
+        AFPoint p;
+        p.x = frame_size;
         float width;
         if (fabs(max) < fabs(min)) {
             width = 2.2 * fabs(min);
@@ -178,15 +150,13 @@ public:
 
 
 private:
-    bool processing;
-    Block * block;
+    Queue<float> queue;
+    int queue_full_warnings;
+    size_t frame_size;
+    int update_interval;
     float * data;
     float max;
     float min;
-    size_t len;
-    bool _valid;
-    pthread_mutex_t mutex;
-    bool data_alloc;
 };
 
 #endif

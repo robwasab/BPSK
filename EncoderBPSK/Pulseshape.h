@@ -22,8 +22,8 @@ public:
         return len;
     }
 
-    Point get_data(size_t index) {
-        Point p;
+    AFPoint get_data(size_t index) {
+        AFPoint p;
         p.x = index;
         p.y = pulseshape[index];
         return p;
@@ -36,15 +36,15 @@ public:
         return true;
     }
 
-    Point get_origin() {
-        Point p;
+    AFPoint get_origin() {
+        AFPoint p;
         p.x = 0;
         p.y = min;
         return p;
     }
 
-    Point get_lengths() {
-        Point p;
+    AFPoint get_lengths() {
+        AFPoint p;
         p.x = len;
         p.y = max - min;
         return p;

@@ -33,16 +33,18 @@ public:
 
     /* Data Source Methods */
     size_t size();
-    Point get_data(size_t index);
+    AFPoint get_data(size_t index);
     void next();
-    Point get_origin();
-    Point get_lengths();
+    AFPoint get_origin();
+    AFPoint get_lengths();
     bool valid();
     int get_updateInterval(); // return ms
 
 private:
+    void addSignal(float signal);
+    int queue_full_warnings;
     int signal_type;
-    size_t chunk;
+    size_t frame_size;
     Queue<float> signal_queue;
     int update_interval;
     float * signal_memory;

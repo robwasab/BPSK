@@ -28,7 +28,7 @@ public:
         return _PREFIX_NAME_;
     }
 private:
-    int prefix_len;
+    size_t prefix_len;
     bool * prefix;
     void encode_helper(Block * encode, bool inv);
 };

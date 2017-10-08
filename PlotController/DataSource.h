@@ -3,14 +3,21 @@
 
 #include <stdlib.h>
 #include <pthread.h>
+#include <math.h>
 
-struct Point
+#define NUM_FRAMES 6
+#define UPDATE_RATE_HZ 24
+#define UPDATE_INTERVAL_MS (1000/UPDATE_RATE_HZ)
+#define FRAME_SIZE(fs) ((int)(round(1.0*fs/UPDATE_RATE_HZ)))
+#define BUFFER_SIZE(fs) (NUM_FRAMES * FRAME_SIZE(fs))
+
+struct AFPoint
 {
     float x;
     float y;
 };
 
-typedef struct Point Point;
+typedef struct AFPoint AFPoint;
 
 class DataSource
 {
@@ -22,18 +29,21 @@ public:
         pthread_mutex_init(&mutex, NULL);
     }
 
+    virtual ~DataSource()
+    {
+    }
     virtual size_t size() = 0;
-    virtual Point get_data(size_t index) = 0;
+    virtual AFPoint get_data(size_t index) = 0;
     virtual void next() = 0;
     void * plot;
-    virtual Point get_origin() = 0;
-    virtual Point get_lengths() = 0;
+    virtual AFPoint get_origin() = 0;
+    virtual AFPoint get_lengths() = 0;
     virtual bool valid() = 0;
 
     /* return milliseconds */
     virtual int get_updateInterval()
     {
-        return 50;
+        return UPDATE_INTERVAL_MS;
     }
 
     virtual const char * name() = 0;

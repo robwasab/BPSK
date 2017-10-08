@@ -17,15 +17,14 @@ public:
             double fc, 
             double biqu_fcut = 600.0,
             double loop_fnat = 200.0,
-            double lock_thesh = 0.5,
-            size_t chunk = 1024);
+            double lock_thesh = 0.5);
 
     /* DataSource Methods */
     size_t size();
-    Point get_data(size_t index);
+    AFPoint get_data(size_t index);
     void next();
-    Point get_origin();
-    Point get_lengths();
+    AFPoint get_origin();
+    AFPoint get_lengths();
     bool valid();
     int get_updateInterval();
     const char * name();
@@ -53,7 +52,8 @@ public:
     ~Plottable_CostasLoop();
 
 private:
-    size_t chunk;
+    int queue_full_warnings;
+    size_t frame_size;
     int update_interval;
     Queue<float> in_phase_queue;
     Queue<float> qu_phase_queue;

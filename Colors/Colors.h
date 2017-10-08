@@ -2,7 +2,9 @@
 #define __COLORS_H__
 
 #include <stdio.h>
+#include "../switches.h"
 
+#ifdef ENABLE_COLORS
 #define BOLD printf("\e[1m")
 #define DIM printf("\e[2m")
 #define UNDERLINE printf("\e[4m")
@@ -15,5 +17,19 @@
 #define BLUE printf("\e[34m")
 #define MAGENTA printf("\e[35m")
 #define CYAN printf("\e[36m")
+#else
+#define BOLD
+#define DIM
+#define UNDERLINE
+#define BLINK
+#define INVERT
+#define ENDC 
+#define RED
+#define GREEN
+#define YELLOW
+#define BLUE
+#define MAGENTA
+#define CYAN
+#endif
 
 #endif
