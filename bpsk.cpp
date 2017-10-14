@@ -1,15 +1,16 @@
 
 #include "switches.h"
 
+#include <pthread.h>
+int _argc = 0;
+char ** _argv = NULL;
+pthread_mutex_t log_mutex;
+
 #ifdef TERMINAL_APP
 
 #include "TestFramework/TestFramework.h"
 #include "TestFramework/TestFrameworkStdin.h"
 #include "Tests/simple.h"
-
-int _argc = 0;
-char ** _argv = NULL;
-pthread_mutex_t log_mutex;
 
 int main(int argc, char ** argv)
 {

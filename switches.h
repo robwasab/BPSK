@@ -1,17 +1,13 @@
 #ifndef __SWITCH_H__
 
-/* Controls the target */
-#define MAC_OSX_NO_XCODE
-//#define MAC_OSX_WITH_XCODE
-
 /* Prefix log prints with file location */
 //#define LOG_FILE
 
 /* Enable color prints */
-#define ENABLE_COLORS
+//#define ENABLE_COLORS
 
 /* Enable local loopback of signal data. If not defined, will transmit over the air. */
-#define SIMULATE
+//#define SIMULATE
 
 /* Enable data to be encoded in QPSK form. If not defined, will use BPSK instead */
 #define QPSK_ENCODE
@@ -19,13 +15,11 @@
 /* Enable QT plots. They add a lot of processing overhead, so they are enabled for development purposes only */
 #define GUI
 
-#ifdef GUI
 /* TERMINAL_APP means that there is a main function */
-#define TERMINAL_APP
+//#define TERMINAL_APP
 /* MACOSX_APP means that the main function is removed, and code is expected to be called from ViewController etc. */
-//#define MACOSX_APP
+#define MACOSX_APP
 //#define IPHONE_APP
-#endif
 
 /* Enable Constellation Plots */
 #ifdef GUI

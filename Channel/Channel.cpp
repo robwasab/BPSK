@@ -17,22 +17,22 @@ void Channel::process_rx_buffer(const float rx_buffer[], size_t len)
     rx_block = memory->allocate(len);
     rx_iter  = rx_block->get_iterator();
 
-#ifdef SIMULATE
+    #ifdef SIMULATE
     pthread_mutex_lock(&mutex);
-#endif
+    #endif
 
     for (n = 0; n < len; n++)
     {
         **rx_iter = rx_buffer[n];
-#ifdef SIMULATE
+        #ifdef SIMULATE
         **rx_iter += distribution(generator);
-#endif
+        #endif
         rx_block->next();
     }
 
-#ifdef SIMULATE
+    #ifdef SIMULATE
     pthread_mutex_unlock(&mutex);
-#endif
+    #endif
 
     rx_block->reset();
 
@@ -49,26 +49,26 @@ double db_noise(double db)
 
 void Channel::set_noise_level(double noise_level_db)
 {
-#ifdef SIMULATE
+    #ifdef SIMULATE
     std::normal_distribution<double> new_distribution(0.0, db_noise(noise_level_db));
     pthread_mutex_lock(&mutex);
     distribution = new_distribution;
     pthread_mutex_unlock(&mutex);
-#endif
+    #endif
 }
 
 Channel::Channel(Memory * memory, TransceiverCallback cb, void * transceiver):
     Module(memory, cb, transceiver),
     PortAudioChannel()
-#ifdef SIMULATE
+    #ifdef SIMULATE
     ,distribution(0.0, db_noise(-20.0))
-#endif
+    #endif
 {
     handle = PortAudio_init(this);
 
-#ifdef SIMULATE
+    #ifdef SIMULATE
     pthread_mutex_init(&mutex, NULL);
-#endif 
+    #endif
 }
 
 Block * Channel::process(Block * block)
