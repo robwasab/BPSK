@@ -51,8 +51,7 @@ public:
         iter = b->get_iterator();
         ptr = &value;
         _free = false;
-        b->reset();
-        value = autogain->work(**iter);
+        value = 0.0;
     }
 
     ~AutogainBlock()
@@ -61,6 +60,7 @@ public:
 
     void reset() {
         b->reset();
+        value = autogain->work(**iter);
     }
 
     void free() 

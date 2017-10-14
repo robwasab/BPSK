@@ -44,12 +44,14 @@ public:
 
         ptr = &value;
         value = (float) ((bpsk->inv) * sin(bpsk->phase));
-        bpsk->phase += bpsk->inc;
+        //bpsk->phase += bpsk->inc;
 
-        reset();
         bits_iter = bits->get_iterator();
-
         notify_sent = false;
+        bits->reset();
+        state = TRAIN;
+        k = 1;
+        n = 1;
     }
 
     ~BPSKBlock() {}
@@ -74,6 +76,9 @@ public:
         state = TRAIN;
         k = 1;
         n = 1;
+        
+        value = (float) ((bpsk->inv) * sin(bpsk->phase));
+        bpsk->phase += bpsk->inc;
     }
 
     bool next() 

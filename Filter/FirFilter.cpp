@@ -60,8 +60,7 @@ public:
     {
         iter = block->get_iterator();
         ptr = &value;
-        block->reset();
-        value = filter->work(**iter);
+        value = 0.0;
     }
 
     ~FirFilterBlock() {};
@@ -85,6 +84,7 @@ public:
     void reset() 
     {
         block->reset();
+        value = filter->work(**iter);
     }
 
     bool next() 

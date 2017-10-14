@@ -20,14 +20,6 @@ CostasLoopBlock::CostasLoopBlock(Block * block,
 
     block_iter = block->get_iterator();
     ptr = get_pointer(type);
-
-    block->reset();
-    costa->work(**block_iter, 
-            in_phase_ptr,
-            qu_phase_ptr,
-            freq_est_ptr, 
-            lock_ptr, 
-            error_ptr);
 }
 
 float * CostasLoopBlock::get_pointer(SignalType type)
@@ -60,6 +52,12 @@ float ** CostasLoopBlock::get_iterator()
 
 void CostasLoopBlock::reset() {
     block->reset();
+    costa->work(**block_iter,
+                in_phase_ptr,
+                qu_phase_ptr,
+                freq_est_ptr,
+                lock_ptr,
+                error_ptr);
 }
 
 void CostasLoopBlock::hard_reset() {
