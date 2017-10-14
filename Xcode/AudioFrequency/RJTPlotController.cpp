@@ -11,12 +11,12 @@
 
 using namespace std;
 
-OnCloseCallback on_close_cb = NULL;
-void * on_close_cb_obj = NULL;
-
 RJTPlotController::RJTPlotController():
-PlotController(0, NULL),
 mDataSources()
+{
+}
+
+RJTPlotController::~RJTPlotController()
 {
 }
 
@@ -41,11 +41,11 @@ void RJTPlotController::remove_plot(DataSource * source)
 
 void RJTPlotController::set_close_cb(OnCloseCallback cb, void * obj)
 {
-    on_close_cb = cb;
-    on_close_cb_obj = obj;
+    mOnCloseCb = cb;
+    mOnCloseCbObj = obj;
 }
 
-int PlotController::run()
+int RJTPlotController::run()
 {
     return 0;
 }

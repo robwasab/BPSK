@@ -20,6 +20,11 @@ void ByteInputInterface::process_msg(const uint8_t msg[], size_t len)
         ERROR("Message length > 255\n");
         return;
     }
+    else if (len == 0)
+    {
+        ERROR("Message length == 0\n");
+        return;
+    }
 
     Block * block = memory->allocate(1 + len + 2);
 

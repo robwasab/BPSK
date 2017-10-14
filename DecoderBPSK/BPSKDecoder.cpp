@@ -458,6 +458,8 @@ Block * BPSKDecoder::process(Block * block)
                             }
                             else
                             {
+                                RadioMsg crc_error(NOTIFY_CRC_CORRUPTED);
+                                broadcast(&crc_error);
                                 ret->free();
                                 return NULL;
                             }

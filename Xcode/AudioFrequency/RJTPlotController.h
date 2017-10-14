@@ -22,6 +22,7 @@ class RJTPlotController: public PlotController
 {
 public:
     RJTPlotController();
+    ~RJTPlotController();
     
     /* Inherited */
     void add_plot(DataSource * source);
@@ -41,6 +42,9 @@ public:
      * RJTRadio.mm will use this instance variable to retreive the sources
      */
     vector<DataSource *> mDataSources;
+private:
+    OnCloseCallback mOnCloseCb = NULL;
+    void * mOnCloseCbObj = NULL;
 };
 
 #endif /* RJTPlotController_h */
