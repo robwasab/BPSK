@@ -52,7 +52,6 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     rx_memory = new Memory();
     modules = new Module*[MAX_MODULES];
     sources = new DataSource*[MAX_MODULES];
-    phase = 0.0;
     
     int k;
     for (k = 0; k < MAX_MODULES; k++)

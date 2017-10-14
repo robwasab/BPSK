@@ -10,9 +10,7 @@
 #include "pthread.h"
 #endif
 
-#include "../PortAudioDriver/PortAudioChannel.h"
-
-class Channel : public Module, public PortAudioChannel
+class Channel : public Module
 {
 public:
     Channel(Memory * rx_memory, TransceiverCallback cb, void * transceiver);
@@ -24,12 +22,28 @@ public:
     std::normal_distribution<double> distribution;
     pthread_mutex_t mutex;
 #endif
-    /* Implement PortAudioChannel receive callback */
-    void process_rx_buffer(const float rx_buffer[], size_t len);
+    
+    /* Functions used by the audio hardware interface */
+    /* Add a transmit block */
+    void add(Block * block);
+    
+    /* Called in Port Audio Driver */
+    void callback(float tx_buffer[], const float rx_buffer[], size_t len);
+    
+    /* Needs to implement */
+    virtual void process_rx_buffer(const float rx_buffer[], size_t len);
+    
+    void load();
+
 
 private:
     Block * process(Block * block);
     int handle;
+    
+    /* Variables used by the audio hardware interface */
+    Queue<Block *> source;
+    Block * tx_block;
+    bool load_block;
 };
 
 #endif

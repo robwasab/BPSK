@@ -11,13 +11,12 @@
 #include "../switches.h"
 
 #include "PortAudioDriver.h"
-#include "PortAudioChannel.h"
 #define MAX_CHANNELS 10
 
 static int occupied_channels = 0;
 
 static PaStream * stream = NULL;
-static PortAudioChannel * channels[MAX_CHANNELS] = {NULL};
+static Channel * channels[MAX_CHANNELS] = {NULL};
 
 static pthread_mutex_t mutex;
 static bool quit = false;
@@ -35,7 +34,7 @@ int PortAudio_callback( const void *input, void *output, unsigned long frames, c
  * returns the handle number.
  * returns -1 if no more available channles.
  */
-int PortAudio_init(PortAudioChannel * channel)
+int PortAudio_init(Channel * channel)
 {
     if (occupied_channels < 1)
     {
@@ -331,8 +330,7 @@ int PortAudio_callback(
     float * tx_buffer = (float *) output;
     const float * rx_buffer = (const float *) input;
     size_t k;
-    double load;
-
+    
     /* Parse Error Messages TODO */
     /*
     PaTime input_time = timeInfo->inputBufferAdcTime;
@@ -393,6 +391,7 @@ int PortAudio_callback(
     pthread_mutex_unlock(&mutex);
 	
 	#ifdef PRINT_CPU_LOAD
+    double load;
     if (stream)
     {
         load = Pa_GetStreamCpuLoad(stream);
