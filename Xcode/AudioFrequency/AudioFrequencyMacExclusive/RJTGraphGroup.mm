@@ -9,13 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "RJTGraphGroup.h"
 #import "RJTGraph.h"
+#import "RJTRadio.h"
 #include "DataSource.h"
 #include "SineWave.hpp"
 #include <vector>
-#import "AudioFrequencyWrapper.h"
-using namespace std;
 
-extern vector<DataSource *> dataSources;
+using namespace std;
 
 @interface RJTGraphGroup()
 {
@@ -24,20 +23,20 @@ extern vector<DataSource *> dataSources;
 }
 // MARK: Private Methods
 -(void) layoutGraphs;
--(void) graphsToCreate:(int)num;
--(void) checkDataSources:(NSTimer *)timer;
+-(void) graphsToCreate:(size_t)num;
+-(void) removeAllGraphs;
+-(void) loadDataSourcesFromRJTRadio:(RJTRadio *)radio;
 
 @end
 
 @implementation RJTGraphGroup
 {
     //MARK: Private Instance Variables
-    int mNumGraphs;
+    size_t mNumGraphs;
     CGFloat mWidth;
     CGFloat mHeight;
     BOOL mExpandRemainingGraphs;
     NSMutableArray * mGraphs;
-    NSTimer * mTimer;
 }
 
 -(id) initWithNumGraphs:(int)numGraphs
@@ -53,7 +52,6 @@ extern vector<DataSource *> dataSources;
         mExpandRemainingGraphs = expand;
         mGraphs = [[NSMutableArray alloc] init];
         [self graphsToCreate:numGraphs];
-        mTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkDataSources:) userInfo:nil repeats:YES];
     }
     return self;
 }
@@ -63,11 +61,23 @@ extern vector<DataSource *> dataSources;
     return nil;
 }
 
--(void) graphsToCreate:(int)numGraphs
+-(void) removeAllGraphs
 {
-    mNumGraphs = numGraphs;
+    for (int k = 0; k < mNumGraphs; k++)
+    {
+        RJTGraph * graph = [mGraphs objectAtIndex:k];
+        [graph stopTimer];
+    }
     
     [mGraphs removeAllObjects];
+    mNumGraphs = 0;
+}
+
+-(void) graphsToCreate:(size_t)numGraphs
+{
+    [self removeAllGraphs];
+    
+    mNumGraphs = numGraphs;
     
     for (int k = 0; k < mNumGraphs; k++)
     {
@@ -89,22 +99,19 @@ extern vector<DataSource *> dataSources;
     [_delegate redraw];
 }
 
--(void) checkDataSources:(NSTimer *)timer
+-(void) loadDataSourcesFromRJTRadio:(RJTRadio *)radio
 {
-    if (dataSources.size() == mNumGraphs)
+    vector<DataSource *> * sources = (vector<DataSource *> *) radio->mDataSourcesRef;
+    
+    if (mNumGraphs != sources->size())
     {
-        [mTimer invalidate];
-        mTimer = nil;
-        [self loadAudioFrequencyDataSources];
+        [self removeAllGraphs];
+        [self graphsToCreate:sources->size()];
     }
-}
-
--(void) loadAudioFrequencyDataSources
-{
-    for (int k = 0; k < mNumGraphs; k++)
+    
+    for (int k = 0; k < sources->size(); k++)
     {
-        printf("%s\n", dataSources[k]->name());
-        [[mGraphs objectAtIndex:k] setDataSource:dataSources[k]];
+        [[mGraphs objectAtIndex:k] setDataSource:(*sources)[k]];
     }
 }
 
@@ -131,7 +138,7 @@ extern vector<DataSource *> dataSources;
 
 -(void) layoutGraphs
 {
-    int numColumns;
+    size_t numColumns;
     CGFloat columnWidth;
     
     numColumns = mNumGraphs / 4 + (mNumGraphs % 4 > 0 ? 1 : 0);

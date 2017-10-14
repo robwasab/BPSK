@@ -3,51 +3,100 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E1963521F48CA2000E736C2 /* bpsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963311F48CA2000E736C2 /* bpsk.cpp */; };
-		1E19637F1F48CBB500E736C2 /* Autogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963541F48CBB400E736C2 /* Autogain.cpp */; };
-		1E1963801F48CBB500E736C2 /* PlottableAutogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */; };
-		1E1963811F48CBB500E736C2 /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963561F48CBB400E736C2 /* Channel.cpp */; };
-		1E1963821F48CBB500E736C2 /* Constellation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963571F48CBB400E736C2 /* Constellation.cpp */; };
-		1E1963831F48CBB500E736C2 /* Biquad_LowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */; };
-		1E1963841F48CBB500E736C2 /* CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963591F48CBB400E736C2 /* CostasLoop.cpp */; };
-		1E1963851F48CBB500E736C2 /* CostasLoopBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */; };
-		1E1963861F48CBB500E736C2 /* Plottable_CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */; };
-		1E1963871F48CBB500E736C2 /* QPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635C1F48CBB400E736C2 /* QPSK.cpp */; };
-		1E1963881F48CBB500E736C2 /* QPSKBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */; };
-		1E1963891F48CBB500E736C2 /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635E1F48CBB400E736C2 /* crc.cpp */; };
-		1E19638A1F48CBB500E736C2 /* BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */; };
-		1E19638B1F48CBB500E736C2 /* Plottable_BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */; };
-		1E19638C1F48CBB500E736C2 /* BPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963611F48CBB400E736C2 /* BPSK.cpp */; };
-		1E19638D1F48CBB500E736C2 /* ByteInputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */; };
-		1E19638E1F48CBB500E736C2 /* Prefix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963631F48CBB400E736C2 /* Prefix.cpp */; };
-		1E1963901F48CBB500E736C2 /* StdinSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963651F48CBB400E736C2 /* StdinSource.cpp */; };
-		1E1963911F48CBB500E736C2 /* BandPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963661F48CBB400E736C2 /* BandPass.cpp */; };
-		1E1963921F48CBB500E736C2 /* FirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963671F48CBB400E736C2 /* FirFilter.cpp */; };
-		1E1963931F48CBB500E736C2 /* FirLowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963681F48CBB400E736C2 /* FirLowPass.cpp */; };
-		1E1963941F48CBB500E736C2 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963691F48CBB400E736C2 /* math.cpp */; };
-		1E1963951F48CBB500E736C2 /* PhaseEqualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636A1F48CBB400E736C2 /* PhaseEqualizer.cpp */; };
-		1E1963961F48CBB500E736C2 /* PlottableFirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */; };
-		1E1963971F48CBB500E736C2 /* generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636C1F48CBB400E736C2 /* generator.cpp */; };
-		1E1963981F48CBB500E736C2 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636D1F48CBB400E736C2 /* Memory.cpp */; };
-		1E1963991F48CBB500E736C2 /* Modulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636E1F48CBB400E736C2 /* Modulator.cpp */; };
-		1E19639A1F48CBB500E736C2 /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636F1F48CBB400E736C2 /* Module.cpp */; };
-		1E19639D1F48CBB500E736C2 /* PortAudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */; };
-		1E19639E1F48CBB500E736C2 /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */; };
-		1E19639F1F48CBB500E736C2 /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
-		1E1963A01F48CBB500E736C2 /* SpectrumAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963751F48CBB500E736C2 /* SpectrumAnalyzer.cpp */; };
-		1E1963A21F48CBB500E736C2 /* TestFramework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963771F48CBB500E736C2 /* TestFramework.cpp */; };
-		1E1963A31F48CBB500E736C2 /* TestFrameworkStdin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */; };
-		1E1963A61F48CBB500E736C2 /* simple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637B1F48CBB500E736C2 /* simple.cpp */; };
-		1E1963A71F48CBB500E736C2 /* Transceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637C1F48CBB500E736C2 /* Transceiver.cpp */; };
-		1E1963A81F48CBB500E736C2 /* TransceiverBPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */; };
+		1E07CBFD1F8A79D00004051D /* QTPlotController.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CBFC1F8A79D00004051D /* QTPlotController.o */; };
+		1E07CBFE1F8A8EFE0004051D /* bpsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637E1F48CBB500E736C2 /* bpsk.cpp */; };
+		1E09E7731F88D9500011C95E /* SineWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76D1F88D9500011C95E /* SineWave.cpp */; };
+		1E09E7741F88D9500011C95E /* RJTGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76F1F88D9500011C95E /* RJTGraph.mm */; };
+		1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */; };
+		1E09E7761F88DBDF0011C95E /* RJTPlotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */; };
+		1E09E7791F89AF0E0011C95E /* RJTRadio.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7781F89AF0E0011C95E /* RJTRadio.mm */; };
+		1EC0393F1F80121000A4D83A /* Autogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963541F48CBB400E736C2 /* Autogain.cpp */; };
+		1EC039401F80121000A4D83A /* PlottableAutogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */; };
+		1EC039411F80121000A4D83A /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963561F48CBB400E736C2 /* Channel.cpp */; };
+		1EC039421F80121000A4D83A /* Constellation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963571F48CBB400E736C2 /* Constellation.cpp */; };
+		1EC039431F80121000A4D83A /* Biquad_LowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */; };
+		1EC039441F80121000A4D83A /* CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963591F48CBB400E736C2 /* CostasLoop.cpp */; };
+		1EC039451F80121000A4D83A /* CostasLoopBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */; };
+		1EC039461F80121000A4D83A /* Plottable_CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */; };
+		1EC039471F80121000A4D83A /* QPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635C1F48CBB400E736C2 /* QPSK.cpp */; };
+		1EC039481F80121000A4D83A /* QPSKBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */; };
+		1EC039491F80121000A4D83A /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635E1F48CBB400E736C2 /* crc.cpp */; };
+		1EC0394A1F80121000A4D83A /* BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */; };
+		1EC0394B1F80121000A4D83A /* Plottable_BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */; };
+		1EC0394C1F80121000A4D83A /* BPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963611F48CBB400E736C2 /* BPSK.cpp */; };
+		1EC0394D1F80121000A4D83A /* ByteInputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */; };
+		1EC0394E1F80121000A4D83A /* Prefix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963631F48CBB400E736C2 /* Prefix.cpp */; };
+		1EC039501F80121000A4D83A /* StdinSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963651F48CBB400E736C2 /* StdinSource.cpp */; };
+		1EC039511F80121000A4D83A /* BandPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963661F48CBB400E736C2 /* BandPass.cpp */; };
+		1EC039521F80121000A4D83A /* FirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963671F48CBB400E736C2 /* FirFilter.cpp */; };
+		1EC039531F80121000A4D83A /* FirLowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963681F48CBB400E736C2 /* FirLowPass.cpp */; };
+		1EC039541F80121000A4D83A /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963691F48CBB400E736C2 /* math.cpp */; };
+		1EC039561F80121000A4D83A /* PlottableFirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */; };
+		1EC039571F80121000A4D83A /* generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636C1F48CBB400E736C2 /* generator.cpp */; };
+		1EC039581F80121000A4D83A /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636D1F48CBB400E736C2 /* Memory.cpp */; };
+		1EC039591F80121000A4D83A /* Modulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636E1F48CBB400E736C2 /* Modulator.cpp */; };
+		1EC0395A1F80121000A4D83A /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636F1F48CBB400E736C2 /* Module.cpp */; };
+		1EC0395D1F80121000A4D83A /* PortAudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */; };
+		1EC0395E1F80121000A4D83A /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */; };
+		1EC0395F1F80121000A4D83A /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
+		1EC039621F80121000A4D83A /* TestFramework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963771F48CBB500E736C2 /* TestFramework.cpp */; };
+		1EC039631F80121000A4D83A /* TestFrameworkStdin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */; };
+		1EC039651F80121000A4D83A /* simple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637B1F48CBB500E736C2 /* simple.cpp */; };
+		1EC039661F80121000A4D83A /* Transceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637C1F48CBB500E736C2 /* Transceiver.cpp */; };
+		1EC039671F80121000A4D83A /* TransceiverBPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */; };
+		1EC039681F80121000A4D83A /* bpsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637E1F48CBB500E736C2 /* bpsk.cpp */; };
+		1EC0396B1F80138100A4D83A /* circularbuffer.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6BEE401F48FAC600CE9060 /* circularbuffer.o */; };
+		1EC0396C1F80138100A4D83A /* mainwindow.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6BEE411F48FAC600CE9060 /* mainwindow.o */; };
+		1EC0396D1F80138100A4D83A /* moc_mainwindow.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6BEE421F48FAC600CE9060 /* moc_mainwindow.o */; };
+		1EC0396E1F80138100A4D83A /* moc_plot.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6BEE431F48FAC600CE9060 /* moc_plot.o */; };
+		1EC0396F1F80138100A4D83A /* plot.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6BEE441F48FAC600CE9060 /* plot.o */; };
+		1EC039781F80158400A4D83A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039771F80158400A4D83A /* AppDelegate.swift */; };
+		1EC0397A1F80158400A4D83A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039791F80158400A4D83A /* ViewController.swift */; };
+		1EC0397C1F80158400A4D83A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EC0397B1F80158400A4D83A /* Assets.xcassets */; };
+		1EC0397F1F80158400A4D83A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC0397D1F80158400A4D83A /* Main.storyboard */; };
+		1EC039861F80161800A4D83A /* Graph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039841F80161800A4D83A /* Graph.swift */; };
+		1EC039871F80161800A4D83A /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039851F80161800A4D83A /* GraphView.swift */; };
+		1EC039881F8018AD00A4D83A /* Autogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963541F48CBB400E736C2 /* Autogain.cpp */; };
+		1EC039891F8018AD00A4D83A /* PlottableAutogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */; };
+		1EC0398A1F8018AD00A4D83A /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963561F48CBB400E736C2 /* Channel.cpp */; };
+		1EC0398B1F8018AD00A4D83A /* Constellation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963571F48CBB400E736C2 /* Constellation.cpp */; };
+		1EC0398C1F8018AD00A4D83A /* Biquad_LowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */; };
+		1EC0398D1F8018AD00A4D83A /* CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963591F48CBB400E736C2 /* CostasLoop.cpp */; };
+		1EC0398E1F8018AD00A4D83A /* CostasLoopBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */; };
+		1EC0398F1F8018AD00A4D83A /* Plottable_CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */; };
+		1EC039901F8018AD00A4D83A /* QPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635C1F48CBB400E736C2 /* QPSK.cpp */; };
+		1EC039911F8018AD00A4D83A /* QPSKBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */; };
+		1EC039921F8018AD00A4D83A /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635E1F48CBB400E736C2 /* crc.cpp */; };
+		1EC039931F8018AD00A4D83A /* BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */; };
+		1EC039941F8018AD00A4D83A /* Plottable_BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */; };
+		1EC039951F8018AD00A4D83A /* BPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963611F48CBB400E736C2 /* BPSK.cpp */; };
+		1EC039961F8018AD00A4D83A /* ByteInputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */; };
+		1EC039971F8018AD00A4D83A /* Prefix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963631F48CBB400E736C2 /* Prefix.cpp */; };
+		1EC039981F8018AD00A4D83A /* StdinSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963651F48CBB400E736C2 /* StdinSource.cpp */; };
+		1EC039991F8018AD00A4D83A /* BandPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963661F48CBB400E736C2 /* BandPass.cpp */; };
+		1EC0399A1F8018AD00A4D83A /* FirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963671F48CBB400E736C2 /* FirFilter.cpp */; };
+		1EC0399B1F8018AD00A4D83A /* FirLowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963681F48CBB400E736C2 /* FirLowPass.cpp */; };
+		1EC0399C1F8018AD00A4D83A /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963691F48CBB400E736C2 /* math.cpp */; };
+		1EC0399E1F8018AD00A4D83A /* PlottableFirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */; };
+		1EC0399F1F8018AD00A4D83A /* generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636C1F48CBB400E736C2 /* generator.cpp */; };
+		1EC039A01F8018AD00A4D83A /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636D1F48CBB400E736C2 /* Memory.cpp */; };
+		1EC039A11F8018AD00A4D83A /* Modulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636E1F48CBB400E736C2 /* Modulator.cpp */; };
+		1EC039A21F8018AD00A4D83A /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636F1F48CBB400E736C2 /* Module.cpp */; };
+		1EC039A31F8018AD00A4D83A /* PortAudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */; };
+		1EC039A41F8018AD00A4D83A /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */; };
+		1EC039A51F8018AD00A4D83A /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
+		1EC039A91F8018AD00A4D83A /* Transceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637C1F48CBB500E736C2 /* Transceiver.cpp */; };
+		1EC039AA1F8018AD00A4D83A /* TransceiverBPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */; };
+		1EC039AE1F8019D700A4D83A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EC0387E1F7FBF6B00A4D83A /* CoreGraphics.framework */; };
+		1EC039BB1F814ED700A4D83A /* RJTPlotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1E1963241F48C9AD00E736C2 /* CopyFiles */ = {
+		1EC038FA1F8011F700A4D83A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -59,92 +108,153 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1E1963261F48C9AD00E736C2 /* AudioFrequency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AudioFrequency; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E1963301F48CA2000E736C2 /* switches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = switches.h; path = ../../../switches.h; sourceTree = "<group>"; };
-		1E1963311F48CA2000E736C2 /* bpsk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bpsk.cpp; path = ../../../bpsk.cpp; sourceTree = "<group>"; };
-		1E1963321F48CA2000E736C2 /* CRC-16 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "CRC-16"; path = "../../CRC-16"; sourceTree = SOURCE_ROOT; };
-		1E1963331F48CA2000E736C2 /* Log */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Log; path = ../../../Log; sourceTree = "<group>"; };
-		1E1963341F48CA2000E736C2 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../../main.h; sourceTree = "<group>"; };
-		1E1963351F48CA2000E736C2 /* Notify */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Notify; path = ../../../Notify; sourceTree = "<group>"; };
-		1E1963361F48CA2000E736C2 /* SuppressPrint */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SuppressPrint; path = ../../../SuppressPrint; sourceTree = "<group>"; };
-		1E1963371F48CA2000E736C2 /* PortAudioDriver */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PortAudioDriver; path = ../../../PortAudioDriver; sourceTree = "<group>"; };
-		1E1963381F48CA2000E736C2 /* Channel */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Channel; path = ../../../Channel; sourceTree = "<group>"; };
-		1E1963391F48CA2000E736C2 /* RadioMsg */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RadioMsg; path = ../../../RadioMsg; sourceTree = "<group>"; };
-		1E19633A1F48CA2000E736C2 /* SignaledThread */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SignaledThread; path = ../../../SignaledThread; sourceTree = "<group>"; };
-		1E19633B1F48CA2000E736C2 /* TestFramework */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TestFramework; path = ../../../TestFramework; sourceTree = "<group>"; };
-		1E19633C1F48CA2000E736C2 /* Transceivers */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Transceivers; path = ../../../Transceivers; sourceTree = "<group>"; };
-		1E19633D1F48CA2000E736C2 /* Constellation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Constellation; path = ../../../Constellation; sourceTree = "<group>"; };
-		1E19633E1F48CA2000E736C2 /* Attenuator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Attenuator; path = ../../../Attenuator; sourceTree = "<group>"; };
-		1E19633F1F48CA2000E736C2 /* Autogain */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Autogain; path = ../../../Autogain; sourceTree = "<group>"; };
-		1E1963401F48CA2000E736C2 /* Colors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Colors; path = ../../../Colors; sourceTree = "<group>"; };
-		1E1963411F48CA2000E736C2 /* CostasLoop */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CostasLoop; path = ../../../CostasLoop; sourceTree = "<group>"; };
-		1E1963421F48CA2000E736C2 /* DecoderBPSK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DecoderBPSK; path = ../../../DecoderBPSK; sourceTree = "<group>"; };
-		1E1963431F48CA2000E736C2 /* EncoderBPSK */ = {isa = PBXFileReference; lastKnownFileType = folder; name = EncoderBPSK; path = ../../../EncoderBPSK; sourceTree = "<group>"; };
-		1E1963441F48CA2000E736C2 /* Filter */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Filter; path = ../../../Filter; sourceTree = "<group>"; };
-		1E1963451F48CA2000E736C2 /* MaximumLength */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MaximumLength; path = ../../../MaximumLength; sourceTree = "<group>"; };
-		1E1963461F48CA2000E736C2 /* Memory */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Memory; path = ../../../Memory; sourceTree = "<group>"; };
-		1E1963471F48CA2000E736C2 /* Modulator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Modulator; path = ../../../Modulator; sourceTree = "<group>"; };
-		1E1963481F48CA2000E736C2 /* Module */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Module; path = ../../../Module; sourceTree = "<group>"; };
-		1E1963491F48CA2000E736C2 /* PlotController */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PlotController; path = ../../../PlotController; sourceTree = "<group>"; };
-		1E19634A1F48CA2000E736C2 /* PlotSink */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PlotSink; path = ../../../PlotSink; sourceTree = "<group>"; };
-		1E19634B1F48CA2000E736C2 /* PortAudio */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PortAudio; path = ../../../PortAudio; sourceTree = "<group>"; };
-		1E19634C1F48CA2000E736C2 /* Queue */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Queue; path = ../../../Queue; sourceTree = "<group>"; };
-		1E19634D1F48CA2000E736C2 /* SpectrumAnalyzer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SpectrumAnalyzer; path = ../../../SpectrumAnalyzer; sourceTree = "<group>"; };
-		1E19634E1F48CA2000E736C2 /* Stack */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Stack; path = ../../../Stack; sourceTree = "<group>"; };
-		1E19634F1F48CA2000E736C2 /* TaskScheduler */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TaskScheduler; path = ../../../TaskScheduler; sourceTree = "<group>"; };
-		1E1963501F48CA2000E736C2 /* Tests */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Tests; path = ../../../Tests; sourceTree = "<group>"; };
-		1E1963511F48CA2000E736C2 /* WavSink */ = {isa = PBXFileReference; lastKnownFileType = folder; name = WavSink; path = ../../../WavSink; sourceTree = "<group>"; };
-		1E1963541F48CBB400E736C2 /* Autogain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Autogain.cpp; path = ../../Autogain/Autogain.cpp; sourceTree = "<group>"; };
-		1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlottableAutogain.cpp; path = ../../Autogain/PlottableAutogain.cpp; sourceTree = "<group>"; };
-		1E1963561F48CBB400E736C2 /* Channel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Channel.cpp; path = ../../Channel/Channel.cpp; sourceTree = "<group>"; };
-		1E1963571F48CBB400E736C2 /* Constellation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Constellation.cpp; path = ../../Constellation/Constellation.cpp; sourceTree = "<group>"; };
-		1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Biquad_LowPass.cpp; path = ../../CostasLoop/Biquad_LowPass.cpp; sourceTree = "<group>"; };
-		1E1963591F48CBB400E736C2 /* CostasLoop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CostasLoop.cpp; path = ../../CostasLoop/CostasLoop.cpp; sourceTree = "<group>"; };
-		1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CostasLoopBlock.cpp; path = ../../CostasLoop/CostasLoopBlock.cpp; sourceTree = "<group>"; };
-		1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Plottable_CostasLoop.cpp; path = ../../CostasLoop/Plottable_CostasLoop.cpp; sourceTree = "<group>"; };
-		1E19635C1F48CBB400E736C2 /* QPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QPSK.cpp; path = ../../CostasLoop/QPSK.cpp; sourceTree = "<group>"; };
-		1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QPSKBlock.cpp; path = ../../CostasLoop/QPSKBlock.cpp; sourceTree = "<group>"; };
-		1E19635E1F48CBB400E736C2 /* crc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = crc.cpp; path = "../../CRC-16/crc.cpp"; sourceTree = "<group>"; };
-		1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BPSKDecoder.cpp; path = ../../DecoderBPSK/BPSKDecoder.cpp; sourceTree = "<group>"; };
-		1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Plottable_BPSKDecoder.cpp; path = ../../DecoderBPSK/Plottable_BPSKDecoder.cpp; sourceTree = "<group>"; };
-		1E1963611F48CBB400E736C2 /* BPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BPSK.cpp; path = ../../EncoderBPSK/BPSK.cpp; sourceTree = "<group>"; };
-		1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ByteInputInterface.cpp; path = ../../EncoderBPSK/ByteInputInterface.cpp; sourceTree = "<group>"; };
-		1E1963631F48CBB400E736C2 /* Prefix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Prefix.cpp; path = ../../EncoderBPSK/Prefix.cpp; sourceTree = "<group>"; };
-		1E1963641F48CBB400E736C2 /* Pulseshape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Pulseshape.cpp; path = ../../EncoderBPSK/Pulseshape.cpp; sourceTree = "<group>"; };
-		1E1963651F48CBB400E736C2 /* StdinSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = StdinSource.cpp; path = ../../EncoderBPSK/StdinSource.cpp; sourceTree = "<group>"; };
-		1E1963661F48CBB400E736C2 /* BandPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BandPass.cpp; path = ../../Filter/BandPass.cpp; sourceTree = "<group>"; };
-		1E1963671F48CBB400E736C2 /* FirFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FirFilter.cpp; path = ../../Filter/FirFilter.cpp; sourceTree = "<group>"; };
-		1E1963681F48CBB400E736C2 /* FirLowPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FirLowPass.cpp; path = ../../Filter/FirLowPass.cpp; sourceTree = "<group>"; };
-		1E1963691F48CBB400E736C2 /* math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = math.cpp; path = ../../Filter/math.cpp; sourceTree = "<group>"; };
-		1E19636A1F48CBB400E736C2 /* PhaseEqualizer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PhaseEqualizer.cpp; path = ../../Filter/PhaseEqualizer.cpp; sourceTree = "<group>"; };
-		1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlottableFirFilter.cpp; path = ../../Filter/PlottableFirFilter.cpp; sourceTree = "<group>"; };
-		1E19636C1F48CBB400E736C2 /* generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = generator.cpp; path = ../../MaximumLength/generator.cpp; sourceTree = "<group>"; };
-		1E19636D1F48CBB400E736C2 /* Memory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../Memory/Memory.cpp; sourceTree = "<group>"; };
-		1E19636E1F48CBB400E736C2 /* Modulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Modulator.cpp; path = ../../Modulator/Modulator.cpp; sourceTree = "<group>"; };
-		1E19636F1F48CBB400E736C2 /* Module.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Module.cpp; path = ../../Module/Module.cpp; sourceTree = "<group>"; };
-		1E1963701F48CBB400E736C2 /* PortAudioSimulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioSimulator.cpp; path = ../../PortAudio/PortAudioSimulator.cpp; sourceTree = "<group>"; };
-		1E1963711F48CBB400E736C2 /* PortAudioStdin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioStdin.cpp; path = ../../PortAudio/PortAudioStdin.cpp; sourceTree = "<group>"; };
-		1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioChannel.cpp; path = ../../PortAudioDriver/PortAudioChannel.cpp; sourceTree = "<group>"; };
-		1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioDriver.cpp; path = ../../PortAudioDriver/PortAudioDriver.cpp; sourceTree = "<group>"; };
-		1E1963741F48CBB400E736C2 /* RadioMsg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RadioMsg.cpp; path = ../../RadioMsg/RadioMsg.cpp; sourceTree = "<group>"; };
-		1E1963751F48CBB500E736C2 /* SpectrumAnalyzer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SpectrumAnalyzer.cpp; path = ../../SpectrumAnalyzer/SpectrumAnalyzer.cpp; sourceTree = "<group>"; };
-		1E1963761F48CBB500E736C2 /* TaskScheduler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TaskScheduler.cpp; path = ../../TaskScheduler/TaskScheduler.cpp; sourceTree = "<group>"; };
-		1E1963771F48CBB500E736C2 /* TestFramework.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestFramework.cpp; path = ../../TestFramework/TestFramework.cpp; sourceTree = "<group>"; };
-		1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestFrameworkStdin.cpp; path = ../../TestFramework/TestFrameworkStdin.cpp; sourceTree = "<group>"; };
-		1E1963791F48CBB500E736C2 /* memory_main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = memory_main.cpp; path = ../../Tests/memory_main.cpp; sourceTree = "<group>"; };
-		1E19637A1F48CBB500E736C2 /* no_port_audio_main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = no_port_audio_main.cpp; path = ../../Tests/no_port_audio_main.cpp; sourceTree = "<group>"; };
-		1E19637B1F48CBB500E736C2 /* simple.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = simple.cpp; path = ../../Tests/simple.cpp; sourceTree = "<group>"; };
-		1E19637C1F48CBB500E736C2 /* Transceiver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Transceiver.cpp; path = ../../Transceivers/Transceiver.cpp; sourceTree = "<group>"; usesTabs = 0; };
-		1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TransceiverBPSK.cpp; path = ../../Transceivers/TransceiverBPSK.cpp; sourceTree = "<group>"; };
-		1E19637E1F48CBB500E736C2 /* bpsk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = bpsk.cpp; path = ../../bpsk.cpp; sourceTree = "<group>"; };
-		1E1963A91F48CFB200E736C2 /* PlotController */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PlotController; path = ../../../PlotController; sourceTree = "<group>"; };
+		1E07CBF81F8A58E90004051D /* RJTPlotController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RJTPlotController.h; sourceTree = "<group>"; };
+		1E07CBFC1F8A79D00004051D /* QTPlotController.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = QTPlotController.o; path = ../../PlotController/QTPlotController.o; sourceTree = "<group>"; };
+		1E09E76D1F88D9500011C95E /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
+		1E09E76E1F88D9500011C95E /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
+		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraph.mm; path = AudioFrequencyMacExclusive/RJTGraph.mm; sourceTree = "<group>"; };
+		1E09E7701F88D9500011C95E /* RJTGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RJTGraph.h; path = AudioFrequencyMacExclusive/RJTGraph.h; sourceTree = "<group>"; };
+		1E09E7711F88D9500011C95E /* RJTGraphGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RJTGraphGroup.h; path = AudioFrequencyMacExclusive/RJTGraphGroup.h; sourceTree = "<group>"; };
+		1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraphGroup.mm; path = AudioFrequencyMacExclusive/RJTGraphGroup.mm; sourceTree = "<group>"; };
+		1E09E7771F89A9970011C95E /* RJTRadio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTRadio.h; sourceTree = "<group>"; };
+		1E09E7781F89AF0E0011C95E /* RJTRadio.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RJTRadio.mm; sourceTree = "<group>"; };
+		1E1963541F48CBB400E736C2 /* Autogain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Autogain.cpp; path = ../../Autogain/Autogain.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlottableAutogain.cpp; path = ../../Autogain/PlottableAutogain.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963561F48CBB400E736C2 /* Channel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Channel.cpp; path = ../../Channel/Channel.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963571F48CBB400E736C2 /* Constellation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Constellation.cpp; path = ../../Constellation/Constellation.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Biquad_LowPass.cpp; path = ../../CostasLoop/Biquad_LowPass.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963591F48CBB400E736C2 /* CostasLoop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CostasLoop.cpp; path = ../../CostasLoop/CostasLoop.cpp; sourceTree = SOURCE_ROOT; };
+		1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CostasLoopBlock.cpp; path = ../../CostasLoop/CostasLoopBlock.cpp; sourceTree = SOURCE_ROOT; };
+		1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Plottable_CostasLoop.cpp; path = ../../CostasLoop/Plottable_CostasLoop.cpp; sourceTree = SOURCE_ROOT; };
+		1E19635C1F48CBB400E736C2 /* QPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QPSK.cpp; path = ../../CostasLoop/QPSK.cpp; sourceTree = SOURCE_ROOT; };
+		1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QPSKBlock.cpp; path = ../../CostasLoop/QPSKBlock.cpp; sourceTree = SOURCE_ROOT; };
+		1E19635E1F48CBB400E736C2 /* crc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = crc.cpp; path = "../../CRC-16/crc.cpp"; sourceTree = SOURCE_ROOT; };
+		1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BPSKDecoder.cpp; path = ../../DecoderBPSK/BPSKDecoder.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Plottable_BPSKDecoder.cpp; path = ../../DecoderBPSK/Plottable_BPSKDecoder.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963611F48CBB400E736C2 /* BPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BPSK.cpp; path = ../../EncoderBPSK/BPSK.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ByteInputInterface.cpp; path = ../../EncoderBPSK/ByteInputInterface.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963631F48CBB400E736C2 /* Prefix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Prefix.cpp; path = ../../EncoderBPSK/Prefix.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963641F48CBB400E736C2 /* Pulseshape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Pulseshape.cpp; path = ../../EncoderBPSK/Pulseshape.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963651F48CBB400E736C2 /* StdinSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = StdinSource.cpp; path = ../../EncoderBPSK/StdinSource.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963661F48CBB400E736C2 /* BandPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BandPass.cpp; path = ../../Filter/BandPass.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963671F48CBB400E736C2 /* FirFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FirFilter.cpp; path = ../../Filter/FirFilter.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963681F48CBB400E736C2 /* FirLowPass.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FirLowPass.cpp; path = ../../Filter/FirLowPass.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963691F48CBB400E736C2 /* math.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = math.cpp; path = ../../Filter/math.cpp; sourceTree = SOURCE_ROOT; };
+		1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlottableFirFilter.cpp; path = ../../Filter/PlottableFirFilter.cpp; sourceTree = SOURCE_ROOT; };
+		1E19636C1F48CBB400E736C2 /* generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = generator.cpp; path = ../../MaximumLength/generator.cpp; sourceTree = SOURCE_ROOT; };
+		1E19636D1F48CBB400E736C2 /* Memory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../Memory/Memory.cpp; sourceTree = SOURCE_ROOT; };
+		1E19636E1F48CBB400E736C2 /* Modulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Modulator.cpp; path = ../../Modulator/Modulator.cpp; sourceTree = SOURCE_ROOT; };
+		1E19636F1F48CBB400E736C2 /* Module.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Module.cpp; path = ../../Module/Module.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963701F48CBB400E736C2 /* PortAudioSimulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioSimulator.cpp; path = ../../PortAudio/PortAudioSimulator.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963711F48CBB400E736C2 /* PortAudioStdin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioStdin.cpp; path = ../../PortAudio/PortAudioStdin.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioChannel.cpp; path = ../../PortAudioDriver/PortAudioChannel.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioDriver.cpp; path = ../../PortAudioDriver/PortAudioDriver.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963741F48CBB400E736C2 /* RadioMsg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RadioMsg.cpp; path = ../../RadioMsg/RadioMsg.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963751F48CBB500E736C2 /* SpectrumAnalyzer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SpectrumAnalyzer.cpp; path = ../../SpectrumAnalyzer/SpectrumAnalyzer.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963771F48CBB500E736C2 /* TestFramework.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestFramework.cpp; path = ../../TestFramework/TestFramework.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestFrameworkStdin.cpp; path = ../../TestFramework/TestFrameworkStdin.cpp; sourceTree = SOURCE_ROOT; };
+		1E1963791F48CBB500E736C2 /* memory_main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = memory_main.cpp; path = ../../Tests/memory_main.cpp; sourceTree = SOURCE_ROOT; };
+		1E19637B1F48CBB500E736C2 /* simple.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = simple.cpp; path = ../../Tests/simple.cpp; sourceTree = SOURCE_ROOT; };
+		1E19637C1F48CBB500E736C2 /* Transceiver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Transceiver.cpp; path = ../../Transceivers/Transceiver.cpp; sourceTree = SOURCE_ROOT; usesTabs = 0; };
+		1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TransceiverBPSK.cpp; path = ../../Transceivers/TransceiverBPSK.cpp; sourceTree = SOURCE_ROOT; };
+		1E19637E1F48CBB500E736C2 /* bpsk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = bpsk.cpp; path = ../../bpsk.cpp; sourceTree = SOURCE_ROOT; };
+		1E6BEE401F48FAC600CE9060 /* circularbuffer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = circularbuffer.o; path = ../../PlotController/circularbuffer.o; sourceTree = "<group>"; };
+		1E6BEE411F48FAC600CE9060 /* mainwindow.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = mainwindow.o; path = ../../PlotController/mainwindow.o; sourceTree = "<group>"; };
+		1E6BEE421F48FAC600CE9060 /* moc_mainwindow.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = moc_mainwindow.o; path = ../../PlotController/moc_mainwindow.o; sourceTree = "<group>"; };
+		1E6BEE431F48FAC600CE9060 /* moc_plot.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = moc_plot.o; path = ../../PlotController/moc_plot.o; sourceTree = "<group>"; };
+		1E6BEE441F48FAC600CE9060 /* plot.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = plot.o; path = ../../PlotController/plot.o; sourceTree = "<group>"; };
+		1EC0387E1F7FBF6B00A4D83A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		1EC038BC1F8010C100A4D83A /* switches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = switches.h; path = ../../switches.h; sourceTree = "<group>"; };
+		1EC038BD1F8010C100A4D83A /* crc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc.h; path = "../../CRC-16/crc.h"; sourceTree = "<group>"; };
+		1EC038BE1F8010C100A4D83A /* Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Log.h; path = ../../Log/Log.h; sourceTree = "<group>"; };
+		1EC038BF1F8010C100A4D83A /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../main.h; sourceTree = "<group>"; };
+		1EC038C01F8010C100A4D83A /* Notify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notify.h; path = ../../Notify/Notify.h; sourceTree = "<group>"; };
+		1EC038C11F8010C100A4D83A /* SuppressPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuppressPrint.h; path = ../../SuppressPrint/SuppressPrint.h; sourceTree = "<group>"; };
+		1EC038C21F8010C100A4D83A /* PortAudioChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PortAudioChannel.h; path = ../../PortAudioDriver/PortAudioChannel.h; sourceTree = "<group>"; };
+		1EC038C31F8010C100A4D83A /* PortAudioDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PortAudioDriver.h; path = ../../PortAudioDriver/PortAudioDriver.h; sourceTree = "<group>"; };
+		1EC038C41F8010C100A4D83A /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Channel.h; path = ../../Channel/Channel.h; sourceTree = "<group>"; };
+		1EC038C51F8010C100A4D83A /* RadioMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadioMsg.h; path = ../../RadioMsg/RadioMsg.h; sourceTree = "<group>"; };
+		1EC038C61F8010C100A4D83A /* SignaledThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignaledThread.h; path = ../../SignaledThread/SignaledThread.h; sourceTree = "<group>"; };
+		1EC038C71F8010C100A4D83A /* TestFrameworkStdin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFrameworkStdin.h; path = ../../TestFramework/TestFrameworkStdin.h; sourceTree = "<group>"; };
+		1EC038C81F8010C100A4D83A /* TestFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFramework.h; path = ../../TestFramework/TestFramework.h; sourceTree = "<group>"; };
+		1EC038C91F8010C100A4D83A /* Transceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transceiver.h; path = ../../Transceivers/Transceiver.h; sourceTree = "<group>"; };
+		1EC038CA1F8010C100A4D83A /* TransceiverBPSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TransceiverBPSK.h; path = ../../Transceivers/TransceiverBPSK.h; sourceTree = "<group>"; };
+		1EC038CB1F8010C100A4D83A /* HostControllerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HostControllerInterface.h; path = ../../Transceivers/HostControllerInterface.h; sourceTree = "<group>"; };
+		1EC038CC1F8010C100A4D83A /* Constellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constellation.h; path = ../../Constellation/Constellation.h; sourceTree = "<group>"; };
+		1EC038CD1F8010C100A4D83A /* Attenuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Attenuator.h; path = ../../Attenuator/Attenuator.h; sourceTree = "<group>"; };
+		1EC038CE1F8010C100A4D83A /* PlottableAutogain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlottableAutogain.h; path = ../../Autogain/PlottableAutogain.h; sourceTree = "<group>"; };
+		1EC038CF1F8010C100A4D83A /* Autogain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Autogain.h; path = ../../Autogain/Autogain.h; sourceTree = "<group>"; };
+		1EC038D01F8010C100A4D83A /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Colors.h; path = ../../Colors/Colors.h; sourceTree = "<group>"; };
+		1EC038D11F8010C100A4D83A /* Plottable_CostasLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plottable_CostasLoop.h; path = ../../CostasLoop/Plottable_CostasLoop.h; sourceTree = "<group>"; };
+		1EC038D21F8010C100A4D83A /* CostasLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CostasLoop.h; path = ../../CostasLoop/CostasLoop.h; sourceTree = "<group>"; };
+		1EC038D31F8010C100A4D83A /* LockDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LockDetector.h; path = ../../CostasLoop/LockDetector.h; sourceTree = "<group>"; };
+		1EC038D41F8010C100A4D83A /* CostasLoopBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CostasLoopBlock.h; path = ../../CostasLoop/CostasLoopBlock.h; sourceTree = "<group>"; };
+		1EC038D51F8010C100A4D83A /* QPSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QPSK.h; path = ../../CostasLoop/QPSK.h; sourceTree = "<group>"; };
+		1EC038D61F8010C100A4D83A /* QPSKBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QPSKBlock.h; path = ../../CostasLoop/QPSKBlock.h; sourceTree = "<group>"; };
+		1EC038D71F8010C100A4D83A /* SecondOrderPLL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecondOrderPLL.h; path = ../../CostasLoop/SecondOrderPLL.h; sourceTree = "<group>"; };
+		1EC038D81F8010C100A4D83A /* Biquad_LowPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Biquad_LowPass.h; path = ../../CostasLoop/Biquad_LowPass.h; sourceTree = "<group>"; };
+		1EC038D91F8010C100A4D83A /* Integrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Integrator.h; path = ../../CostasLoop/Integrator.h; sourceTree = "<group>"; };
+		1EC038DA1F8010C100A4D83A /* RC_LowPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RC_LowPass.h; path = ../../CostasLoop/RC_LowPass.h; sourceTree = "<group>"; };
+		1EC038DB1F8010C100A4D83A /* Plottable_BPSKDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plottable_BPSKDecoder.h; path = ../../DecoderBPSK/Plottable_BPSKDecoder.h; sourceTree = "<group>"; };
+		1EC038DC1F8010C100A4D83A /* BPSKDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPSKDecoder.h; path = ../../DecoderBPSK/BPSKDecoder.h; sourceTree = "<group>"; };
+		1EC038DD1F8010C100A4D83A /* HighPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HighPass.h; path = ../../DecoderBPSK/HighPass.h; sourceTree = "<group>"; };
+		1EC038DE1F8010C100A4D83A /* Pulseshape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pulseshape.h; path = ../../EncoderBPSK/Pulseshape.h; sourceTree = "<group>"; };
+		1EC038DF1F8010C100A4D83A /* Prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.h; path = ../../EncoderBPSK/Prefix.h; sourceTree = "<group>"; };
+		1EC038E01F8010C100A4D83A /* BPSK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BPSK.h; path = ../../EncoderBPSK/BPSK.h; sourceTree = "<group>"; };
+		1EC038E11F8010C100A4D83A /* ByteInputInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteInputInterface.h; path = ../../EncoderBPSK/ByteInputInterface.h; sourceTree = "<group>"; };
+		1EC038E21F8010C100A4D83A /* StdinSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StdinSource.h; path = ../../EncoderBPSK/StdinSource.h; sourceTree = "<group>"; };
+		1EC038E31F8010C100A4D83A /* PlottableFirFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlottableFirFilter.h; path = ../../Filter/PlottableFirFilter.h; sourceTree = "<group>"; };
+		1EC038E41F8010C100A4D83A /* FirFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirFilter.h; path = ../../Filter/FirFilter.h; sourceTree = "<group>"; };
+		1EC038E51F8010C100A4D83A /* BandPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BandPass.h; path = ../../Filter/BandPass.h; sourceTree = "<group>"; };
+		1EC038E61F8010C100A4D83A /* FirBandPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirBandPass.h; path = ../../Filter/FirBandPass.h; sourceTree = "<group>"; };
+		1EC038E71F8010C100A4D83A /* FirHighPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirHighPass.h; path = ../../Filter/FirHighPass.h; sourceTree = "<group>"; };
+		1EC038E81F8010C100A4D83A /* FirLowPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirLowPass.h; path = ../../Filter/FirLowPass.h; sourceTree = "<group>"; };
+		1EC038E91F8010C100A4D83A /* math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = math.h; path = ../../Filter/math.h; sourceTree = "<group>"; };
+		1EC038EB1F8010C100A4D83A /* generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = generator.h; path = ../../MaximumLength/generator.h; sourceTree = "<group>"; };
+		1EC038EC1F8010C100A4D83A /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Block.h; path = ../../Memory/Block.h; sourceTree = "<group>"; };
+		1EC038ED1F8010C100A4D83A /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../Memory/Memory.h; sourceTree = "<group>"; };
+		1EC038EE1F8010C100A4D83A /* MemoryAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryAllocator.h; path = ../../Memory/MemoryAllocator.h; sourceTree = "<group>"; };
+		1EC038EF1F8010C100A4D83A /* Modulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Modulator.h; path = ../../Modulator/Modulator.h; sourceTree = "<group>"; };
+		1EC038F01F8010C100A4D83A /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Module.h; path = ../../Module/Module.h; sourceTree = "<group>"; };
+		1EC038F11F8010C100A4D83A /* DataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataSource.h; path = ../../PlotController/DataSource.h; sourceTree = "<group>"; };
+		1EC038F21F8010C100A4D83A /* PlotController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlotController.h; path = ../../PlotController/PlotController.h; sourceTree = "<group>"; };
+		1EC038F31F8010C100A4D83A /* PlotSink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlotSink.h; path = ../../PlotSink/PlotSink.h; sourceTree = "<group>"; };
+		1EC038F41F8010C100A4D83A /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = ../../Queue/Queue.h; sourceTree = "<group>"; };
+		1EC038F51F8010C100A4D83A /* SpectrumAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpectrumAnalyzer.h; path = ../../SpectrumAnalyzer/SpectrumAnalyzer.h; sourceTree = "<group>"; };
+		1EC038F61F8010C100A4D83A /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stack.h; path = ../../Stack/Stack.h; sourceTree = "<group>"; };
+		1EC038F71F8010C100A4D83A /* simple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = simple.h; path = ../../Tests/simple.h; sourceTree = "<group>"; };
+		1EC038FC1F8011F700A4D83A /* AudioFrequency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AudioFrequency; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EC039751F80158400A4D83A /* AudioFrequencyMacExclusive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioFrequencyMacExclusive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EC039771F80158400A4D83A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1EC039791F80158400A4D83A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1EC0397B1F80158400A4D83A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1EC0397E1F80158400A4D83A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1EC039801F80158400A4D83A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1EC039841F80161800A4D83A /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
+		1EC039851F80161800A4D83A /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		1EC039B81F801CE300A4D83A /* AudioFrequency-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AudioFrequency-Bridging-Header.h"; sourceTree = "<group>"; };
+		1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RJTPlotController.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1E1963231F48C9AD00E736C2 /* Frameworks */ = {
+		1EC038F91F8011F700A4D83A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E07CBFD1F8A79D00004051D /* QTPlotController.o in Frameworks */,
+				1EC0396B1F80138100A4D83A /* circularbuffer.o in Frameworks */,
+				1EC0396C1F80138100A4D83A /* mainwindow.o in Frameworks */,
+				1EC0396D1F80138100A4D83A /* moc_mainwindow.o in Frameworks */,
+				1EC0396E1F80138100A4D83A /* moc_plot.o in Frameworks */,
+				1EC0396F1F80138100A4D83A /* plot.o in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EC039721F80158400A4D83A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EC039AE1F8019D700A4D83A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,114 +264,202 @@
 		1E19631D1F48C9AD00E736C2 = {
 			isa = PBXGroup;
 			children = (
-				1E1963541F48CBB400E736C2 /* Autogain.cpp */,
-				1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */,
-				1E1963561F48CBB400E736C2 /* Channel.cpp */,
-				1E1963571F48CBB400E736C2 /* Constellation.cpp */,
-				1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */,
-				1E1963591F48CBB400E736C2 /* CostasLoop.cpp */,
-				1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */,
-				1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */,
-				1E19635C1F48CBB400E736C2 /* QPSK.cpp */,
-				1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */,
-				1E19635E1F48CBB400E736C2 /* crc.cpp */,
-				1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */,
-				1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */,
-				1E1963611F48CBB400E736C2 /* BPSK.cpp */,
-				1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */,
-				1E1963631F48CBB400E736C2 /* Prefix.cpp */,
-				1E1963641F48CBB400E736C2 /* Pulseshape.cpp */,
-				1E1963651F48CBB400E736C2 /* StdinSource.cpp */,
-				1E1963661F48CBB400E736C2 /* BandPass.cpp */,
-				1E1963671F48CBB400E736C2 /* FirFilter.cpp */,
-				1E1963681F48CBB400E736C2 /* FirLowPass.cpp */,
-				1E1963691F48CBB400E736C2 /* math.cpp */,
-				1E19636A1F48CBB400E736C2 /* PhaseEqualizer.cpp */,
-				1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */,
-				1E19636C1F48CBB400E736C2 /* generator.cpp */,
-				1E19636D1F48CBB400E736C2 /* Memory.cpp */,
-				1E19636E1F48CBB400E736C2 /* Modulator.cpp */,
-				1E19636F1F48CBB400E736C2 /* Module.cpp */,
-				1E1963701F48CBB400E736C2 /* PortAudioSimulator.cpp */,
-				1E1963711F48CBB400E736C2 /* PortAudioStdin.cpp */,
-				1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */,
-				1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */,
-				1E1963741F48CBB400E736C2 /* RadioMsg.cpp */,
-				1E1963751F48CBB500E736C2 /* SpectrumAnalyzer.cpp */,
-				1E1963761F48CBB500E736C2 /* TaskScheduler.cpp */,
-				1E1963771F48CBB500E736C2 /* TestFramework.cpp */,
-				1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */,
-				1E1963791F48CBB500E736C2 /* memory_main.cpp */,
-				1E19637A1F48CBB500E736C2 /* no_port_audio_main.cpp */,
-				1E19637B1F48CBB500E736C2 /* simple.cpp */,
-				1E19637C1F48CBB500E736C2 /* Transceiver.cpp */,
-				1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */,
-				1E19637E1F48CBB500E736C2 /* bpsk.cpp */,
-				1E1963281F48C9AD00E736C2 /* AudioFrequency */,
+				1EC039761F80158400A4D83A /* Mac Application Layer */,
+				1EBA3E3B1F7E37150069BF50 /* Objective-C Layer */,
+				1E6BEE4D1F48FBBF00CE9060 /* C++ */,
 				1E1963271F48C9AD00E736C2 /* Products */,
+				1E6BEE3F1F48FAC600CE9060 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		1E1963271F48C9AD00E736C2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1E1963261F48C9AD00E736C2 /* AudioFrequency */,
+				1EC038FC1F8011F700A4D83A /* AudioFrequency */,
+				1EC039751F80158400A4D83A /* AudioFrequencyMacExclusive.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1E1963281F48C9AD00E736C2 /* AudioFrequency */ = {
+		1E6BEE3F1F48FAC600CE9060 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1E1963A91F48CFB200E736C2 /* PlotController */,
-				1E1963301F48CA2000E736C2 /* switches.h */,
-				1E1963311F48CA2000E736C2 /* bpsk.cpp */,
-				1E1963321F48CA2000E736C2 /* CRC-16 */,
-				1E1963331F48CA2000E736C2 /* Log */,
-				1E1963341F48CA2000E736C2 /* main.h */,
-				1E1963351F48CA2000E736C2 /* Notify */,
-				1E1963361F48CA2000E736C2 /* SuppressPrint */,
-				1E1963371F48CA2000E736C2 /* PortAudioDriver */,
-				1E1963381F48CA2000E736C2 /* Channel */,
-				1E1963391F48CA2000E736C2 /* RadioMsg */,
-				1E19633A1F48CA2000E736C2 /* SignaledThread */,
-				1E19633B1F48CA2000E736C2 /* TestFramework */,
-				1E19633C1F48CA2000E736C2 /* Transceivers */,
-				1E19633D1F48CA2000E736C2 /* Constellation */,
-				1E19633E1F48CA2000E736C2 /* Attenuator */,
-				1E19633F1F48CA2000E736C2 /* Autogain */,
-				1E1963401F48CA2000E736C2 /* Colors */,
-				1E1963411F48CA2000E736C2 /* CostasLoop */,
-				1E1963421F48CA2000E736C2 /* DecoderBPSK */,
-				1E1963431F48CA2000E736C2 /* EncoderBPSK */,
-				1E1963441F48CA2000E736C2 /* Filter */,
-				1E1963451F48CA2000E736C2 /* MaximumLength */,
-				1E1963461F48CA2000E736C2 /* Memory */,
-				1E1963471F48CA2000E736C2 /* Modulator */,
-				1E1963481F48CA2000E736C2 /* Module */,
-				1E1963491F48CA2000E736C2 /* PlotController */,
-				1E19634A1F48CA2000E736C2 /* PlotSink */,
-				1E19634B1F48CA2000E736C2 /* PortAudio */,
-				1E19634C1F48CA2000E736C2 /* Queue */,
-				1E19634D1F48CA2000E736C2 /* SpectrumAnalyzer */,
-				1E19634E1F48CA2000E736C2 /* Stack */,
-				1E19634F1F48CA2000E736C2 /* TaskScheduler */,
-				1E1963501F48CA2000E736C2 /* Tests */,
-				1E1963511F48CA2000E736C2 /* WavSink */,
+				1E07CBFC1F8A79D00004051D /* QTPlotController.o */,
+				1EC0387E1F7FBF6B00A4D83A /* CoreGraphics.framework */,
+				1E6BEE401F48FAC600CE9060 /* circularbuffer.o */,
+				1E6BEE411F48FAC600CE9060 /* mainwindow.o */,
+				1E6BEE421F48FAC600CE9060 /* moc_mainwindow.o */,
+				1E6BEE431F48FAC600CE9060 /* moc_plot.o */,
+				1E6BEE441F48FAC600CE9060 /* plot.o */,
 			);
-			path = AudioFrequency;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1E6BEE4D1F48FBBF00CE9060 /* C++ */ = {
+			isa = PBXGroup;
+			children = (
+				1EC039AD1F8018F000A4D83A /* Sources */,
+				1EC039AC1F8018DA00A4D83A /* Headers */,
+			);
+			name = "C++";
+			sourceTree = "<group>";
+		};
+		1EBA3E3B1F7E37150069BF50 /* Objective-C Layer */ = {
+			isa = PBXGroup;
+			children = (
+				1EC039B81F801CE300A4D83A /* AudioFrequency-Bridging-Header.h */,
+				1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */,
+				1E07CBF81F8A58E90004051D /* RJTPlotController.h */,
+				1E09E7771F89A9970011C95E /* RJTRadio.h */,
+				1E09E7781F89AF0E0011C95E /* RJTRadio.mm */,
+				1E09E76F1F88D9500011C95E /* RJTGraph.mm */,
+				1E09E7701F88D9500011C95E /* RJTGraph.h */,
+				1E09E7711F88D9500011C95E /* RJTGraphGroup.h */,
+				1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */,
+			);
+			name = "Objective-C Layer";
+			sourceTree = "<group>";
+		};
+		1EC039761F80158400A4D83A /* Mac Application Layer */ = {
+			isa = PBXGroup;
+			children = (
+				1E09E76D1F88D9500011C95E /* SineWave.cpp */,
+				1E09E76E1F88D9500011C95E /* SineWave.hpp */,
+				1EC039841F80161800A4D83A /* Graph.swift */,
+				1EC039851F80161800A4D83A /* GraphView.swift */,
+				1EC039771F80158400A4D83A /* AppDelegate.swift */,
+				1EC039791F80158400A4D83A /* ViewController.swift */,
+				1EC0397B1F80158400A4D83A /* Assets.xcassets */,
+				1EC0397D1F80158400A4D83A /* Main.storyboard */,
+				1EC039801F80158400A4D83A /* Info.plist */,
+			);
+			name = "Mac Application Layer";
+			path = AudioFrequencyMacExclusive;
+			sourceTree = "<group>";
+		};
+		1EC039AC1F8018DA00A4D83A /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				1EC038CD1F8010C100A4D83A /* Attenuator.h */,
+				1EC038CF1F8010C100A4D83A /* Autogain.h */,
+				1EC038E51F8010C100A4D83A /* BandPass.h */,
+				1EC038D81F8010C100A4D83A /* Biquad_LowPass.h */,
+				1EC038EC1F8010C100A4D83A /* Block.h */,
+				1EC038E01F8010C100A4D83A /* BPSK.h */,
+				1EC038DC1F8010C100A4D83A /* BPSKDecoder.h */,
+				1EC038E11F8010C100A4D83A /* ByteInputInterface.h */,
+				1EC038C41F8010C100A4D83A /* Channel.h */,
+				1EC038D01F8010C100A4D83A /* Colors.h */,
+				1EC038CC1F8010C100A4D83A /* Constellation.h */,
+				1EC038D21F8010C100A4D83A /* CostasLoop.h */,
+				1EC038D41F8010C100A4D83A /* CostasLoopBlock.h */,
+				1EC038BD1F8010C100A4D83A /* crc.h */,
+				1EC038F11F8010C100A4D83A /* DataSource.h */,
+				1EC038E61F8010C100A4D83A /* FirBandPass.h */,
+				1EC038E41F8010C100A4D83A /* FirFilter.h */,
+				1EC038E71F8010C100A4D83A /* FirHighPass.h */,
+				1EC038E81F8010C100A4D83A /* FirLowPass.h */,
+				1EC038EB1F8010C100A4D83A /* generator.h */,
+				1EC038DD1F8010C100A4D83A /* HighPass.h */,
+				1EC038CB1F8010C100A4D83A /* HostControllerInterface.h */,
+				1EC038D91F8010C100A4D83A /* Integrator.h */,
+				1EC038D31F8010C100A4D83A /* LockDetector.h */,
+				1EC038BE1F8010C100A4D83A /* Log.h */,
+				1EC038BF1F8010C100A4D83A /* main.h */,
+				1EC038E91F8010C100A4D83A /* math.h */,
+				1EC038ED1F8010C100A4D83A /* Memory.h */,
+				1EC038EE1F8010C100A4D83A /* MemoryAllocator.h */,
+				1EC038EF1F8010C100A4D83A /* Modulator.h */,
+				1EC038F01F8010C100A4D83A /* Module.h */,
+				1EC038C01F8010C100A4D83A /* Notify.h */,
+				1EC038F21F8010C100A4D83A /* PlotController.h */,
+				1EC038F31F8010C100A4D83A /* PlotSink.h */,
+				1EC038DB1F8010C100A4D83A /* Plottable_BPSKDecoder.h */,
+				1EC038D11F8010C100A4D83A /* Plottable_CostasLoop.h */,
+				1EC038CE1F8010C100A4D83A /* PlottableAutogain.h */,
+				1EC038E31F8010C100A4D83A /* PlottableFirFilter.h */,
+				1EC038C21F8010C100A4D83A /* PortAudioChannel.h */,
+				1EC038C31F8010C100A4D83A /* PortAudioDriver.h */,
+				1EC038DF1F8010C100A4D83A /* Prefix.h */,
+				1EC038DE1F8010C100A4D83A /* Pulseshape.h */,
+				1EC038D51F8010C100A4D83A /* QPSK.h */,
+				1EC038D61F8010C100A4D83A /* QPSKBlock.h */,
+				1EC038F41F8010C100A4D83A /* Queue.h */,
+				1EC038C51F8010C100A4D83A /* RadioMsg.h */,
+				1EC038DA1F8010C100A4D83A /* RC_LowPass.h */,
+				1EC038D71F8010C100A4D83A /* SecondOrderPLL.h */,
+				1EC038C61F8010C100A4D83A /* SignaledThread.h */,
+				1EC038F71F8010C100A4D83A /* simple.h */,
+				1EC038F51F8010C100A4D83A /* SpectrumAnalyzer.h */,
+				1EC038F61F8010C100A4D83A /* Stack.h */,
+				1EC038E21F8010C100A4D83A /* StdinSource.h */,
+				1EC038C11F8010C100A4D83A /* SuppressPrint.h */,
+				1EC038BC1F8010C100A4D83A /* switches.h */,
+				1EC038C81F8010C100A4D83A /* TestFramework.h */,
+				1EC038C71F8010C100A4D83A /* TestFrameworkStdin.h */,
+				1EC038C91F8010C100A4D83A /* Transceiver.h */,
+				1EC038CA1F8010C100A4D83A /* TransceiverBPSK.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		1EC039AD1F8018F000A4D83A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1E1963541F48CBB400E736C2 /* Autogain.cpp */,
+				1E1963661F48CBB400E736C2 /* BandPass.cpp */,
+				1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */,
+				1E19637E1F48CBB500E736C2 /* bpsk.cpp */,
+				1E1963611F48CBB400E736C2 /* BPSK.cpp */,
+				1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */,
+				1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */,
+				1E1963561F48CBB400E736C2 /* Channel.cpp */,
+				1E1963571F48CBB400E736C2 /* Constellation.cpp */,
+				1E1963591F48CBB400E736C2 /* CostasLoop.cpp */,
+				1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */,
+				1E19635E1F48CBB400E736C2 /* crc.cpp */,
+				1E1963671F48CBB400E736C2 /* FirFilter.cpp */,
+				1E1963681F48CBB400E736C2 /* FirLowPass.cpp */,
+				1E19636C1F48CBB400E736C2 /* generator.cpp */,
+				1E1963691F48CBB400E736C2 /* math.cpp */,
+				1E1963791F48CBB500E736C2 /* memory_main.cpp */,
+				1E19636D1F48CBB400E736C2 /* Memory.cpp */,
+				1E19636E1F48CBB400E736C2 /* Modulator.cpp */,
+				1E19636F1F48CBB400E736C2 /* Module.cpp */,
+				1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */,
+				1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */,
+				1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */,
+				1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */,
+				1E1963721F48CBB400E736C2 /* PortAudioChannel.cpp */,
+				1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */,
+				1E1963701F48CBB400E736C2 /* PortAudioSimulator.cpp */,
+				1E1963711F48CBB400E736C2 /* PortAudioStdin.cpp */,
+				1E1963631F48CBB400E736C2 /* Prefix.cpp */,
+				1E1963641F48CBB400E736C2 /* Pulseshape.cpp */,
+				1E19635C1F48CBB400E736C2 /* QPSK.cpp */,
+				1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */,
+				1E1963741F48CBB400E736C2 /* RadioMsg.cpp */,
+				1E19637B1F48CBB500E736C2 /* simple.cpp */,
+				1E1963751F48CBB500E736C2 /* SpectrumAnalyzer.cpp */,
+				1E1963651F48CBB400E736C2 /* StdinSource.cpp */,
+				1E1963771F48CBB500E736C2 /* TestFramework.cpp */,
+				1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */,
+				1E19637C1F48CBB500E736C2 /* Transceiver.cpp */,
+				1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */,
+			);
+			name = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1E1963251F48C9AD00E736C2 /* AudioFrequency */ = {
+		1EC038FB1F8011F700A4D83A /* AudioFrequency */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1E19632D1F48C9AD00E736C2 /* Build configuration list for PBXNativeTarget "AudioFrequency" */;
+			buildConfigurationList = 1EC039001F8011F700A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequency" */;
 			buildPhases = (
-				1E1963221F48C9AD00E736C2 /* Sources */,
-				1E1963231F48C9AD00E736C2 /* Frameworks */,
-				1E1963241F48C9AD00E736C2 /* CopyFiles */,
+				1EC038F81F8011F700A4D83A /* Sources */,
+				1EC038F91F8011F700A4D83A /* Frameworks */,
+				1EC038FA1F8011F700A4D83A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -269,8 +467,25 @@
 			);
 			name = AudioFrequency;
 			productName = AudioFrequency;
-			productReference = 1E1963261F48C9AD00E736C2 /* AudioFrequency */;
+			productReference = 1EC038FC1F8011F700A4D83A /* AudioFrequency */;
 			productType = "com.apple.product-type.tool";
+		};
+		1EC039741F80158400A4D83A /* AudioFrequencyMacExclusive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1EC039811F80158400A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequencyMacExclusive" */;
+			buildPhases = (
+				1EC039711F80158400A4D83A /* Sources */,
+				1EC039721F80158400A4D83A /* Frameworks */,
+				1EC039731F80158400A4D83A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AudioFrequencyMacExclusive;
+			productName = AudioFrequencyMacExclusive;
+			productReference = 1EC039751F80158400A4D83A /* AudioFrequencyMacExclusive.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -278,78 +493,155 @@
 		1E19631E1F48C9AD00E736C2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Robby Tong";
 				TargetAttributes = {
-					1E1963251F48C9AD00E736C2 = {
+					1EC038FB1F8011F700A4D83A = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+					1EC039741F80158400A4D83A = {
 						CreatedOnToolsVersion = 8.3.3;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = 1E1963211F48C9AD00E736C2 /* Build configuration list for PBXProject "AudioFrequency" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 1E19631D1F48C9AD00E736C2;
 			productRefGroup = 1E1963271F48C9AD00E736C2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1E1963251F48C9AD00E736C2 /* AudioFrequency */,
+				1EC038FB1F8011F700A4D83A /* AudioFrequency */,
+				1EC039741F80158400A4D83A /* AudioFrequencyMacExclusive */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		1EC039731F80158400A4D83A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EC0397C1F80158400A4D83A /* Assets.xcassets in Resources */,
+				1EC0397F1F80158400A4D83A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		1E1963221F48C9AD00E736C2 /* Sources */ = {
+		1EC038F81F8011F700A4D83A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E19637F1F48CBB500E736C2 /* Autogain.cpp in Sources */,
-				1E1963801F48CBB500E736C2 /* PlottableAutogain.cpp in Sources */,
-				1E1963811F48CBB500E736C2 /* Channel.cpp in Sources */,
-				1E1963821F48CBB500E736C2 /* Constellation.cpp in Sources */,
-				1E1963831F48CBB500E736C2 /* Biquad_LowPass.cpp in Sources */,
-				1E1963841F48CBB500E736C2 /* CostasLoop.cpp in Sources */,
-				1E1963851F48CBB500E736C2 /* CostasLoopBlock.cpp in Sources */,
-				1E1963861F48CBB500E736C2 /* Plottable_CostasLoop.cpp in Sources */,
-				1E1963871F48CBB500E736C2 /* QPSK.cpp in Sources */,
-				1E1963881F48CBB500E736C2 /* QPSKBlock.cpp in Sources */,
-				1E1963891F48CBB500E736C2 /* crc.cpp in Sources */,
-				1E19638A1F48CBB500E736C2 /* BPSKDecoder.cpp in Sources */,
-				1E19638B1F48CBB500E736C2 /* Plottable_BPSKDecoder.cpp in Sources */,
-				1E19638C1F48CBB500E736C2 /* BPSK.cpp in Sources */,
-				1E19638D1F48CBB500E736C2 /* ByteInputInterface.cpp in Sources */,
-				1E19638E1F48CBB500E736C2 /* Prefix.cpp in Sources */,
-				1E1963901F48CBB500E736C2 /* StdinSource.cpp in Sources */,
-				1E1963911F48CBB500E736C2 /* BandPass.cpp in Sources */,
-				1E1963921F48CBB500E736C2 /* FirFilter.cpp in Sources */,
-				1E1963931F48CBB500E736C2 /* FirLowPass.cpp in Sources */,
-				1E1963941F48CBB500E736C2 /* math.cpp in Sources */,
-				1E1963951F48CBB500E736C2 /* PhaseEqualizer.cpp in Sources */,
-				1E1963961F48CBB500E736C2 /* PlottableFirFilter.cpp in Sources */,
-				1E1963971F48CBB500E736C2 /* generator.cpp in Sources */,
-				1E1963981F48CBB500E736C2 /* Memory.cpp in Sources */,
-				1E1963991F48CBB500E736C2 /* Modulator.cpp in Sources */,
-				1E19639A1F48CBB500E736C2 /* Module.cpp in Sources */,
-				1E19639D1F48CBB500E736C2 /* PortAudioChannel.cpp in Sources */,
-				1E19639E1F48CBB500E736C2 /* PortAudioDriver.cpp in Sources */,
-				1E19639F1F48CBB500E736C2 /* RadioMsg.cpp in Sources */,
-				1E1963A01F48CBB500E736C2 /* SpectrumAnalyzer.cpp in Sources */,
-				1E1963A21F48CBB500E736C2 /* TestFramework.cpp in Sources */,
-				1E1963A31F48CBB500E736C2 /* TestFrameworkStdin.cpp in Sources */,
-				1E1963A61F48CBB500E736C2 /* simple.cpp in Sources */,
-				1E1963A71F48CBB500E736C2 /* Transceiver.cpp in Sources */,
-				1E1963A81F48CBB500E736C2 /* TransceiverBPSK.cpp in Sources */,
-				1E1963521F48CA2000E736C2 /* bpsk.cpp in Sources */,
+				1EC0393F1F80121000A4D83A /* Autogain.cpp in Sources */,
+				1EC039401F80121000A4D83A /* PlottableAutogain.cpp in Sources */,
+				1EC039411F80121000A4D83A /* Channel.cpp in Sources */,
+				1EC039421F80121000A4D83A /* Constellation.cpp in Sources */,
+				1EC039431F80121000A4D83A /* Biquad_LowPass.cpp in Sources */,
+				1EC039441F80121000A4D83A /* CostasLoop.cpp in Sources */,
+				1EC039451F80121000A4D83A /* CostasLoopBlock.cpp in Sources */,
+				1EC039461F80121000A4D83A /* Plottable_CostasLoop.cpp in Sources */,
+				1EC039471F80121000A4D83A /* QPSK.cpp in Sources */,
+				1EC039481F80121000A4D83A /* QPSKBlock.cpp in Sources */,
+				1EC039491F80121000A4D83A /* crc.cpp in Sources */,
+				1EC0394A1F80121000A4D83A /* BPSKDecoder.cpp in Sources */,
+				1EC0394B1F80121000A4D83A /* Plottable_BPSKDecoder.cpp in Sources */,
+				1EC0394C1F80121000A4D83A /* BPSK.cpp in Sources */,
+				1EC0394D1F80121000A4D83A /* ByteInputInterface.cpp in Sources */,
+				1EC0394E1F80121000A4D83A /* Prefix.cpp in Sources */,
+				1EC039501F80121000A4D83A /* StdinSource.cpp in Sources */,
+				1EC039511F80121000A4D83A /* BandPass.cpp in Sources */,
+				1EC039521F80121000A4D83A /* FirFilter.cpp in Sources */,
+				1EC039531F80121000A4D83A /* FirLowPass.cpp in Sources */,
+				1EC039541F80121000A4D83A /* math.cpp in Sources */,
+				1EC039561F80121000A4D83A /* PlottableFirFilter.cpp in Sources */,
+				1EC039571F80121000A4D83A /* generator.cpp in Sources */,
+				1EC039581F80121000A4D83A /* Memory.cpp in Sources */,
+				1EC039591F80121000A4D83A /* Modulator.cpp in Sources */,
+				1EC0395A1F80121000A4D83A /* Module.cpp in Sources */,
+				1EC0395D1F80121000A4D83A /* PortAudioChannel.cpp in Sources */,
+				1EC0395E1F80121000A4D83A /* PortAudioDriver.cpp in Sources */,
+				1EC0395F1F80121000A4D83A /* RadioMsg.cpp in Sources */,
+				1EC039BB1F814ED700A4D83A /* RJTPlotController.cpp in Sources */,
+				1EC039621F80121000A4D83A /* TestFramework.cpp in Sources */,
+				1EC039631F80121000A4D83A /* TestFrameworkStdin.cpp in Sources */,
+				1EC039651F80121000A4D83A /* simple.cpp in Sources */,
+				1EC039661F80121000A4D83A /* Transceiver.cpp in Sources */,
+				1EC039671F80121000A4D83A /* TransceiverBPSK.cpp in Sources */,
+				1EC039681F80121000A4D83A /* bpsk.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EC039711F80158400A4D83A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E07CBFE1F8A8EFE0004051D /* bpsk.cpp in Sources */,
+				1E09E7761F88DBDF0011C95E /* RJTPlotController.cpp in Sources */,
+				1E09E7791F89AF0E0011C95E /* RJTRadio.mm in Sources */,
+				1EC039881F8018AD00A4D83A /* Autogain.cpp in Sources */,
+				1EC039891F8018AD00A4D83A /* PlottableAutogain.cpp in Sources */,
+				1EC0398A1F8018AD00A4D83A /* Channel.cpp in Sources */,
+				1EC0398B1F8018AD00A4D83A /* Constellation.cpp in Sources */,
+				1EC0398C1F8018AD00A4D83A /* Biquad_LowPass.cpp in Sources */,
+				1EC0398D1F8018AD00A4D83A /* CostasLoop.cpp in Sources */,
+				1EC0398E1F8018AD00A4D83A /* CostasLoopBlock.cpp in Sources */,
+				1EC0398F1F8018AD00A4D83A /* Plottable_CostasLoop.cpp in Sources */,
+				1EC039901F8018AD00A4D83A /* QPSK.cpp in Sources */,
+				1EC039911F8018AD00A4D83A /* QPSKBlock.cpp in Sources */,
+				1EC039921F8018AD00A4D83A /* crc.cpp in Sources */,
+				1EC039931F8018AD00A4D83A /* BPSKDecoder.cpp in Sources */,
+				1E09E7741F88D9500011C95E /* RJTGraph.mm in Sources */,
+				1EC039941F8018AD00A4D83A /* Plottable_BPSKDecoder.cpp in Sources */,
+				1EC039951F8018AD00A4D83A /* BPSK.cpp in Sources */,
+				1EC039961F8018AD00A4D83A /* ByteInputInterface.cpp in Sources */,
+				1EC039971F8018AD00A4D83A /* Prefix.cpp in Sources */,
+				1EC039981F8018AD00A4D83A /* StdinSource.cpp in Sources */,
+				1EC039991F8018AD00A4D83A /* BandPass.cpp in Sources */,
+				1EC0399A1F8018AD00A4D83A /* FirFilter.cpp in Sources */,
+				1EC0399B1F8018AD00A4D83A /* FirLowPass.cpp in Sources */,
+				1EC0399C1F8018AD00A4D83A /* math.cpp in Sources */,
+				1EC0399E1F8018AD00A4D83A /* PlottableFirFilter.cpp in Sources */,
+				1EC0399F1F8018AD00A4D83A /* generator.cpp in Sources */,
+				1EC039A01F8018AD00A4D83A /* Memory.cpp in Sources */,
+				1EC039A11F8018AD00A4D83A /* Modulator.cpp in Sources */,
+				1EC039A21F8018AD00A4D83A /* Module.cpp in Sources */,
+				1EC039A31F8018AD00A4D83A /* PortAudioChannel.cpp in Sources */,
+				1EC039A41F8018AD00A4D83A /* PortAudioDriver.cpp in Sources */,
+				1EC039A51F8018AD00A4D83A /* RadioMsg.cpp in Sources */,
+				1EC039A91F8018AD00A4D83A /* Transceiver.cpp in Sources */,
+				1EC039AA1F8018AD00A4D83A /* TransceiverBPSK.cpp in Sources */,
+				1EC039861F80161800A4D83A /* Graph.swift in Sources */,
+				1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */,
+				1EC0397A1F80158400A4D83A /* ViewController.swift in Sources */,
+				1EC039781F80158400A4D83A /* AppDelegate.swift in Sources */,
+				1EC039871F80161800A4D83A /* GraphView.swift in Sources */,
+				1E09E7731F88D9500011C95E /* SineWave.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		1EC0397D1F80158400A4D83A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1EC0397E1F80158400A4D83A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1E19632B1F48C9AD00E736C2 /* Debug */ = {
@@ -441,20 +733,40 @@
 			};
 			name = Release;
 		};
-		1E19632E1F48C9AD00E736C2 /* Debug */ = {
+		1EC039011F8011F700A4D83A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INSTALL_PATH = /usr/bin;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-I",
+				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					"-I",
 					../../,
+					../,
 				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
+					"-F/usr/local/Cellar/qt5/5.7.0/lib",
+					"-L",
+					/usr/local/opt/qwt/lib/qwt.framework/,
+					/usr/local/opt/qwt/lib/qwt.framework/qwt,
+					"-framework",
+					QtPrintSupport,
+					"-framework",
+					QtWidgets,
+					"-framework",
+					QtGui,
+					"-framework",
+					QtCore,
+					"-framework",
+					DiskArbitration,
+					"-framework",
+					IOKit,
+					"-framework",
+					QtOpenGL,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
 					"-lm",
 					"-lfftw3f",
 					"-lpthread",
@@ -464,26 +776,149 @@
 			};
 			name = Debug;
 		};
-		1E19632F1F48C9AD00E736C2 /* Release */ = {
+		1EC039021F8011F700A4D83A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INSTALL_PATH = /usr/bin;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
-					"-I",
+				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					"-I",
 					../../,
+					../,
 				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
 					"-L",
 					/usr/local/lib,
+					"-F/usr/local/Cellar/qt5/5.7.0/lib",
+					"-L",
+					/usr/local/opt/qwt/lib/qwt.framework/,
+					/usr/local/opt/qwt/lib/qwt.framework/qwt,
+					"-framework",
+					QtPrintSupport,
+					"-framework",
+					QtWidgets,
+					"-framework",
+					QtGui,
+					"-framework",
+					QtCore,
+					"-framework",
+					DiskArbitration,
+					"-framework",
+					IOKit,
+					"-framework",
+					QtOpenGL,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
 					"-lm",
 					"-lfftw3f",
 					"-lpthread",
 					"-lportaudio",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		1EC039821F80158400A4D83A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BZ43VN2TVC;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					../../../,
+					../../,
+					../,
+				);
+				INFOPLIST_FILE = AudioFrequencyMacExclusive/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lm",
+					"-lfftw3f",
+					"-lpthread",
+					"-lportaudio",
+					"-F/usr/local/Cellar/qt5/5.7.0/lib",
+					"-L",
+					/usr/local/opt/qwt/lib/qwt.framework/,
+					/usr/local/opt/qwt/lib/qwt.framework/qwt,
+					"-framework",
+					QtPrintSupport,
+					"-framework",
+					QtWidgets,
+					"-framework",
+					QtGui,
+					"-framework",
+					QtCore,
+					"-framework",
+					DiskArbitration,
+					"-framework",
+					IOKit,
+					"-framework",
+					QtOpenGL,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = RobbyTog.AudioFrequencyMacExclusive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "AudioFrequency-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		1EC039831F80158400A4D83A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BZ43VN2TVC;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					../../../,
+					../../,
+					../,
+				);
+				INFOPLIST_FILE = AudioFrequencyMacExclusive/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lm",
+					"-lfftw3f",
+					"-lpthread",
+					"-lportaudio",
+					"-F/usr/local/Cellar/qt5/5.7.0/lib",
+					"-L",
+					/usr/local/opt/qwt/lib/qwt.framework/,
+					/usr/local/opt/qwt/lib/qwt.framework/qwt,
+					"-framework",
+					QtPrintSupport,
+					"-framework",
+					QtWidgets,
+					"-framework",
+					QtGui,
+					"-framework",
+					QtCore,
+					"-framework",
+					DiskArbitration,
+					"-framework",
+					IOKit,
+					"-framework",
+					QtOpenGL,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = RobbyTog.AudioFrequencyMacExclusive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AudioFrequency-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -499,13 +934,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1E19632D1F48C9AD00E736C2 /* Build configuration list for PBXNativeTarget "AudioFrequency" */ = {
+		1EC039001F8011F700A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequency" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1E19632E1F48C9AD00E736C2 /* Debug */,
-				1E19632F1F48C9AD00E736C2 /* Release */,
+				1EC039011F8011F700A4D83A /* Debug */,
+				1EC039021F8011F700A4D83A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1EC039811F80158400A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequencyMacExclusive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1EC039821F80158400A4D83A /* Debug */,
+				1EC039831F80158400A4D83A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

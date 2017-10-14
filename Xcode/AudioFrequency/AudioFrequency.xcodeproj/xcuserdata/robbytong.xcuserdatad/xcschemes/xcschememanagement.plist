@@ -9,10 +9,45 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>AudioFrequencyMacExclusive.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>1E1963251F48C9AD00E736C2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1EC038521F7FBD1100A4D83A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1EC038621F7FBD1100A4D83A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1EC0386D1F7FBD1100A4D83A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1EC0388A1F800D7000A4D83A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1EC038FB1F8011F700A4D83A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1EC039741F80158400A4D83A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -16,7 +16,8 @@
 typedef void * DataSourceRef;
 
 @interface RJTGraph : NSObject
-
+{
+}
 @property (weak, atomic) id <RJTViewUpdateDelegate> delegate;
 
 //init(x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat)
@@ -27,6 +28,7 @@ typedef void * DataSourceRef;
 
 -(id) init;
 -(void) dealloc;
+-(void) stopTimer;
 -(void) useDemoSineWaveAsDataSource;
 -(void) setDemoSineWavePeriod:(int)period;
 -(void) setDataSource:(DataSourceRef)dataSource;

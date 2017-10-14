@@ -684,11 +684,72 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="AudioFrequencyMacExclusive" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="1nG-jA-dn0">
-                        <rect key="frame" x="0.0" y="0.0" width="282" height="646"/>
+                        <rect key="frame" x="0.0" y="0.0" width="439" height="906"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TfP-7d-nNC">
+                                <rect key="frame" x="-6" y="878" width="70" height="32"/>
+                                <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Uyo-XN-vnN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="startButtonClicked:" target="XfG-lQ-9wD" id="xJn-D1-rrm"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Hg-eh-X4s">
+                                <rect key="frame" x="-6" y="849" width="69" height="32"/>
+                                <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="i9I-bo-uJr">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="stopButtonClicked:" target="XfG-lQ-9wD" id="9r5-9L-dk6"/>
+                                </connections>
+                            </button>
+                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mGM-Gs-5C9">
+                                <rect key="frame" x="0.0" y="845" width="439" height="5"/>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qv0-rr-IXJ">
+                                <rect key="frame" x="-2" y="822" width="157" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Press Enter to Send Text:" id="2bf-bc-fCx">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dio-pV-CoY">
+                                <rect key="frame" x="0.0" y="792" width="439" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Ydy-cS-F7f">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="textFieldEnterPressed:" target="XfG-lQ-9wD" id="3Zf-ze-27o"/>
+                                </connections>
+                            </textField>
+                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="mKC-z1-xfC">
+                                <rect key="frame" x="0.0" y="781" width="439" height="5"/>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jpt-kc-G4o">
+                                <rect key="frame" x="-2" y="758" width="64" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Received:" id="Q1G-Qf-uhZ">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7BL-CO-enH">
+                                <rect key="frame" x="-2" y="733" width="443" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="IG8-ok-0lz">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="9cf-s7-iH9" customClass="GraphView" customModule="AudioFrequencyMacExclusive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="551" height="646"/>
+                                <rect key="frame" x="0.0" y="0.0" width="439" height="725"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="expandRemainingGraphs" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="numGraphs">
@@ -698,25 +759,52 @@
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="9cf-s7-iH9" secondAttribute="bottom" id="4PO-x1-sg5"/>
-                            <constraint firstItem="9cf-s7-iH9" firstAttribute="leading" secondItem="1nG-jA-dn0" secondAttribute="leading" id="77j-a0-dN4"/>
-                            <constraint firstItem="9cf-s7-iH9" firstAttribute="top" secondItem="1nG-jA-dn0" secondAttribute="top" id="Gcg-m2-Mhp"/>
-                            <constraint firstAttribute="trailing" secondItem="9cf-s7-iH9" secondAttribute="trailing" id="Nj6-AY-W8J"/>
+                            <constraint firstAttribute="trailing" secondItem="mGM-Gs-5C9" secondAttribute="trailing" id="03I-yl-Rmu"/>
+                            <constraint firstItem="mKC-z1-xfC" firstAttribute="leading" secondItem="1nG-jA-dn0" secondAttribute="leading" id="3tk-cE-Z9Q"/>
+                            <constraint firstItem="Dio-pV-CoY" firstAttribute="leading" secondItem="1nG-jA-dn0" secondAttribute="leading" id="6z7-jM-kdZ"/>
+                            <constraint firstItem="mGM-Gs-5C9" firstAttribute="leading" secondItem="1nG-jA-dn0" secondAttribute="leading" id="869-wW-JUi"/>
+                            <constraint firstAttribute="trailing" secondItem="mKC-z1-xfC" secondAttribute="trailing" id="9ik-WX-ApU"/>
+                            <constraint firstItem="7BL-CO-enH" firstAttribute="leading" secondItem="1nG-jA-dn0" secondAttribute="leading" id="D1N-S2-nE0"/>
+                            <constraint firstItem="9cf-s7-iH9" firstAttribute="leading" secondItem="1nG-jA-dn0" secondAttribute="leading" id="Ipu-WM-Tel"/>
+                            <constraint firstAttribute="trailing" secondItem="7BL-CO-enH" secondAttribute="trailing" id="Nlm-Fi-C2B"/>
+                            <constraint firstAttribute="bottom" secondItem="9cf-s7-iH9" secondAttribute="bottom" id="O01-b0-fXv"/>
+                            <constraint firstAttribute="trailing" secondItem="Dio-pV-CoY" secondAttribute="trailing" id="ZCu-IC-v8S"/>
+                            <constraint firstAttribute="trailing" secondItem="9cf-s7-iH9" secondAttribute="trailing" id="xpu-NU-eU7"/>
                         </constraints>
                         <visibilityPriorities>
                             <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
+                            <integer value="1000"/>
                         </visibilityPriorities>
                         <customSpacing>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
+                            <real value="3.4028234663852886e+38"/>
                             <real value="3.4028234663852886e+38"/>
                         </customSpacing>
                     </stackView>
                     <connections>
                         <outlet property="graphView" destination="9cf-s7-iH9" id="xHa-br-Esq"/>
+                        <outlet property="mDataReceivedLabel" destination="7BL-CO-enH" id="A4c-XO-LHc"/>
+                        <outlet property="mStartButton" destination="TfP-7d-nNC" id="iW9-6c-pQP"/>
+                        <outlet property="mStopButton" destination="8Hg-eh-X4s" id="aoY-f5-iy4"/>
+                        <outlet property="mTextField" destination="Dio-pV-CoY" id="04v-5y-naX"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-30" y="789"/>
+            <point key="canvasLocation" x="75" y="1031"/>
         </scene>
     </scenes>
 </document>

@@ -52,7 +52,8 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     rx_memory = new Memory();
     modules = new Module*[MAX_MODULES];
     sources = new DataSource*[MAX_MODULES];
-
+    phase = 0.0;
+    
     int k;
     for (k = 0; k < MAX_MODULES; k++)
     {
@@ -83,12 +84,18 @@ void Transceiver::process(RadioMsg msg)
             }
             break;
 
+        case NOTIFY_CRC_CORRUPTED:
         case NOTIFY_DATA_START:
         case NOTIFY_DATA_BODY:
         case NOTIFY_USER_REQUEST_QUIT:
             notify_cb(obj, &msg);
             break;
 
+        case NOTIFY_PLL_RESET:
+        case NOTIFY_PLL_LOST_LOCK:
+            notify_cb(obj, &msg);
+            // fall through
+        case NOTIFY_PLL_LOCK:
         case CMD_START:
         case CMD_STOP:
         case CMD_RESET_ALL:
@@ -98,9 +105,6 @@ void Transceiver::process(RadioMsg msg)
         case CMD_SET_RECEIVE_CHANNEL:
         case CMD_SET_NOISE_LEVEL:
         case CMD_TEST_PSK8_SIG_GEN:
-        case NOTIFY_PLL_RESET:
-        case NOTIFY_PLL_LOCK:
-        case NOTIFY_PLL_LOST_LOCK:
         case NOTIFY_PACKET_HEADER_DETECTED:
         case NOTIFY_RECEIVER_RESET_CONDITION_DETECTED:
         case NOTIFY_MSG_EXHAUSTED:

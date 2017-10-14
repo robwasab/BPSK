@@ -10,11 +10,20 @@
 #define Radio_h
 
 @protocol RJTRadioReceiveProtocol<NSObject>
--(void) receivedData:(char *)data;
+@required
+-(void) receivedData:(uint8_t *)data dataLen:(uint8_t)len;
+-(void) finishedStopping;
 @end
 
 
 @interface RJTRadio:NSObject
+{
+    @public
+    uint8_t mReceiveDataCount;
+    uint8_t mReceiveDataLen;
+    uint8_t mReceiveData[256];
+    void * mDataSourcesRef;
+}
 
 @property (weak, atomic) id<RJTRadioReceiveProtocol> mReceiveDelegate;
 
@@ -22,8 +31,7 @@
 -(id) initWithTxFreq:(double)txFreq rxFreq:(double)rxFreq ifBandWidth:(double)bw ifFreq:(double)ifFreq cyclesPerBit:(int)cycles;
 -(id) initWithTxFreq:(double)txFreq rxFreq:(double)rxFreq;
 -(void) dealloc;
-
--(void) sendWithByteArray:(char *)msg;
+-(void) sendWithByteArray:(const uint8_t *)inMsg length:(uint8_t)len;
 -(void) sendWithObject:(NSString *)msg;
 -(void) start;
 -(void) stop;

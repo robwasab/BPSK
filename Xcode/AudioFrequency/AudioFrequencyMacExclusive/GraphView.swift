@@ -9,10 +9,11 @@
 import Cocoa
 import CoreGraphics
 
-@IBDesignable class GraphView: NSView, RJTViewUpdateDelegate {
+@IBDesignable class GraphView: NSView, RJTViewUpdateDelegate, RJTRadioReceiveProtocol {
 
     var mGraphGroup:RJTGraphGroup?
-    var mRadio:AudioFrequencyWrapper?
+    var mRadio:RJTRadio?
+    weak var viewController:ViewController?
     
     @IBInspectable var expandRemainingGraphs:Bool = false
     {
@@ -25,7 +26,7 @@ import CoreGraphics
     }
     
     
-    @IBInspectable var numGraphs:Int = 3
+    var numGraphs:Int = 3
     {
         didSet
         {
@@ -48,16 +49,17 @@ import CoreGraphics
     required init?(coder: NSCoder)
     {
         super.init(coder: coder)
+        mRadio = RJTRadio(txFreq: 18E3, rxFreq: 18E3)
+        mRadio?.mReceiveDelegate = self
         updateGraphGroup()
-        mRadio = AudioFrequencyWrapper(blockOnStart: false)
-        mRadio?.start()
     }
     
     override init(frame:NSRect)
     {
         super.init(frame:frame)
     }
-    
+
+    // Implement RJTViewUpdateProtocol
     func redraw()
     {
         self.needsDisplay = true
@@ -73,13 +75,7 @@ import CoreGraphics
                                     height: height,
                                     expandRemainingGraphs: expandRemainingGraphs)
         mGraphGroup?.delegate = self
-        /*
-        mGraphGroup = GraphGroup(
-            numGraphs: numGraphs,
-            width: width,
-            height: height,
-            expandRemainingGraphs: expandRemainingGraphs)
-         */
+        mGraphGroup?.loadDataSources(from: mRadio)
         self.needsDisplay = true
     }
     
@@ -108,5 +104,29 @@ import CoreGraphics
 
         mGraphGroup?.draw(ctx)
         //mGraphGroup?.draw(ctx: ctx)
+    }
+    
+    // Implement RJTRadioReceiveProtocol
+    func receivedData(_ data: UnsafeMutablePointer<UInt8>!, dataLen len: UInt8)
+    {
+        let rawData = Data(bytes: data, count: Int(len));
+        
+        if let stringMessage = String(data: rawData, encoding: .ascii)
+        {
+            if let vc = viewController
+            {
+                vc.mDataReceivedLabel.stringValue = stringMessage;
+            }
+        }
+    }
+    
+    func finishedStopping()
+    {
+        if let vc = viewController
+        {
+            vc.mStarted = false;
+            vc.mStartButton.isEnabled = true;
+            vc.mStopButton.isEnabled = false;
+        }
     }
 }

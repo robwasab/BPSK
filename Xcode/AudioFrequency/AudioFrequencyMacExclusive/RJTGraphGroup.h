@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "RJTRadio.h"
 
 @protocol RJTViewUpdateDelegate <NSObject>
 
@@ -34,9 +35,9 @@
 
 -(void) dealloc;
 
--(void) redraw;
+-(void) loadDataSourcesFromRJTRadio:(RJTRadio *)radio;
 
--(void) loadAudioFrequencyDataSources;
+-(void) redraw;
 
 -(void) graphsShouldExpand:(BOOL)expandGraphs;
 

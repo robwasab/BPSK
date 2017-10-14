@@ -12,6 +12,9 @@
 #import "RJTGraph.h"
 #include "DataSource.h"
 #include "SineWave.hpp"
+#include <vector>
+
+using namespace std;
 
 @interface RJTGraph()
 
@@ -25,9 +28,7 @@
      plotCenterX:(CGFloat) plotCenterX
      plotCenterY:(CGFloat) plotCenterY
           xScale:(CGFloat) xScale
-          yScale:(CGFloat) yScale
-yAxisPositivePartStopsAt:(CGFloat) yAxisPositiveStop
-yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
+          yScale:(CGFloat) yScale;
 
 -(void) drawAxisTickLabels:(CGContextRef) ctx
                     xScale:(CGFloat) xScale
@@ -37,9 +38,7 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
 
 -(void) drawAxisTicks:(CGContextRef) ctx
                xScale:(CGFloat) xScale
-               yScale:(CGFloat) yScale
- outYAxisNegativeStop:(CGFloat *) negativeStopRef
- outYAxisPositiveStop:(CGFloat *) positiveStopRef;
+               yScale:(CGFloat) yScale;
 
 -(void) drawPlot:(CGContextRef) ctx;
 -(void) updateTitleBounds;
@@ -68,6 +67,21 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
     NSTimer * mTimer;
     DataSource * mDataSource;
     SineWave * mSineWave;
+    BOOL mResized;
+    
+    /* Cached Objects */
+    NSBezierPath * mPlotPath;
+    NSBezierPath * mXAxisPath;
+    NSBezierPath * mYAxisPath;
+    AFPoint mLastOrigin;
+    AFPoint mLastDimensions;
+    CGFloat mYAxisNegativeStop;
+    CGFloat mYAxisPositiveStop;
+    BOOL mRecalculateAxis;
+    NSBezierPath * mVerticalTickPath;
+    NSBezierPath * mHorizontalTickPath;
+    NSMutableArray * mTickLabelStrings;
+    vector<NSPoint> * mTickLabelLocations;
 }
 
 // MARK: Initialization
@@ -94,7 +108,6 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
         mSineWave = new SineWave(1);
         mDataSource = mSineWave;
         
-        //[self startTimer];
         [self updateTitleBounds];
         
         mTitleFont = [NSFont fontWithName:@"Times New Roman" size: 10];
@@ -120,6 +133,7 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
             
             mTickLabelFontAttributes = [NSDictionary dictionaryWithObjects:objs forKeys:keys count:1];
         }
+        mTickLabelLocations = new vector<NSPoint>();
     }
     return self;
 }
@@ -135,6 +149,7 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
 -(void) dealloc
 {
     delete mSineWave;
+    delete mTickLabelLocations;
 }
 
 // MARK: Public method implementation
@@ -151,6 +166,11 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
                                         repeats:true];
 }
 
+-(void) stopTimer
+{
+    [mTimer invalidate];
+    mTimer = nil;
+}
 
 -(void) useDemoSineWaveAsDataSource
 {
@@ -168,6 +188,7 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
     if (mDataSource->quit_requested())
     {
         [timer invalidate];
+        mTimer = nil;
         mDataSource->acknowledge_quit();
         return;
     }
@@ -208,8 +229,31 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
     [self updateTitleBounds];
 }
 
+#define SQUARE(x) ((x) * (x))
+
+bool shouldRecalculate(AFPoint origPoint, AFPoint newPoint, CGFloat xScale, CGFloat yScale)
+{
+    CGFloat xScreenPntsSquared = SQUARE(origPoint.x - newPoint.x) * xScale;
+    CGFloat yScreenPntsSquared = SQUARE(origPoint.y - newPoint.y) * yScale;
+    
+    CGFloat distanceSquared = xScreenPntsSquared + yScreenPntsSquared;
+    
+    if (distanceSquared > 100.0)
+    {
+        printf("DistanceSquared: %.3f\n", distanceSquared);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 -(void) draw:(CGContextRef) ctx
 {
+    AFPoint dimensions = mDataSource->get_lengths();
+    if (dimensions.x < 1E-6 || dimensions.y < 1E-6) { return; }
+    
     CGContextSaveGState(ctx);
     [self drawBoundingBox:ctx];
     [self drawTitle:ctx];
@@ -274,23 +318,32 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop;
         CGContextScaleCTM(ctx, xScale, yScale);
         CGContextTranslateCTM(ctx, translateByXToCenter, translateByYToCenter);
         
-        CGFloat yAxisNegativeStop = 0;
-        CGFloat yAxisPositiveStop = 0;
+        mRecalculateAxis = shouldRecalculate(mLastOrigin, lowerLeftHandCorner, xScale, yScale) ? YES : NO;
+        mRecalculateAxis |= shouldRecalculate(mLastDimensions, dimensions, xScale, yScale) ? YES : NO;
+        mRecalculateAxis = mResized ? YES : mRecalculateAxis;
+        mResized = NO;
         
-        [self drawAxisTicks:ctx xScale:xScale
-                     yScale:yScale
-       outYAxisNegativeStop:&yAxisNegativeStop
-       outYAxisPositiveStop:&yAxisPositiveStop];
+        mLastOrigin = lowerLeftHandCorner;
+        mLastDimensions = dimensions;
         
+        [self drawAxisTicks:ctx xScale:xScale yScale:yScale];
+
         [self drawAxis:ctx
            plotCenterX:plotCenterX
            plotCenterY:plotCenterY
                 xScale:xScale
-                yScale:yScale
-yAxisPositivePartStopsAt:yAxisPositiveStop
-yAxisNegativePartStopsAt:yAxisNegativeStop];
+                yScale:yScale];
         
-        NSBezierPath * path = [[NSBezierPath alloc] init];
+        if (mPlotPath == nil)
+        {
+            mPlotPath = [[NSBezierPath alloc] init];
+            mPlotPath.lineWidth = 0.5/yScale;
+        }
+        else
+        {
+            [mPlotPath removeAllPoints];
+        }
+        
         BOOL plotFirstPoint = YES;
         
         //CGColorRef grayColor = CGColorCreateGenericGray(0.15, 0.75);
@@ -298,7 +351,6 @@ yAxisNegativePartStopsAt:yAxisNegativeStop];
         CGColorRef black = NSColor.blackColor.CGColor;
         
         CGContextSetStrokeColorWithColor(ctx, black);
-        path.lineWidth = 2.0/yScale;
         
         AFPoint pnt;
         NSPoint ns_pnt;
@@ -316,15 +368,15 @@ yAxisNegativePartStopsAt:yAxisNegativeStop];
                 if (plotFirstPoint == YES)
                 {
                     plotFirstPoint = NO;
-                    [path moveToPoint:ns_pnt];
+                    [mPlotPath moveToPoint:ns_pnt];
                 }
                 else
                 {
-                    [path lineToPoint:ns_pnt];
+                    [mPlotPath lineToPoint:ns_pnt];
                 }
             }
         }
-        [path stroke];
+        [mPlotPath stroke];
         CGContextRestoreGState(ctx);
         
         
@@ -343,8 +395,6 @@ yAxisNegativePartStopsAt:yAxisNegativeStop];
      plotCenterY:(CGFloat) plotCenterY
           xScale:(CGFloat) xScale
           yScale:(CGFloat) yScale
-yAxisPositivePartStopsAt:(CGFloat) yAxisPositiveStop
-yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop
 {
     if (mDataSource != NULL)
     {
@@ -361,32 +411,44 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop
         CGContextSetStrokeColorWithColor(ctx, axisColor);
         
         // Draw the x axis
-        NSBezierPath * xAxisPath;
         NSPoint xAxisFirstPoint;
         NSPoint xAxisLastPoint;
         
-        xAxisPath = [[NSBezierPath alloc] init];
+        if (mXAxisPath == nil)
+        {
+            mXAxisPath = [[NSBezierPath alloc] init];
+        }
+        else
+        {
+            [mXAxisPath removeAllPoints];
+        }
+        mXAxisPath.lineWidth = 1.0/yScale;
         xAxisFirstPoint = NSMakePoint(lowerLeftHandCorner.x, plotCenterY);
         xAxisLastPoint = NSMakePoint(lowerLeftHandCorner.x + dimensions.x, plotCenterY);
         
-        xAxisPath.lineWidth = 1.0/yScale;
-        [xAxisPath moveToPoint:xAxisFirstPoint];
-        [xAxisPath lineToPoint:xAxisLastPoint];
-        [xAxisPath stroke];
+        [mXAxisPath moveToPoint:xAxisFirstPoint];
+        [mXAxisPath lineToPoint:xAxisLastPoint];
+        [mXAxisPath stroke];
         
         // Draw the y axis
-        NSBezierPath * yAxisPath;
         NSPoint yAxisFirstPoint;
         NSPoint yAxisLastPoint;
         
-        yAxisPath = [[NSBezierPath alloc] init];
-        yAxisFirstPoint = NSMakePoint(lowerLeftHandCorner.x, yAxisNegativeStop);
-        yAxisLastPoint = NSMakePoint(lowerLeftHandCorner.x, yAxisPositiveStop);
+        if (mYAxisPath == nil)
+        {
+            mYAxisPath = [[NSBezierPath alloc] init];
+        }
+        else
+        {
+            [mYAxisPath removeAllPoints];
+        }
+        mYAxisPath.lineWidth = 1.0/xScale;
+        yAxisFirstPoint = NSMakePoint(lowerLeftHandCorner.x, mYAxisNegativeStop);
+        yAxisLastPoint = NSMakePoint(lowerLeftHandCorner.x, mYAxisPositiveStop);
         
-        yAxisPath.lineWidth = 1.0/xScale;
-        [yAxisPath moveToPoint:yAxisFirstPoint];
-        [yAxisPath lineToPoint:yAxisLastPoint];
-        [yAxisPath stroke];
+        [mYAxisPath moveToPoint:yAxisFirstPoint];
+        [mYAxisPath lineToPoint:yAxisLastPoint];
+        [mYAxisPath stroke];
         
         CGContextRestoreGState(ctx);
     }
@@ -401,89 +463,118 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop
     if (mDataSource != NULL)
     {
         CGContextSaveGState(ctx);
-        AFPoint lowerLeftHandCorner;
-        AFPoint dimensions;
-        CGFloat verticalTickSpacing;
-        CGFloat horizontalTickSpacing;
-        CGFloat intersectionWithHorizontalAxis;
-        CGFloat k;
-        CGFloat j;
-        CGFloat upperYAxisLimit;
-        CGFloat xPos;
         
-        lowerLeftHandCorner = mDataSource->get_origin();
-        dimensions = mDataSource->get_lengths();
-        
-        verticalTickSpacing = round(mVerticalTickSpacing / yScale * 10.0) / 10.0 * yScale;
-        
-        horizontalTickSpacing = round(mHorizontalTickSpacing / xScale * 10.0) / 10.0 * xScale;
-        
-        intersectionWithHorizontalAxis = (lowerLeftHandCorner.y + dimensions.y/2.0 + yTranslation) * yScale;
-        
-        k = intersectionWithHorizontalAxis + verticalTickSpacing;
-        j = intersectionWithHorizontalAxis - verticalTickSpacing;
-        
-        upperYAxisLimit = ((lowerLeftHandCorner.y + dimensions.y)+yTranslation) * yScale;
-        
-        xPos = (lowerLeftHandCorner.x + xTranslation)*xScale;
-        
-        while (k < upperYAxisLimit)
+        if (mTickLabelStrings == nil)
         {
-            CGFloat tickPosition;
-            NSString * text;
-            CGSize size;
-            NSPoint pnt;
-            
-            CGFloat negTickPosition;
-            NSString * negText;
-            CGSize negSize;
-            
-            tickPosition = round((k/yScale - yTranslation)*10.0)/10.0;
-            text = [[NSNumber numberWithFloat:tickPosition] descriptionWithLocale:@"%.1f"];
-            size = [text sizeWithAttributes:mTickLabelFontAttributes];
-            
-            pnt = NSMakePoint(
-            xPos - size.width - mTickLength, k - size.height/2.0);
-            
-            [text drawAtPoint:pnt withAttributes:mTickLabelFontAttributes];
-            
-            negTickPosition = j/yScale - yTranslation;
-            
-            negText = [[NSNumber numberWithFloat:negTickPosition] descriptionWithLocale:@"%.1f"];
-            
-            negSize = [negText sizeWithAttributes:mTickLabelFontAttributes];
-            
-            pnt.x = xPos - negSize.width - mTickLength;
-            pnt.y = j - negSize.height;
-            
-            [negText drawAtPoint:pnt withAttributes:mTickLabelFontAttributes];
-            
-            k += verticalTickSpacing;
-            j -= verticalTickSpacing;
+            mTickLabelStrings = [[NSMutableArray alloc] init];
         }
         
-        CGFloat upperXAxisLimit = ((lowerLeftHandCorner.x + dimensions.x) + xTranslation)*xScale;
-        
-        // x coordinate intersection
-        CGFloat intersectionWithVerticalAxis = (lowerLeftHandCorner.x + xTranslation) * xScale;
-        
-        CGFloat yPos = (lowerLeftHandCorner.y + dimensions.y/2.0 + yTranslation)*yScale;
-        
-        k = intersectionWithVerticalAxis;
-        
-        while (k < upperXAxisLimit)
+        if (mRecalculateAxis)
         {
-            CGFloat tickPosition;
-            NSString * text;
-            NSPoint pnt = NSMakePoint(k, yPos);
+            [mTickLabelStrings removeAllObjects];
+            mTickLabelLocations->clear();
             
-            tickPosition = round((k/xScale - xTranslation)*10.0)/10.0;
+            AFPoint lowerLeftHandCorner;
+            AFPoint dimensions;
+            CGFloat verticalTickSpacing;
+            CGFloat horizontalTickSpacing;
+            CGFloat intersectionWithHorizontalAxis;
+            CGFloat k;
+            CGFloat j;
+            CGFloat upperYAxisLimit;
+            CGFloat xPos;
+        
+            lowerLeftHandCorner = mDataSource->get_origin();
+            dimensions = mDataSource->get_lengths();
+        
+            verticalTickSpacing = round(mVerticalTickSpacing / yScale * 10.0) / 10.0 * yScale;
+            horizontalTickSpacing = round(mHorizontalTickSpacing / xScale * 10.0) / 10.0 * xScale;
+
+            verticalTickSpacing = verticalTickSpacing >= 0.1 ? verticalTickSpacing : 0.1;
+            horizontalTickSpacing = horizontalTickSpacing >= 0.1 ? horizontalTickSpacing : 0.1;
+        
+            intersectionWithHorizontalAxis = (lowerLeftHandCorner.y + dimensions.y/2.0 + yTranslation) * yScale;
+        
+            k = intersectionWithHorizontalAxis + verticalTickSpacing;
+            j = intersectionWithHorizontalAxis - verticalTickSpacing;
+        
+            upperYAxisLimit = ((lowerLeftHandCorner.y + dimensions.y)+yTranslation) * yScale;
+        
+            xPos = (lowerLeftHandCorner.x + xTranslation)*xScale;
+        
+            while (k < upperYAxisLimit)
+            {
+                CGFloat tickPosition;
+                NSString * text;
+                CGSize size;
+                NSPoint pnt;
             
-            text = [[NSNumber numberWithFloat:tickPosition] descriptionWithLocale:@"%.1f"];
+                CGFloat negTickPosition;
+                NSString * negText;
+                CGSize negSize;
+            
+                tickPosition = round((k/yScale - yTranslation)*10.0)/10.0;
+                text = [[NSNumber numberWithFloat:tickPosition] descriptionWithLocale:@"%.10f"];
+                size = [text sizeWithAttributes:mTickLabelFontAttributes];
+            
+                pnt = NSMakePoint(
+                xPos - size.width - mTickLength, k - size.height/2.0);
+            
+                //[text drawAtPoint:pnt withAttributes:mTickLabelFontAttributes];
+                [mTickLabelStrings addObject:text];
+                mTickLabelLocations->push_back(pnt);
+                
+                negTickPosition = round((j/yScale - yTranslation)*10.0)/10.0;
+            
+                negText = [[NSNumber numberWithFloat:negTickPosition] descriptionWithLocale:@"%.10f"];
+            
+                negSize = [negText sizeWithAttributes:mTickLabelFontAttributes];
+            
+                pnt.x = xPos - negSize.width - mTickLength;
+                pnt.y = j - negSize.height;
+            
+                //[negText drawAtPoint:pnt withAttributes:mTickLabelFontAttributes];
+                [mTickLabelStrings addObject:negText];
+                mTickLabelLocations->push_back(pnt);
+                
+                k += verticalTickSpacing;
+                j -= verticalTickSpacing;
+            }
+        
+            CGFloat upperXAxisLimit = ((lowerLeftHandCorner.x + dimensions.x) + xTranslation)*xScale;
+        
+            // x coordinate intersection
+            CGFloat intersectionWithVerticalAxis = (lowerLeftHandCorner.x + xTranslation) * xScale;
+        
+            CGFloat yPos = (lowerLeftHandCorner.y + dimensions.y/2.0 + yTranslation)*yScale;
+        
+            k = intersectionWithVerticalAxis;
+        
+            while (k < upperXAxisLimit)
+            {
+                CGFloat tickPosition;
+                NSString * text;
+                NSPoint pnt = NSMakePoint(k, yPos);
+            
+                tickPosition = round((k/xScale - xTranslation)*10.0)/10.0;
+            
+                text = [[NSNumber numberWithFloat:tickPosition] descriptionWithLocale:@"%.1f"];
+        
+                //[text drawAtPoint:pnt withAttributes:mTickLabelFontAttributes];
+                [mTickLabelStrings addObject:text];
+                mTickLabelLocations->push_back(pnt);
+                
+                k += horizontalTickSpacing;
+            }
+        }
+        
+        NSInteger count = [mTickLabelStrings count];
+        for (NSInteger k = 0; k < count; k ++)
+        {
+            NSString * text = [mTickLabelStrings objectAtIndex:k];
+            NSPoint pnt = (*mTickLabelLocations)[k];
             
             [text drawAtPoint:pnt withAttributes:mTickLabelFontAttributes];
-            
-            k += horizontalTickSpacing;
         }
         CGContextRestoreGState(ctx);
     }
@@ -492,8 +583,6 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop
 -(void) drawAxisTicks:(CGContextRef) ctx
                xScale:(CGFloat) xScale
                yScale:(CGFloat) yScale
- outYAxisNegativeStop:(CGFloat *) negativeStopRef
- outYAxisPositiveStop:(CGFloat *) positiveStopRef
 {
     if (mDataSource != NULL)
     {
@@ -509,81 +598,101 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop
         CGFloat j;
         NSPoint leftPointAtPlotOrigin;
         NSPoint rightPointAtPlotOrigin;
-        NSBezierPath * verticalTick;
         
         lowerLeftHandCorner = mDataSource->get_origin();
         dimensions = mDataSource->get_lengths();
         verticalTickSpacing = round(mVerticalTickSpacing/yScale*10.0)/10.0;
         horizontalTickSpacing = round(mHorizontalTickSpacing/xScale*10.0)/10.0;
+        
+        verticalTickSpacing = verticalTickSpacing >= 0.1 ? verticalTickSpacing : 0.1;
+        horizontalTickSpacing = horizontalTickSpacing >= 0.1 ? horizontalTickSpacing : 0.1;
+        
         intersectionWithHorizontalAxis = lowerLeftHandCorner.y+dimensions.y/2.0;
         tickLength = mTickLength/xScale;
         k = intersectionWithHorizontalAxis + verticalTickSpacing;
         j = intersectionWithHorizontalAxis - verticalTickSpacing;
         
         
-        leftPointAtPlotOrigin.x =         rightPointAtPlotOrigin.x = lowerLeftHandCorner.x + tickLength/2.0;
+        leftPointAtPlotOrigin.x = rightPointAtPlotOrigin.x = lowerLeftHandCorner.x + tickLength/2.0;
         
-        verticalTick = [[NSBezierPath alloc] init];
-        
-        verticalTick.lineWidth = 2.0/yScale;
+        if (mVerticalTickPath == nil)
+        {
+            mVerticalTickPath = [[NSBezierPath alloc] init];
+            mVerticalTickPath.lineWidth = 1.0/yScale;
+        }
         
         // Draw the positive and negative vertical ticks
-        while (k < lowerLeftHandCorner.y + dimensions.y)
+        if (mRecalculateAxis)
         {
-            leftPointAtPlotOrigin =
-            NSMakePoint(lowerLeftHandCorner.x - tickLength/2.0, k);
+            [mVerticalTickPath removeAllPoints];
             
-            rightPointAtPlotOrigin =
-            NSMakePoint(lowerLeftHandCorner.x + tickLength/2.0, k);
+            leftPointAtPlotOrigin.x = lowerLeftHandCorner.x - tickLength/2.0;
             
-            [verticalTick moveToPoint:leftPointAtPlotOrigin];
-            [verticalTick lineToPoint:rightPointAtPlotOrigin];
+            rightPointAtPlotOrigin.x = lowerLeftHandCorner.x + tickLength/2.0;
             
-            leftPointAtPlotOrigin.y = j;
-            rightPointAtPlotOrigin.y = j;
+            CGFloat upperLimit = lowerLeftHandCorner.y + dimensions.y;
             
-            [verticalTick moveToPoint:leftPointAtPlotOrigin];
-            [verticalTick lineToPoint:rightPointAtPlotOrigin];
+            while (k < upperLimit)
+            {
+             
+                leftPointAtPlotOrigin.y = k;
+                rightPointAtPlotOrigin.y = k;
+             
+                [mVerticalTickPath moveToPoint:leftPointAtPlotOrigin];
+                [mVerticalTickPath lineToPoint:rightPointAtPlotOrigin];
             
-            k += verticalTickSpacing;
-            j -= verticalTickSpacing;
+                leftPointAtPlotOrigin.y = j;
+                rightPointAtPlotOrigin.y = j;
+            
+                [mVerticalTickPath moveToPoint:leftPointAtPlotOrigin];
+                [mVerticalTickPath lineToPoint:rightPointAtPlotOrigin];
+            
+                k += verticalTickSpacing;
+                j -= verticalTickSpacing;
+            }
+            
+            mYAxisPositiveStop = k - verticalTickSpacing;
+            mYAxisNegativeStop = j + verticalTickSpacing;
         }
         
-        if (negativeStopRef != NULL &&
-            positiveStopRef != NULL)
-        {
-            *positiveStopRef = k - verticalTickSpacing;
-            *negativeStopRef = j + verticalTickSpacing;
-        }
         
-        [verticalTick stroke];
+        [mVerticalTickPath stroke];
         
         // Draw the horizontal axis
-        NSBezierPath * horizontalTick;
         NSPoint upperPoint;
         NSPoint lowerPoint;
         
-        horizontalTick = [[NSBezierPath alloc] init];
-        horizontalTick.lineWidth = 2.0/xScale;
-        tickLength = 5.0/yScale;
-        
-        upperPoint.y = intersectionWithHorizontalAxis + tickLength/2.0;
-        lowerPoint.y = intersectionWithHorizontalAxis - tickLength/2.0;
-        
-        k = lowerLeftHandCorner.x;
-        
-        while (k < lowerLeftHandCorner.x + dimensions.x)
+        if (mHorizontalTickPath == nil)
         {
-            upperPoint.x = k;
-            lowerPoint.x = k;
-            
-            [horizontalTick moveToPoint:upperPoint];
-            [horizontalTick lineToPoint:lowerPoint];
-            
-            k += horizontalTickSpacing;
+            mHorizontalTickPath = [[NSBezierPath alloc] init];
+            mHorizontalTickPath.lineWidth = 2.0/xScale;
         }
         
-        [horizontalTick stroke];
+        tickLength = 5.0/yScale;
+        
+        if (mRecalculateAxis)
+        {
+            [mHorizontalTickPath removeAllPoints];
+
+            upperPoint.y = intersectionWithHorizontalAxis + tickLength/2.0;
+            lowerPoint.y = intersectionWithHorizontalAxis - tickLength/2.0;
+        
+            k = lowerLeftHandCorner.x;
+            
+            while (k < lowerLeftHandCorner.x + dimensions.x)
+            {
+                upperPoint.x = k;
+                lowerPoint.x = k;
+            
+                [mHorizontalTickPath moveToPoint:upperPoint];
+                [mHorizontalTickPath lineToPoint:lowerPoint];
+            
+                k += horizontalTickSpacing;
+            }
+            
+        }
+        
+        [mHorizontalTickPath stroke];
         
         CGContextRestoreGState(ctx);
     }
@@ -616,6 +725,7 @@ yAxisNegativePartStopsAt:(CGFloat) yAxisNegativeStop
     titleHeight = mHeight * mTitleYFraction;
     
     mTitleBounds = CGRectMake(titleX, titleY, titleWidth, titleHeight);
+    mResized = YES;
 }
 
 @end
