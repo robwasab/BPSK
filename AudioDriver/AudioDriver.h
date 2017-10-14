@@ -1,5 +1,5 @@
-#ifndef __PORT_AUDIO_DRIVER_H__
-#define __PORT_AUDIO_DRIVER_H__
+#ifndef __AUDIO_DRIVER_H__
+#define __AUDIO_DRIVER_H__
 
 #include "../Memory/Block.h"
 #include "../Channel/Channel.h"
@@ -9,15 +9,15 @@
  *
  * returns the handle so you can stop the channel later.
  */
-int PortAudio_init(Channel * channel);
+int AudioDriver_init(Channel * channel);
 
 /* Can be called multiple times. However, subsequent calls do nothing */ 
-void PortAudio_start();
+void AudioDriver_start();
 
 /*
  * Stop the current channel i.e., no data will be passed to the channel. Once all the channels
  * are stopped, Port Audio gets destroyed.
  */
-void PortAudio_stop(int handle);
+void AudioDriver_stop(int handle);
 
 #endif

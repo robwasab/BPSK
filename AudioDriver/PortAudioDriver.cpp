@@ -10,7 +10,7 @@
 #include "../Queue/Queue.h"
 #include "../switches.h"
 
-#include "PortAudioDriver.h"
+#include "AudioDriver.h"
 #define MAX_CHANNELS 10
 
 static int occupied_channels = 0;
@@ -34,7 +34,7 @@ int PortAudio_callback( const void *input, void *output, unsigned long frames, c
  * returns the handle number.
  * returns -1 if no more available channles.
  */
-int PortAudio_init(Channel * channel)
+int AudioDriver_init(Channel * channel)
 {
     if (occupied_channels < 1)
     {
@@ -87,7 +87,7 @@ PaError print_device(PaDeviceIndex index)
     return paNoError;
 }
 
-void PortAudio_start()
+void AudioDriver_start()
 {
     static bool started = false;
 
@@ -194,7 +194,7 @@ fail:
 #endif
 }
 
-void PortAudio_stop(int handle)
+void AudioDriver_stop(int handle)
 {
     if (handle >= occupied_channels || handle < 0)
     {

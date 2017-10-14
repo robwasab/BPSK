@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1E07CBFD1F8A79D00004051D /* QTPlotController.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CBFC1F8A79D00004051D /* QTPlotController.o */; };
 		1E07CBFE1F8A8EFE0004051D /* bpsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637E1F48CBB500E736C2 /* bpsk.cpp */; };
+		1E07CC001F92BC460004051D /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */; };
 		1E09E7731F88D9500011C95E /* SineWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76D1F88D9500011C95E /* SineWave.cpp */; };
 		1E09E7741F88D9500011C95E /* RJTGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76F1F88D9500011C95E /* RJTGraph.mm */; };
 		1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */; };
@@ -40,7 +41,6 @@
 		1EC039581F80121000A4D83A /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636D1F48CBB400E736C2 /* Memory.cpp */; };
 		1EC039591F80121000A4D83A /* Modulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636E1F48CBB400E736C2 /* Modulator.cpp */; };
 		1EC0395A1F80121000A4D83A /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636F1F48CBB400E736C2 /* Module.cpp */; };
-		1EC0395E1F80121000A4D83A /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */; };
 		1EC0395F1F80121000A4D83A /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
 		1EC039621F80121000A4D83A /* TestFramework.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963771F48CBB500E736C2 /* TestFramework.cpp */; };
 		1EC039631F80121000A4D83A /* TestFrameworkStdin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */; };
@@ -85,7 +85,6 @@
 		1EC039A01F8018AD00A4D83A /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636D1F48CBB400E736C2 /* Memory.cpp */; };
 		1EC039A11F8018AD00A4D83A /* Modulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636E1F48CBB400E736C2 /* Modulator.cpp */; };
 		1EC039A21F8018AD00A4D83A /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636F1F48CBB400E736C2 /* Module.cpp */; };
-		1EC039A41F8018AD00A4D83A /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */; };
 		1EC039A51F8018AD00A4D83A /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
 		1EC039A91F8018AD00A4D83A /* Transceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637C1F48CBB500E736C2 /* Transceiver.cpp */; };
 		1EC039AA1F8018AD00A4D83A /* TransceiverBPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */; };
@@ -108,6 +107,8 @@
 /* Begin PBXFileReference section */
 		1E07CBF81F8A58E90004051D /* RJTPlotController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RJTPlotController.h; sourceTree = "<group>"; };
 		1E07CBFC1F8A79D00004051D /* QTPlotController.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = QTPlotController.o; path = ../../PlotController/QTPlotController.o; sourceTree = "<group>"; };
+		1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioDriver.cpp; path = ../../AudioDriver/PortAudioDriver.cpp; sourceTree = "<group>"; };
+		1E07CC011F92BC750004051D /* AudioDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioDriver.h; path = ../../AudioDriver/AudioDriver.h; sourceTree = "<group>"; };
 		1E09E76D1F88D9500011C95E /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
 		1E09E76E1F88D9500011C95E /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
 		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraph.mm; path = AudioFrequencyMacExclusive/RJTGraph.mm; sourceTree = "<group>"; };
@@ -143,7 +144,6 @@
 		1E19636D1F48CBB400E736C2 /* Memory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../Memory/Memory.cpp; sourceTree = SOURCE_ROOT; };
 		1E19636E1F48CBB400E736C2 /* Modulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Modulator.cpp; path = ../../Modulator/Modulator.cpp; sourceTree = SOURCE_ROOT; };
 		1E19636F1F48CBB400E736C2 /* Module.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Module.cpp; path = ../../Module/Module.cpp; sourceTree = SOURCE_ROOT; };
-		1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioDriver.cpp; path = ../../PortAudioDriver/PortAudioDriver.cpp; sourceTree = SOURCE_ROOT; };
 		1E1963741F48CBB400E736C2 /* RadioMsg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RadioMsg.cpp; path = ../../RadioMsg/RadioMsg.cpp; sourceTree = SOURCE_ROOT; };
 		1E1963751F48CBB500E736C2 /* SpectrumAnalyzer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SpectrumAnalyzer.cpp; path = ../../SpectrumAnalyzer/SpectrumAnalyzer.cpp; sourceTree = SOURCE_ROOT; };
 		1E1963771F48CBB500E736C2 /* TestFramework.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestFramework.cpp; path = ../../TestFramework/TestFramework.cpp; sourceTree = SOURCE_ROOT; };
@@ -165,7 +165,6 @@
 		1EC038BF1F8010C100A4D83A /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../main.h; sourceTree = "<group>"; };
 		1EC038C01F8010C100A4D83A /* Notify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notify.h; path = ../../Notify/Notify.h; sourceTree = "<group>"; };
 		1EC038C11F8010C100A4D83A /* SuppressPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuppressPrint.h; path = ../../SuppressPrint/SuppressPrint.h; sourceTree = "<group>"; };
-		1EC038C31F8010C100A4D83A /* PortAudioDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PortAudioDriver.h; path = ../../PortAudioDriver/PortAudioDriver.h; sourceTree = "<group>"; };
 		1EC038C41F8010C100A4D83A /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Channel.h; path = ../../Channel/Channel.h; sourceTree = "<group>"; };
 		1EC038C51F8010C100A4D83A /* RadioMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadioMsg.h; path = ../../RadioMsg/RadioMsg.h; sourceTree = "<group>"; };
 		1EC038C61F8010C100A4D83A /* SignaledThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignaledThread.h; path = ../../SignaledThread/SignaledThread.h; sourceTree = "<group>"; };
@@ -334,6 +333,7 @@
 		1EC039AC1F8018DA00A4D83A /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				1E07CC011F92BC750004051D /* AudioDriver.h */,
 				1EC038CD1F8010C100A4D83A /* Attenuator.h */,
 				1EC038CF1F8010C100A4D83A /* Autogain.h */,
 				1EC038E51F8010C100A4D83A /* BandPass.h */,
@@ -372,7 +372,6 @@
 				1EC038D11F8010C100A4D83A /* Plottable_CostasLoop.h */,
 				1EC038CE1F8010C100A4D83A /* PlottableAutogain.h */,
 				1EC038E31F8010C100A4D83A /* PlottableFirFilter.h */,
-				1EC038C31F8010C100A4D83A /* PortAudioDriver.h */,
 				1EC038DF1F8010C100A4D83A /* Prefix.h */,
 				1EC038DE1F8010C100A4D83A /* Pulseshape.h */,
 				1EC038D51F8010C100A4D83A /* QPSK.h */,
@@ -423,7 +422,7 @@
 				1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */,
 				1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */,
 				1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */,
-				1E1963731F48CBB400E736C2 /* PortAudioDriver.cpp */,
+				1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */,
 				1E1963631F48CBB400E736C2 /* Prefix.cpp */,
 				1E1963641F48CBB400E736C2 /* Pulseshape.cpp */,
 				1E19635C1F48CBB400E736C2 /* QPSK.cpp */,
@@ -559,7 +558,6 @@
 				1EC039581F80121000A4D83A /* Memory.cpp in Sources */,
 				1EC039591F80121000A4D83A /* Modulator.cpp in Sources */,
 				1EC0395A1F80121000A4D83A /* Module.cpp in Sources */,
-				1EC0395E1F80121000A4D83A /* PortAudioDriver.cpp in Sources */,
 				1EC0395F1F80121000A4D83A /* RadioMsg.cpp in Sources */,
 				1EC039BB1F814ED700A4D83A /* RJTPlotController.cpp in Sources */,
 				1EC039621F80121000A4D83A /* TestFramework.cpp in Sources */,
@@ -601,11 +599,11 @@
 				1EC0399B1F8018AD00A4D83A /* FirLowPass.cpp in Sources */,
 				1EC0399C1F8018AD00A4D83A /* math.cpp in Sources */,
 				1EC0399E1F8018AD00A4D83A /* PlottableFirFilter.cpp in Sources */,
+				1E07CC001F92BC460004051D /* PortAudioDriver.cpp in Sources */,
 				1EC0399F1F8018AD00A4D83A /* generator.cpp in Sources */,
 				1EC039A01F8018AD00A4D83A /* Memory.cpp in Sources */,
 				1EC039A11F8018AD00A4D83A /* Modulator.cpp in Sources */,
 				1EC039A21F8018AD00A4D83A /* Module.cpp in Sources */,
-				1EC039A41F8018AD00A4D83A /* PortAudioDriver.cpp in Sources */,
 				1EC039A51F8018AD00A4D83A /* RadioMsg.cpp in Sources */,
 				1EC039A91F8018AD00A4D83A /* Transceiver.cpp in Sources */,
 				1EC039AA1F8018AD00A4D83A /* TransceiverBPSK.cpp in Sources */,

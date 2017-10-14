@@ -1,6 +1,6 @@
 #include <math.h>
 #include "Channel.h"
-#include "../PortAudioDriver/PortAudioDriver.h"
+#include "../AudioDriver/AudioDriver.h"
 
 #ifdef SIMULATE
 #include <pthread.h>
@@ -32,7 +32,7 @@ Channel::Channel(Memory * memory, TransceiverCallback cb, void * transceiver):
     tx_block(NULL),
     load_block(true)
 {
-    handle = PortAudio_init(this);
+    handle = AudioDriver_init(this);
 
     #ifdef SIMULATE
     pthread_mutex_init(&mutex, NULL);
@@ -60,11 +60,11 @@ void Channel::dispatch(RadioMsg * msg)
 
         case CMD_START:
             LOG("starting %s...\n", name());
-            PortAudio_start();
+            AudioDriver_start();
             break;
 
         case CMD_STOP:
-            PortAudio_stop(handle);
+            AudioDriver_stop(handle);
             break;
 
         case CMD_SET_NOISE_LEVEL:
