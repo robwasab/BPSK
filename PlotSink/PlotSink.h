@@ -9,7 +9,10 @@
 #include "../Memory/Block.h"
 #include "../Queue/Queue.h"
 
-const char __PLOT_SINK_NAME__[] = "PlotSink";
+const char __PLOT_SINK_NAME__[] = "dBm PlotSink";
+
+#define PLOT_SINK_DB_MAX 30
+#define PLOT_SINK_DB_MIN -30
 
 class PlotSink : public Module, public DataSource
 {
@@ -26,8 +29,6 @@ public:
         update_interval = UPDATE_INTERVAL_MS;
         data = new float[frame_size];
         memset(data, 0, sizeof(float) * frame_size);
-        max = +1.0;
-        min = -1.0;
     }
 
     ~PlotSink() 
@@ -48,14 +49,14 @@ public:
 
         b->reset();
 
-        min = 1000;
-        max = -1000;
-
         float sample;
         bool res;
         do
         {
             sample = **iter;
+            sample = fabs(sample);
+            sample = sample < 0.001 ? 0.001 : sample;
+            sample = 10.0 * log10f(sample) + 30.0;
             res = queue.add(sample);
 
             if (!res)
@@ -66,14 +67,6 @@ public:
                 }
             }
 
-            if (sample > max) 
-            {
-                max = sample;
-            }
-            else if (sample < min) 
-            {
-                min = sample;
-            }
         } while(b->next());
 
         return b;
@@ -112,21 +105,14 @@ public:
     AFPoint get_origin() {
         AFPoint p;
         p.x = 0;
-        p.y = min;
+        p.y = PLOT_SINK_DB_MIN;
         return p;
     }
 
     AFPoint get_lengths() {
         AFPoint p;
         p.x = frame_size;
-        float width;
-        if (fabs(max) < fabs(min)) {
-            width = 2.2 * fabs(min);
-        }
-        else {
-            width = 2.2 * fabs(max);
-        }
-        p.y = width;
+        p.y = PLOT_SINK_DB_MAX - PLOT_SINK_DB_MIN;
         return p;
     }
 
@@ -139,7 +125,7 @@ public:
                 LOG("request_quit()\n");
                 requeust_quit();
                 LOG("join()\n");
-                join();
+                //join();
                 LOG("join successful...\n");
                 break;
 
@@ -155,8 +141,6 @@ private:
     size_t frame_size;
     int update_interval;
     float * data;
-    float max;
-    float min;
 };
 
 #endif
