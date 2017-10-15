@@ -109,6 +109,8 @@
 		1E07CBFC1F8A79D00004051D /* QTPlotController.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = QTPlotController.o; path = ../../PlotController/QTPlotController.o; sourceTree = "<group>"; };
 		1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioDriver.cpp; path = ../../AudioDriver/PortAudioDriver.cpp; sourceTree = "<group>"; };
 		1E07CC011F92BC750004051D /* AudioDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioDriver.h; path = ../../AudioDriver/AudioDriver.h; sourceTree = "<group>"; };
+		1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDriverOSX.cpp; sourceTree = "<group>"; };
+		1E07CC221F93DA820004051D /* AudioDriverSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDriverSimulator.cpp; sourceTree = "<group>"; };
 		1E09E76D1F88D9500011C95E /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
 		1E09E76E1F88D9500011C95E /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
 		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraph.mm; path = AudioFrequencyMacExclusive/RJTGraph.mm; sourceTree = "<group>"; };
@@ -435,6 +437,8 @@
 				1E1963781F48CBB500E736C2 /* TestFrameworkStdin.cpp */,
 				1E19637C1F48CBB500E736C2 /* Transceiver.cpp */,
 				1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */,
+				1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */,
+				1E07CC221F93DA820004051D /* AudioDriverSimulator.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";

@@ -373,7 +373,8 @@ int PortAudio_callback(
     {
         if (channels[k] != NULL)
         {
-            channels[k]->callback(tx_buffer, rx_buffer, frames);
+            channels[k]->transmit_callback(tx_buffer, frames);
+            channels[k]->receive_callback(rx_buffer, frames);
             scale += 1.0;
         }
     }

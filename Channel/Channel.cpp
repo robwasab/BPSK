@@ -102,7 +102,7 @@ void Channel::add(Block * block)
     source.add(block);
 }
 
-void Channel::process_rx_buffer(const float rx_buffer[], size_t len)
+void Channel::receive_callback(const float rx_buffer[], size_t len)
 {
     Block * rx_block;
     float ** rx_iter;
@@ -134,7 +134,7 @@ void Channel::process_rx_buffer(const float rx_buffer[], size_t len)
     handoff(rx_block, 0);
 }
 
-void Channel::callback(float tx_buffer[], const float rx_buffer[], size_t len)
+void Channel::transmit_callback(float tx_buffer[], size_t len)
 {
     float ** tx_iter;
     size_t start;
@@ -169,8 +169,9 @@ void Channel::callback(float tx_buffer[], const float rx_buffer[], size_t len)
             tx_block->next();
         }
     }
-    process_rx_buffer(rx_buffer, len);
 }
+
+
 
 void Channel::load()
 {

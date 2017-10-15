@@ -27,12 +27,10 @@ public:
     /* Add a transmit block */
     void add(Block * block);
     
-    /* Called in Port Audio Driver */
-    void callback(float tx_buffer[], const float rx_buffer[], size_t len);
-    
-    /* Needs to implement */
-    virtual void process_rx_buffer(const float rx_buffer[], size_t len);
-    
+    /* Called in Audio Driver */
+    void transmit_callback(float tx_buffer[], size_t len);
+    void receive_callback(const float rx_buffer[], size_t len);
+        
     void load();
 
 
