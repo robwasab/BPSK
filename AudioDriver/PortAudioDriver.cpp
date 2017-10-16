@@ -29,6 +29,7 @@ static void * PortAudioSimulator_loop(void * arg);
 static
 int PortAudio_callback( const void *input, void *output, unsigned long frames, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void * arg );
 
+#ifdef PORTAUDIO
 /*
  * Initialize Port Audio with a channel.
  * returns the handle number.
@@ -55,6 +56,7 @@ int AudioDriver_init(Channel * channel)
 
     return occupied_channels - 1;
 }
+#endif
 
 static
 PaError print_device(PaDeviceIndex index) 
@@ -87,6 +89,8 @@ PaError print_device(PaDeviceIndex index)
     return paNoError;
 }
 
+
+#ifdef PORTAUDIO
 void AudioDriver_start()
 {
     static bool started = false;
@@ -193,7 +197,9 @@ fail:
     return;
 #endif
 }
+#endif
 
+#ifdef PORTAUDIO
 void AudioDriver_stop(int handle)
 {
     if (handle >= occupied_channels || handle < 0)
@@ -270,6 +276,7 @@ fail:
     return;
 #endif
 }
+#endif
 
 #ifdef SIMULATE
 void * PortAudioSimulator_loop(void * arg)

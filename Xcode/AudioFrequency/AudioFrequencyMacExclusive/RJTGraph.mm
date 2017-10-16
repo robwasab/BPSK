@@ -359,7 +359,7 @@ bool shouldRecalculate(AFPoint origPoint, AFPoint newPoint, CGFloat xScale, CGFl
         
         for (int k = 0; k < size; k++)
         {
-            if (onZero++%32 == 0)
+            if (onZero++%64 == 0)
             {
                 pnt = mDataSource->get_data(k);
                 ns_pnt.x = pnt.x;

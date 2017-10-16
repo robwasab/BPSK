@@ -1,10 +1,29 @@
 #ifndef __SWITCH_H__
 
+/*******************************************************************************
+ MARK: PASS AS ARGUMENTS TO COMPILER TO ENABLE
+ *******************************************************************************/
+
+// -D ENABLE_COLORS //Enables terminal colors, doesn't work in XCode
+// -D LOG_FILE      //Prefixes log prints with file location
+
+// These control the targets and control which functions are linked
+// -D TERMINAL_APP  // Uses QT framework for graphs, starts from main
+// -D MACOSX_APP    // Uses Cocoa framework for graphs, radio is started from Cocoa interface.
+// -D IPHONE_APP
+
+// These control the transmitter / receiver driver
+// -D SIMULATE
+// -D PORTAUDIO
+// -D AUDIOTOOLBOX
+
+/*******************************************************************************
+ MARK: UNCOMMENT / COMMENT TO ENABLE OR DISABLE
+ *******************************************************************************/
+
+#define AUDIOTOOLBOX
 /* Prefix log prints with file location */
 //#define LOG_FILE
-
-/* Enable color prints */
-//#define ENABLE_COLORS
 
 /* Enable local loopback of signal data. If not defined, will transmit over the air. */
 //#define SIMULATE
@@ -14,12 +33,6 @@
 
 /* Enable QT plots. They add a lot of processing overhead, so they are enabled for development purposes only */
 #define GUI
-
-/* TERMINAL_APP means that there is a main function */
-//#define TERMINAL_APP
-/* MACOSX_APP means that the main function is removed, and code is expected to be called from ViewController etc. */
-#define MACOSX_APP
-//#define IPHONE_APP
 
 /* Enable Constellation Plots */
 #ifdef GUI

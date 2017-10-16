@@ -11,9 +11,10 @@
 #include "../Transceivers/TransceiverBPSK.h"
 #include "RJTPlotController.h"
 #include "../Queue/Queue.h"
-
+#include "AudioDriverOSX.h"
 typedef enum
 {
+    RJT_START_RADIO,
     RJT_STOP_RADIO,
     RJT_DATA_RECEIVED,
     RJT_CRC_ERROR,
@@ -151,7 +152,7 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
         mDataSourcesRef = &mPlotController->mDataSources;
         mTransceiver =
         new TransceiverBPSK(RJTRadio_callBack, (__bridge void *)(self), 44.1E3, txFreq, rxFreq, ifFreq, bw, cycles, mPlotController);
-        mTaskCheckTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(checkTaskQueue:) userInfo:nil repeats:YES];
+        mTaskCheckTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(checkTaskQueue:) userInfo:nil repeats:YES];
         mTaskQueue = new Queue<RJTRadioTask>(256);
     }
     return self;
@@ -159,7 +160,7 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
 
 -(id) initWithTxFreq:(double)txFreq rxFreq:(double)rxFreq
 {
-    return [self initWithTxFreq:txFreq rxFreq:rxFreq ifBandWidth:4E3 ifFreq:3E3 cyclesPerBit:20];
+    return [self initWithTxFreq:txFreq rxFreq:rxFreq ifBandWidth:4E3 ifFreq:3E3 cyclesPerBit:10];
 }
 
 -(void) dealloc
@@ -185,7 +186,8 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
 
 -(void) start
 {
-    mTransceiver->start(false);
+    RJTRadioTask task = RJT_START_RADIO;
+    mTaskQueue->add(task);
 }
 
 -(void) stop
@@ -198,12 +200,18 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
 {
     RJTRadioTask task;
     
+    AudioDriverOSX_callPeriodicallyFromMainRunLoop();
+    
     if (mTaskQueue->size() > 0)
     {
         mTaskQueue->get(&task);
     
         switch(task)
         {
+            case RJT_START_RADIO:
+                mTransceiver->start(false);
+                break;
+
             case RJT_STOP_RADIO:
                 mTransceiver->stop();
                 [_mReceiveDelegate finishedStopping];

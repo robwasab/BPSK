@@ -10,6 +10,9 @@
 		1E07CBFD1F8A79D00004051D /* QTPlotController.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CBFC1F8A79D00004051D /* QTPlotController.o */; };
 		1E07CBFE1F8A8EFE0004051D /* bpsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637E1F48CBB500E736C2 /* bpsk.cpp */; };
 		1E07CC001F92BC460004051D /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */; };
+		1E07CC241F93ED3E0004051D /* AudioDriverOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */; };
+		1E07CC261F94131D0004051D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CC251F94131D0004051D /* AudioToolbox.framework */; };
+		1E07CC281F94132D0004051D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CC271F94132D0004051D /* CoreFoundation.framework */; };
 		1E09E7731F88D9500011C95E /* SineWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76D1F88D9500011C95E /* SineWave.cpp */; };
 		1E09E7741F88D9500011C95E /* RJTGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76F1F88D9500011C95E /* RJTGraph.mm */; };
 		1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */; };
@@ -111,6 +114,9 @@
 		1E07CC011F92BC750004051D /* AudioDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioDriver.h; path = ../../AudioDriver/AudioDriver.h; sourceTree = "<group>"; };
 		1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDriverOSX.cpp; sourceTree = "<group>"; };
 		1E07CC221F93DA820004051D /* AudioDriverSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDriverSimulator.cpp; sourceTree = "<group>"; };
+		1E07CC251F94131D0004051D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1E07CC271F94132D0004051D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		1E07CC291F9438190004051D /* AudioDriverOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioDriverOSX.h; sourceTree = "<group>"; };
 		1E09E76D1F88D9500011C95E /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
 		1E09E76E1F88D9500011C95E /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
 		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraph.mm; path = AudioFrequencyMacExclusive/RJTGraph.mm; sourceTree = "<group>"; };
@@ -249,6 +255,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E07CC281F94132D0004051D /* CoreFoundation.framework in Frameworks */,
+				1E07CC261F94131D0004051D /* AudioToolbox.framework in Frameworks */,
 				1EC039AE1F8019D700A4D83A /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +287,8 @@
 		1E6BEE3F1F48FAC600CE9060 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E07CC271F94132D0004051D /* CoreFoundation.framework */,
+				1E07CC251F94131D0004051D /* AudioToolbox.framework */,
 				1E07CBFC1F8A79D00004051D /* QTPlotController.o */,
 				1EC0387E1F7FBF6B00A4D83A /* CoreGraphics.framework */,
 				1E6BEE401F48FAC600CE9060 /* circularbuffer.o */,
@@ -393,6 +403,7 @@
 				1EC038C71F8010C100A4D83A /* TestFrameworkStdin.h */,
 				1EC038C91F8010C100A4D83A /* Transceiver.h */,
 				1EC038CA1F8010C100A4D83A /* TransceiverBPSK.h */,
+				1E07CC291F9438190004051D /* AudioDriverOSX.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -577,6 +588,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E07CC241F93ED3E0004051D /* AudioDriverOSX.cpp in Sources */,
 				1E07CBFE1F8A8EFE0004051D /* bpsk.cpp in Sources */,
 				1E09E7761F88DBDF0011C95E /* RJTPlotController.cpp in Sources */,
 				1E09E7791F89AF0E0011C95E /* RJTRadio.mm in Sources */,
@@ -815,6 +827,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = BZ43VN2TVC;
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = MACOSX_APP;
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					../../../,

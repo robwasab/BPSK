@@ -19,5 +19,4 @@ void AudioDriver_start();
  * are stopped, Port Audio gets destroyed.
  */
 void AudioDriver_stop(int handle);
-
 #endif
