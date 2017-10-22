@@ -48,7 +48,7 @@ public:
 
         bits_iter = bits->get_iterator();
         notify_sent = false;
-        bits->reset();
+        //bits->reset();
         state = TRAIN;
         k = 1;
         n = 1;
@@ -77,8 +77,8 @@ public:
         k = 1;
         n = 1;
         
-        value = (float) ((bpsk->inv) * sin(bpsk->phase));
         bpsk->phase += bpsk->inc;
+        value = (float) ((bpsk->inv) * sin(bpsk->phase));
     }
 
     bool next() 
