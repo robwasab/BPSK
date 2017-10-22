@@ -13,7 +13,6 @@
 #include "../DecoderBPSK/Plottable_BPSKDecoder.h"
 #include "../Modulator/Modulator.h"
 #include "../PlotSink/PlotSink.h"
-#include "../SpectrumAnalyzer/SpectrumAnalyzer.h"
 #include "../Filter/BandPass.h"
 #include "../Filter/FirLowPass.h"
 #include "../Filter/FirHighPass.h"
@@ -21,8 +20,6 @@
 #include "../WavSink/WavSink.h"
 #include "../Memory/Memory.h"
 #include "../Autogain/Autogain.h"
-#include "../PortAudio/PortAudioSimulator.h"
-#include "../PortAudio/PortAudioStdin.h"
 #include "../Attenuator/Attenuator.h"
 #include "../SuppressPrint/SuppressPrint.h"
 #include "../Channel/Channel.h"
@@ -42,7 +39,8 @@ void TransceiverBPSK::send(const uint8_t data[], uint8_t len)
     }
 }
 
-TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj, 
+TransceiverBPSK::TransceiverBPSK(SignaledThread * signaled_thread,
+        TransceiverNotify notify_cb, void * obj,
         double fs, 
         double ftx, 
         double frx,
@@ -50,7 +48,7 @@ TransceiverBPSK::TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
         double bw,
         int cycles_per_bit,
         PlotController * controller):
-    Transceiver(notify_cb, obj, fs, ftx, frx, fif, bw, cycles_per_bit, controller)
+    Transceiver(signaled_thread, notify_cb, obj, fs, ftx, frx, fif, bw, cycles_per_bit, controller)
 {
     double fm;
     /* Transmitter Variables */

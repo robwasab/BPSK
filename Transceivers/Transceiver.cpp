@@ -5,6 +5,21 @@
 
 #define MAX_MODULES 32
 
+
+static
+void process_cb(void * arg)
+{
+    Transceiver * self = (Transceiver *) arg;
+    
+    RadioMsg msg;
+    
+    if (self->msg_queue.size() > 0)
+    {
+        self->msg_queue.get(&msg);
+        self->process(msg);
+    }
+}
+
 /* Radio modules use this function, which is passed as a function pointer
  * into their constructor, to send messages back to the transceiver.
  */
@@ -12,17 +27,19 @@ void transceiver_callback(void * arg, RadioMsg * msg)
 {
     Transceiver * self = (Transceiver *) arg;
 
-    self->notify(*msg);
+    self->msg_queue.add(*msg);
+    self->signaled_thread->notify(process_cb, self);
 }
 
 /* Ignore, was used for debuging the signaling mechanism
  */
 void Transceiver::debug(RadioMsg msg)
 {
-    signal();
+    this->signaled_thread->signal();
 }
 
-Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj, 
+Transceiver::Transceiver(SignaledThread * signaled_thread,
+        TransceiverNotify notify_cb, void * obj,
         double fs,
         double ftx, 
         double frx, 
@@ -30,7 +47,7 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
         double bw,
         int cycles_per_bit,
         PlotController * controller):
-    SignaledThread(128),
+    signaled_thread(signaled_thread),
     notify_cb(notify_cb),
     obj(obj),
     fs(fs),
@@ -41,7 +58,8 @@ Transceiver::Transceiver(TransceiverNotify notify_cb, void * obj,
     cycles_per_bit(cycles_per_bit),
     order(6),
     spectrum_size(1 << 10),
-    controller(controller)
+    controller(controller),
+    msg_queue(128)
 {
     generate_ml_sequence(&prefix_len, &prefix);
 
@@ -126,15 +144,23 @@ void Transceiver::process(RadioMsg msg)
 void Transceiver::start(bool block)
 {
     RadioMsg msg(CMD_START);
-    this->notify(msg);
-    SignaledThread::start(block);
+    
+    // notify
+    msg_queue.add(msg);
+    signaled_thread->notify(process_cb, this);
+
+    signaled_thread->start(block);
 }
 
 void Transceiver::stop()
 {
     RadioMsg msg(CMD_STOP);
-    this->notify(msg);
-    SignaledThread::stop();
+
+    // notify
+    msg_queue.add(msg);
+    signaled_thread->notify(process_cb, this);
+
+    signaled_thread->stop();
 }
 
 Transceiver::~Transceiver()

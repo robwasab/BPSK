@@ -7,6 +7,7 @@
 #include "../SignaledThread/SignaledThread.h"
 #include "../Notify/Notify.h"
 #include "../switches.h"
+#include "../SignaledThread/PosixSignaledThread.h"
 
 #ifdef GUI
 #include "../PlotController/PlotController.h"
@@ -41,7 +42,7 @@ typedef void (*StateMachine)(TestEvent t);
 extern void print_msg(const uint8_t msg[], uint8_t size);
 extern void TestFramework_cb(void * obj, RadioMsg * msg);
 
-class TestFramework : public SignaledThread<TestEvent>
+class TestFramework
 {
 public:
     TestFramework(StateMachine sm);
@@ -58,21 +59,28 @@ public:
     void main_loop();
 
     /* to be only used in main... */
-    void stop();
+    virtual void stop();
 
     /* to be only used in main... */
-    void start(bool block);
+    virtual void start(bool block);
 
     uint8_t receive_data[256];
     uint8_t receive_data_len;
     uint8_t receive_data_count;
-protected:
+    Queue<TestEvent> event_queue;
+    PosixSignaledThread * testFrameworkSignaledThread;
+    PosixSignaledThread * transceiverSignaledThread;
+    
     void process(TestEvent t);
+
+    void notify(TestEvent event);
+
 private:
     Stack<StateMachine> sm_stack;
     PlotController * controller;
     Transceiver * transceivers [MAX_TRANSCEIVERS];
     int transceiver_count;
+
 };
 
 #endif

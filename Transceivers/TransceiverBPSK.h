@@ -6,7 +6,8 @@
 class TransceiverBPSK : public Transceiver
 {
 public:
-    TransceiverBPSK(TransceiverNotify notify_cb, void * obj,
+    TransceiverBPSK(SignaledThread * signaled_thread,
+            TransceiverNotify notify_cb, void * obj,
             double fs,
             double ftx,
             double frx,

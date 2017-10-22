@@ -14,10 +14,11 @@ typedef void (*TransceiverNotify)(void * obj, RadioMsg * msg);
 
 void transceiver_callback(void * arg, RadioMsg * msg);
 
-class Transceiver : public SignaledThread<RadioMsg>
+class Transceiver
 {
 public:
-    Transceiver(TransceiverNotify notify_cb, void * obj, 
+    Transceiver(SignaledThread * signaled_thread,
+            TransceiverNotify notify_cb, void * obj,
             double fs=44.1E3, 
             double ftx=19E3, 
             double frx=19E3, 
@@ -37,7 +38,11 @@ public:
     virtual void send(const uint8_t data[], uint8_t len) = 0;
 
     void debug(RadioMsg msg);
-
+    
+    /* Message Queue */
+    Queue<RadioMsg> msg_queue;
+    SignaledThread * signaled_thread;
+    
 protected:
     TransceiverNotify notify_cb;
     void * obj;
@@ -53,7 +58,7 @@ protected:
     size_t prefix_len;
     bool * prefix;
     uint16_t * crc_table;
-
+    
     /* Holds Modules */
     Module ** modules;
 

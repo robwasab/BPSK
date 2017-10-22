@@ -9,7 +9,20 @@
 
 #define MAX_STATE_MACHINE 128
 
-char test_event_strings[][64] = 
+static
+void process_cb(void * arg)
+{
+    TestFramework * self = (TestFramework *) arg;
+    
+    TestEvent event;
+    if (self->event_queue.size() > 0)
+    {
+        self->event_queue.get(&event);
+        self->process(event);
+    }
+}
+
+char test_event_strings[][64] =
 {
     [EVENT_START] = "EVENT_START",
     [EVENT_DONE]  = "EVENT_DONE",
@@ -76,6 +89,7 @@ void TestFramework_cb(void * obj, RadioMsg * msg)
         case NOTIFY_USER_REQUEST_QUIT:
             LOG("User has requested to quit\n");
             te.type = EVENT_KILL;
+            
             self->notify(te);
             break;
             
@@ -104,6 +118,7 @@ void TestFramework_cb(void * obj, RadioMsg * msg)
                 te.type = EVENT_RECEIVE_DATA;
                 te.data = frwd_data;
                 te.len = self->receive_data_len;
+                
                 self->notify(te);
             }
             break;
@@ -125,16 +140,21 @@ void plotcontroller_close_callback(void * arg)
     te.type = EVENT_KILL;
     te.data = NULL;
     te.len = 0;
+    
+    // notify
     self->notify(te);
 }
 
 
 TestFramework::TestFramework(StateMachine sm):
-    SignaledThread(128),
+    event_queue(128),
     sm_stack(MAX_STATE_MACHINE),
     controller(NULL),
     transceiver_count(0)
 {
+    testFrameworkSignaledThread = new PosixSignaledThread();
+    transceiverSignaledThread = new PosixSignaledThread();
+    
     memset(transceivers, 0, sizeof(transceivers));
     memset(receive_data, 0, sizeof(receive_data));
     receive_data_len = 0;
@@ -157,9 +177,9 @@ int TestFramework::newTransceiver(double ftx, double frx, double fif, double bw,
     {
         return -1;
     }
-
     transceivers[transceiver_count] = 
-    new TransceiverBPSK(TestFramework_cb, this, 44.1E3, ftx, frx, fif, bw, cycles_per_bit, controller);
+    new TransceiverBPSK(transceiverSignaledThread,
+                    TestFramework_cb, this, 44.1E3, ftx, frx, fif, bw, cycles_per_bit, controller);
 
     transceivers[transceiver_count]->start(false);
 
@@ -194,6 +214,7 @@ void TestFramework::send(int handle, const uint8_t msg[], uint8_t len)
 void TestFramework::smStart(StateMachine sm, TestEvent te)
 {
     sm_stack.push(sm);
+    
     notify(te);
 }
 
@@ -201,6 +222,7 @@ void TestFramework::smReturn(TestEvent te)
 {
     StateMachine sm;
     sm_stack.pop(&sm);
+    
     notify(te);
 }
 
@@ -218,33 +240,35 @@ TestFramework::~TestFramework()
             delete transceivers[k];
         }
     }
+    delete transceiverSignaledThread;
+    delete testFrameworkSignaledThread;
 }
 
 /* Don't call manualy, this is called in main_loop */
 void TestFramework::start(bool block)
 {
     #ifdef GUI
-    SignaledThread::start(false);
-
+    testFrameworkSignaledThread->start(false);
+    
     /* start the plot controller */
     if (controller != NULL)
     {
         (void) controller->run();
     }
-    #else 
-    SignaledThread::start(block);
+    #else
+    testFrameworkSignaledThread->start(block);
     #endif
 }
 
 void TestFramework::stop()
 {
-    SignaledThread::stop();
+    testFrameworkSignaledThread->stop();
 }
 
 void TestFramework::main_loop()
 {
     start(false);
-    pthread_join(main, NULL);
+    pthread_join(testFrameworkSignaledThread->main, NULL);
     LOG("Joined...\n");
 }
 
@@ -261,9 +285,10 @@ void TestFramework::process(TestEvent t)
         switch (t.type)
         {
             case EVENT_KILL:
-                lock();
-                quit = true;
-                unlock();
+                
+                testFrameworkSignaledThread->lock();
+                testFrameworkSignaledThread->quit = true;
+                testFrameworkSignaledThread->unlock();
                 break;
 
             case EVENT_START:
@@ -279,5 +304,11 @@ void TestFramework::process(TestEvent t)
     {
         free(t.data);
     }
+}
+
+void TestFramework::notify(TestEvent event)
+{
+    event_queue.add(event);
+    testFrameworkSignaledThread->notify(process_cb, this);
 }
 
