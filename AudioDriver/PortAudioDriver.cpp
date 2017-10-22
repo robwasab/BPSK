@@ -1,4 +1,4 @@
-#include <portaudio.h>
+
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
@@ -11,25 +11,23 @@
 #include "../switches.h"
 
 #include "AudioDriver.h"
+
+#if defined(PORTAUDIO) && !defined(SIMULATE)
+
 #define MAX_CHANNELS 10
+
+#include <portaudio.h>
+
+static PaStream * stream = NULL;
+static int PortAudio_callback( const void *input, void *output, unsigned long frames, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void * arg );
 
 static int occupied_channels = 0;
 
-static PaStream * stream = NULL;
 static Channel * channels[MAX_CHANNELS] = {NULL};
 
 static pthread_mutex_t mutex;
 static bool quit = false;
 
-#ifdef SIMULATE
-static pthread_t thread;
-static void * PortAudioSimulator_loop(void * arg);
-#endif
-
-static
-int PortAudio_callback( const void *input, void *output, unsigned long frames, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void * arg );
-
-#ifdef PORTAUDIO
 /*
  * Initialize Port Audio with a channel.
  * returns the handle number.
@@ -56,7 +54,6 @@ int AudioDriver_init(Channel * channel)
 
     return occupied_channels - 1;
 }
-#endif
 
 static
 PaError print_device(PaDeviceIndex index) 
@@ -89,8 +86,6 @@ PaError print_device(PaDeviceIndex index)
     return paNoError;
 }
 
-
-#ifdef PORTAUDIO
 void AudioDriver_start()
 {
     static bool started = false;
@@ -105,10 +100,6 @@ void AudioDriver_start()
         LOG("Starting Port Audio!\n");
         started = true;
     }
-    #ifdef SIMULATE
-    pthread_create(&thread, NULL, PortAudioSimulator_loop, NULL);
-    return;
-    #else
     PaStreamParameters input_params;
     PaStreamParameters outpu_params;
     double input_fs;
@@ -195,11 +186,8 @@ void AudioDriver_start()
 fail:
     ERROR("%s\n", Pa_GetErrorText(error));
     return;
-#endif
 }
-#endif
 
-#ifdef PORTAUDIO
 void AudioDriver_stop(int handle)
 {
     if (handle >= occupied_channels || handle < 0)
@@ -230,10 +218,6 @@ void AudioDriver_stop(int handle)
     pthread_mutex_lock(&mutex);
     quit = true;
     pthread_mutex_unlock(&mutex);
-
-#ifdef SIMULATE
-    pthread_join(thread, NULL);
-#else
 
     PaError err;
 
@@ -274,55 +258,7 @@ void AudioDriver_stop(int handle)
 fail:
     ERROR("%s\n", Pa_GetErrorText(err));
     return;
-#endif
 }
-#endif
-
-#ifdef SIMULATE
-void * PortAudioSimulator_loop(void * arg)
-{
-    size_t size = 1024;
-    unsigned int sleep_time = (unsigned int) round(size/44.1E3*1E6);
-    //sleep_time = 1E5;
-
-    //int count = 0;
-    float * tx_buffer = (float *) malloc(sizeof(float) * size);
-    float * rx_buffer = tx_buffer;
-    unsigned long frames = size;
-
-    PaStreamCallbackTimeInfo time_info;
-    PaStreamCallbackFlags status_flags = 0;
-    bool quit = false;
-    int result;
-
-    while(!quit)
-    {
-        time_info.inputBufferAdcTime = 0.0;
-        time_info.currentTime = 0.0;
-        time_info.outputBufferDacTime = 0.0;
-        usleep(sleep_time);
-        result = PortAudio_callback(
-                rx_buffer, tx_buffer, frames, &time_info, status_flags, arg);
-
-        switch (result)
-        {
-            case paContinue:
-                continue;
-
-            case paAbort:
-                ERROR("PortAudio returned Error!\n");
-                break;
-
-            case paComplete:
-                LOG("PortAudio completed!\n");
-                quit = true;
-                break;
-        }
-    }
-    LOG("PortAudio quitting...\n");
-    return NULL;
-}
-#endif
 
 static
 int PortAudio_callback(
@@ -409,3 +345,5 @@ int PortAudio_callback(
 	
     return paContinue;
 }
+
+#endif

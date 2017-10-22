@@ -11,7 +11,9 @@
 #include "../Transceivers/TransceiverBPSK.h"
 #include "RJTPlotController.h"
 #include "../Queue/Queue.h"
-#include "AudioDriverOSX.h"
+#include "PosixSignaledThread.h"
+#include "SerialDispatchQueueSignaledThread.h"
+
 typedef enum
 {
     RJT_START_RADIO,
@@ -23,7 +25,6 @@ typedef enum
 
 @interface RJTRadio()
 // private method declaration
--(void) checkTaskQueue:(NSTimer *) timer;
 @end
 
 @implementation RJTRadio
@@ -31,8 +32,7 @@ typedef enum
     // private instance variables
     TransceiverBPSK * mTransceiver;
     RJTPlotController * mPlotController;
-    NSTimer * mTaskCheckTimer;
-    Queue<RJTRadioTask> * mTaskQueue;
+    SignaledThread * mSignaledThread;
 }
 
 static
@@ -85,6 +85,8 @@ void print_msg(const uint8_t msg[], uint8_t size)
 
 void RJTRadio_callBack(void * obj, RadioMsg * msg)
 {
+    if (obj == NULL) return;
+    
     RJTRadio * radio = (__bridge RJTRadio *) obj;
     
     switch (msg->type)
@@ -120,21 +122,23 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
                 LOG("Assembled message: ");
                 print_msg(radio->mReceiveData, radio->mReceiveDataLen);
                 
-                RJTRadioTask task = RJT_DATA_RECEIVED;
-                radio->mTaskQueue->add(task);
-             }
+                if (radio->_mReceiveDelegate != NULL)
+                {
+                    [radio->_mReceiveDelegate receivedData:radio->mReceiveData dataLen:radio->mReceiveDataLen];
+                }
+            }
             break;
         
         case NOTIFY_CRC_CORRUPTED:
         {
-            RJTRadioTask task = RJT_CRC_ERROR;
-            radio->mTaskQueue->add(task);
+            char msg[] = "CRC ERROR";
+            [radio->_mReceiveDelegate receivedData:(uint8_t *)msg dataLen:sizeof(msg)];
         } break;
             
         case NOTIFY_PLL_LOST_LOCK:
         {
-            RJTRadioTask task = RJT_PLL_LOST_LOCK;
-            radio->mTaskQueue->add(task);
+            char msg[] = "PLL LOST LOCK";
+            [radio->_mReceiveDelegate receivedData:(uint8_t *)msg dataLen:sizeof(msg)];
         } break;
             
         default:
@@ -148,12 +152,21 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
     self = [super init];
     if (self)
     {
+        //mSignaledThread = new PosixSignaledThread();
+        mSignaledThread = new SerialDispatchQueueSignaledThread();
         mPlotController = new RJTPlotController();
         mDataSourcesRef = &mPlotController->mDataSources;
         mTransceiver =
-        new TransceiverBPSK(RJTRadio_callBack, (__bridge void *)(self), 44.1E3, txFreq, rxFreq, ifFreq, bw, cycles, mPlotController);
-        mTaskCheckTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(checkTaskQueue:) userInfo:nil repeats:YES];
-        mTaskQueue = new Queue<RJTRadioTask>(256);
+        new TransceiverBPSK(mSignaledThread,
+                            RJTRadio_callBack,
+                            (__bridge void *)(self),
+                            44.1E3,
+                            txFreq,
+                            rxFreq,
+                            ifFreq,
+                            bw,
+                            cycles,
+                            mPlotController);
     }
     return self;
 }
@@ -165,11 +178,9 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
 
 -(void) dealloc
 {
-    [mTaskCheckTimer invalidate];
-    mTaskCheckTimer = nil;
+    delete mSignaledThread;
     delete mTransceiver;
     delete mPlotController;
-    delete mTaskQueue;
 }
 
 -(void) sendWithByteArray:(const uint8_t *)inMsg length:(uint8_t)len
@@ -186,61 +197,12 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
 
 -(void) start
 {
-    RJTRadioTask task = RJT_START_RADIO;
-    mTaskQueue->add(task);
+    mTransceiver->start(false);
 }
 
 -(void) stop
 {
-    RJTRadioTask task = RJT_STOP_RADIO;
-    mTaskQueue->add(task);
+    mTransceiver->stop();
+    [_mReceiveDelegate finishedStopping];
 }
-
--(void) checkTaskQueue:(NSTimer *) timer
-{
-    RJTRadioTask task;
-    
-    AudioDriverOSX_callPeriodicallyFromMainRunLoop();
-    
-    if (mTaskQueue->size() > 0)
-    {
-        mTaskQueue->get(&task);
-    
-        switch(task)
-        {
-            case RJT_START_RADIO:
-                mTransceiver->start(false);
-                break;
-
-            case RJT_STOP_RADIO:
-                mTransceiver->stop();
-                [_mReceiveDelegate finishedStopping];
-                break;
-            
-            case RJT_DATA_RECEIVED:
-                if (_mReceiveDelegate != NULL)
-                {
-                    [_mReceiveDelegate receivedData:mReceiveData dataLen:mReceiveDataLen];
-                }
-                break;
-            
-            case RJT_CRC_ERROR:
-                if (_mReceiveDelegate != NULL)
-                {
-                    char msg[] = "CRC ERROR";
-                    [_mReceiveDelegate receivedData:(uint8_t *)msg dataLen:sizeof(msg)];
-                }
-                break;
-            
-            case RJT_PLL_LOST_LOCK:
-                if (_mReceiveDelegate != NULL)
-                {
-                    char msg[] = "PLL LOST LOCK";
-                    [_mReceiveDelegate receivedData:(uint8_t *)msg dataLen:sizeof(msg)];
-                }
-                break;
-        }
-    }
-}
-
 @end

@@ -26,7 +26,7 @@ void Channel::set_noise_level(double noise_level_db)
 Channel::Channel(Memory * memory, TransceiverCallback cb, void * transceiver):
     Module(memory, cb, transceiver),
     #ifdef SIMULATE
-    ,distribution(0.0, db_noise(-20.0)),
+    distribution(0.0, db_noise(-20.0)),
     #endif
     source(64),
     tx_block(NULL),

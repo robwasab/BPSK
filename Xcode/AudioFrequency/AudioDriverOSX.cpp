@@ -31,6 +31,8 @@
 #define BUFFER_SIZE 1024
 #define FS 44.1E3
 
+#if defined(AUDIOTOOLBOX) && !defined(SIMULATE)
+
 /*****************************************************************
  * MARK: Global Variables + Type Defs
  *****************************************************************/
@@ -39,7 +41,7 @@ static int occupied_channels = 0;
 static Channel * channels[MAX_CHANNELS] = {NULL};
 
 // Set the number of buffers to use
-static const int kNumberBuffers = 3;
+static const int kNumberBuffers = 6;
 
 static pthread_mutex_t mutex;
 
@@ -69,45 +71,10 @@ static struct AQRecorderState mRecorderState = {0};
 bool mRequestAudioStart = false;
 bool mRequestAudioStop = false;
 
-#define LOCK pthread_mutex_lock(&mutex);
-#define UNLOCK pthread_mutex_unlock(&mutex);
-
-/*****************************************************************
- * MARK: Functions to start the Audio Queue from the main RunLoop
- *****************************************************************/
-
-void AudioDriverOSX_callPeriodicallyFromMainRunLoop()
-{
-    static bool started = false;
-    static bool stopped = false;
-
-    LOCK
-    if (!started && mRequestAudioStart)
-    {
-        started = true;
-        AudioQueueStart(mPlayerState.mQueue, NULL);
-        AudioQueueStart(mRecorderState.mQueue, NULL);
-    }
-    
-    if (!stopped && mRequestAudioStop)
-    {
-        stopped = true;
-        LOG("Calling AudioQueueStop on player\n");
-        AudioQueueStop(mPlayerState.mQueue, true);
-        
-        LOG("Calling AudioQueueStop on recorder\n");
-        AudioQueueStop(mRecorderState.mQueue, true);
-        
-        // Need to call in a dispose interface function
-        // Since future behavior will allow start and stop to be repeatively called
-        LOG("Calling AudioQueueDispose on player\n");
-        AudioQueueDispose(mPlayerState.mQueue, true);
-        
-        LOG("Calling AudioQueueDispose on recorder\n");
-        AudioQueueDispose(mRecorderState.mQueue, true);
-    }
-    UNLOCK
-}
+//#define LOCK pthread_mutex_lock(&mutex);
+//#define UNLOCK pthread_mutex_unlock(&mutex);
+#define LOCK
+#define UNLOCK
 
 
 /*****************************************************************
@@ -170,6 +137,8 @@ void AudioDriver_start()
         started = true;
         LOCK
         mRequestAudioStart = true;
+        AudioQueueStart(mPlayerState.mQueue, NULL);
+        AudioQueueStart(mRecorderState.mQueue, NULL);
         UNLOCK
     }
 }
@@ -201,10 +170,24 @@ void AudioDriver_stop(int handle)
     LOCK
     mRequestAudioStop = true;
     UNLOCK
+
+    LOG("Calling AudioQueueStop on player\n");
+    AudioQueueStop(mPlayerState.mQueue, true);
+    
+    LOG("Calling AudioQueueStop on recorder\n");
+    AudioQueueStop(mRecorderState.mQueue, true);
+    
+    // Need to call in a dispose interface function
+    // Since future behavior will allow start and stop to be repeatively called
+    LOG("Calling AudioQueueDispose on player\n");
+    AudioQueueDispose(mPlayerState.mQueue, true);
+    
+    LOG("Calling AudioQueueDispose on recorder\n");
+    AudioQueueDispose(mRecorderState.mQueue, true);
 }
 
 #endif
-#endif 
+#endif
 
 
 /*****************************************************************
@@ -538,3 +521,5 @@ void AQRecorderState_Initialize(struct AQRecorderState * aq)
     // Init audio queue buffers
     AQRecorderState_AllocateBuffers(aq);
 }
+
+#endif
