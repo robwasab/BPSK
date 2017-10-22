@@ -13,11 +13,60 @@
 		1E07CC241F93ED3E0004051D /* AudioDriverOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */; };
 		1E07CC261F94131D0004051D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CC251F94131D0004051D /* AudioToolbox.framework */; };
 		1E07CC281F94132D0004051D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E07CC271F94132D0004051D /* CoreFoundation.framework */; };
+		1E07CC301F9BDE260004051D /* PosixSignaledThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CC2E1F9BDE260004051D /* PosixSignaledThread.cpp */; };
+		1E07CC311F9BDE260004051D /* PosixSignaledThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CC2E1F9BDE260004051D /* PosixSignaledThread.cpp */; };
 		1E09E7731F88D9500011C95E /* SineWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76D1F88D9500011C95E /* SineWave.cpp */; };
 		1E09E7741F88D9500011C95E /* RJTGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E76F1F88D9500011C95E /* RJTGraph.mm */; };
 		1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */; };
 		1E09E7761F88DBDF0011C95E /* RJTPlotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */; };
 		1E09E7791F89AF0E0011C95E /* RJTRadio.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7781F89AF0E0011C95E /* RJTRadio.mm */; };
+		1E7A1F101F9BF00F00953C86 /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */; };
+		1E7A1F171F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F161F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp */; };
+		1E7A1F221F9D1FF700953C86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F211F9D1FF700953C86 /* AppDelegate.swift */; };
+		1E7A1F241F9D1FF700953C86 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F231F9D1FF700953C86 /* ViewController.swift */; };
+		1E7A1F271F9D1FF700953C86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A1F251F9D1FF700953C86 /* Main.storyboard */; };
+		1E7A1F291F9D1FF700953C86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A1F281F9D1FF700953C86 /* Assets.xcassets */; };
+		1E7A1F2C1F9D1FF700953C86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A1F2A1F9D1FF700953C86 /* LaunchScreen.storyboard */; };
+		1E7A1F311F9D213A00953C86 /* RJTPlotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */; };
+		1E7A1F321F9D213A00953C86 /* RJTRadio.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7781F89AF0E0011C95E /* RJTRadio.mm */; };
+		1E7A1F341F9D213A00953C86 /* Autogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963541F48CBB400E736C2 /* Autogain.cpp */; };
+		1E7A1F351F9D213B00953C86 /* Biquad_LowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963581F48CBB400E736C2 /* Biquad_LowPass.cpp */; };
+		1E7A1F361F9D213B00953C86 /* bpsk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637E1F48CBB500E736C2 /* bpsk.cpp */; };
+		1E7A1F371F9D213B00953C86 /* BPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963611F48CBB400E736C2 /* BPSK.cpp */; };
+		1E7A1F381F9D213B00953C86 /* BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635F1F48CBB400E736C2 /* BPSKDecoder.cpp */; };
+		1E7A1F391F9D213B00953C86 /* ByteInputInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963621F48CBB400E736C2 /* ByteInputInterface.cpp */; };
+		1E7A1F3A1F9D213B00953C86 /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963561F48CBB400E736C2 /* Channel.cpp */; };
+		1E7A1F3B1F9D213B00953C86 /* Constellation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963571F48CBB400E736C2 /* Constellation.cpp */; };
+		1E7A1F3C1F9D213B00953C86 /* CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963591F48CBB400E736C2 /* CostasLoop.cpp */; };
+		1E7A1F3D1F9D213B00953C86 /* CostasLoopBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635A1F48CBB400E736C2 /* CostasLoopBlock.cpp */; };
+		1E7A1F3E1F9D213B00953C86 /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635E1F48CBB400E736C2 /* crc.cpp */; };
+		1E7A1F3F1F9D213B00953C86 /* Plottable_BPSKDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963601F48CBB400E736C2 /* Plottable_BPSKDecoder.cpp */; };
+		1E7A1F401F9D213B00953C86 /* Plottable_CostasLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635B1F48CBB400E736C2 /* Plottable_CostasLoop.cpp */; };
+		1E7A1F411F9D213B00953C86 /* PlottableAutogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */; };
+		1E7A1F421F9D213B00953C86 /* Prefix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963631F48CBB400E736C2 /* Prefix.cpp */; };
+		1E7A1F431F9D213B00953C86 /* QPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635C1F48CBB400E736C2 /* QPSK.cpp */; };
+		1E7A1F441F9D213B00953C86 /* QPSKBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19635D1F48CBB400E736C2 /* QPSKBlock.cpp */; };
+		1E7A1F471F9D21EA00953C86 /* BandPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963661F48CBB400E736C2 /* BandPass.cpp */; };
+		1E7A1F481F9D21EA00953C86 /* FirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963671F48CBB400E736C2 /* FirFilter.cpp */; };
+		1E7A1F491F9D21EA00953C86 /* FirLowPass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963681F48CBB400E736C2 /* FirLowPass.cpp */; };
+		1E7A1F4A1F9D21EA00953C86 /* generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636C1F48CBB400E736C2 /* generator.cpp */; };
+		1E7A1F4B1F9D21EA00953C86 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963691F48CBB400E736C2 /* math.cpp */; };
+		1E7A1F4C1F9D21EA00953C86 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636D1F48CBB400E736C2 /* Memory.cpp */; };
+		1E7A1F4D1F9D21EA00953C86 /* Modulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636E1F48CBB400E736C2 /* Modulator.cpp */; };
+		1E7A1F4E1F9D21EA00953C86 /* Module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636F1F48CBB400E736C2 /* Module.cpp */; };
+		1E7A1F4F1F9D21EA00953C86 /* PlottableFirFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */; };
+		1E7A1F501F9D21EA00953C86 /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */; };
+		1E7A1F511F9D21EA00953C86 /* StdinSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963651F48CBB400E736C2 /* StdinSource.cpp */; };
+		1E7A1F521F9D21EA00953C86 /* Transceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637C1F48CBB500E736C2 /* Transceiver.cpp */; };
+		1E7A1F531F9D21EA00953C86 /* TransceiverBPSK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */; };
+		1E7A1F541F9D21EA00953C86 /* SerialDispatchQueueSignaledThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F161F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp */; };
+		1E7A1F561F9D223500953C86 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7A1F551F9D223500953C86 /* CoreFoundation.framework */; };
+		1E7A1F581F9D223D00953C86 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7A1F571F9D223D00953C86 /* AudioToolbox.framework */; };
+		1E7A1F5A1F9D224600953C86 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7A1F591F9D224600953C86 /* CoreGraphics.framework */; };
+		1E7A1F5C1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */; };
+		1E7A1F5D1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */; };
+		1E7A1F5E1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */; };
+		1E7A1F5F1F9D33A600953C86 /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
 		1EC0393F1F80121000A4D83A /* Autogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963541F48CBB400E736C2 /* Autogain.cpp */; };
 		1EC039401F80121000A4D83A /* PlottableAutogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */; };
 		1EC039411F80121000A4D83A /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963561F48CBB400E736C2 /* Channel.cpp */; };
@@ -113,10 +162,10 @@
 		1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PortAudioDriver.cpp; path = ../../AudioDriver/PortAudioDriver.cpp; sourceTree = "<group>"; };
 		1E07CC011F92BC750004051D /* AudioDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioDriver.h; path = ../../AudioDriver/AudioDriver.h; sourceTree = "<group>"; };
 		1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDriverOSX.cpp; sourceTree = "<group>"; };
-		1E07CC221F93DA820004051D /* AudioDriverSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDriverSimulator.cpp; sourceTree = "<group>"; };
 		1E07CC251F94131D0004051D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1E07CC271F94132D0004051D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		1E07CC291F9438190004051D /* AudioDriverOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioDriverOSX.h; sourceTree = "<group>"; };
+		1E07CC2A1F9BD59A0004051D /* PosixSignaledThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PosixSignaledThread.h; path = ../../SignaledThread/PosixSignaledThread.h; sourceTree = "<group>"; };
+		1E07CC2E1F9BDE260004051D /* PosixSignaledThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PosixSignaledThread.cpp; path = ../../SignaledThread/PosixSignaledThread.cpp; sourceTree = "<group>"; };
 		1E09E76D1F88D9500011C95E /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
 		1E09E76E1F88D9500011C95E /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
 		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraph.mm; path = AudioFrequencyMacExclusive/RJTGraph.mm; sourceTree = "<group>"; };
@@ -166,6 +215,20 @@
 		1E6BEE421F48FAC600CE9060 /* moc_mainwindow.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = moc_mainwindow.o; path = ../../PlotController/moc_mainwindow.o; sourceTree = "<group>"; };
 		1E6BEE431F48FAC600CE9060 /* moc_plot.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = moc_plot.o; path = ../../PlotController/moc_plot.o; sourceTree = "<group>"; };
 		1E6BEE441F48FAC600CE9060 /* plot.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = plot.o; path = ../../PlotController/plot.o; sourceTree = "<group>"; };
+		1E7A1F161F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SerialDispatchQueueSignaledThread.cpp; sourceTree = "<group>"; };
+		1E7A1F181F9C06F700953C86 /* SerialDispatchQueueSignaledThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SerialDispatchQueueSignaledThread.h; sourceTree = "<group>"; };
+		1E7A1F191F9C099600953C86 /* libdispatch.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libdispatch.tbd; path = usr/lib/system/libdispatch.tbd; sourceTree = SDKROOT; };
+		1E7A1F1F1F9D1FF700953C86 /* AudioFrequencyIphoneExclusive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioFrequencyIphoneExclusive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E7A1F211F9D1FF700953C86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1E7A1F231F9D1FF700953C86 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1E7A1F261F9D1FF700953C86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1E7A1F281F9D1FF700953C86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1E7A1F2B1F9D1FF700953C86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1E7A1F2D1F9D1FF700953C86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E7A1F551F9D223500953C86 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		1E7A1F571F9D223D00953C86 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		1E7A1F591F9D224600953C86 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimulateAudioDriver.cpp; path = ../../AudioDriver/SimulateAudioDriver.cpp; sourceTree = "<group>"; };
 		1EC0387E1F7FBF6B00A4D83A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1EC038BC1F8010C100A4D83A /* switches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = switches.h; path = ../../switches.h; sourceTree = "<group>"; };
 		1EC038BD1F8010C100A4D83A /* crc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc.h; path = "../../CRC-16/crc.h"; sourceTree = "<group>"; };
@@ -238,6 +301,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1E7A1F1C1F9D1FF700953C86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E7A1F5A1F9D224600953C86 /* CoreGraphics.framework in Frameworks */,
+				1E7A1F581F9D223D00953C86 /* AudioToolbox.framework in Frameworks */,
+				1E7A1F561F9D223500953C86 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1EC038F91F8011F700A4D83A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -267,6 +340,7 @@
 		1E19631D1F48C9AD00E736C2 = {
 			isa = PBXGroup;
 			children = (
+				1E7A1F201F9D1FF700953C86 /* iPhone Application Layer */,
 				1EC039761F80158400A4D83A /* Mac Application Layer */,
 				1EBA3E3B1F7E37150069BF50 /* Objective-C Layer */,
 				1E6BEE4D1F48FBBF00CE9060 /* C++ */,
@@ -280,6 +354,7 @@
 			children = (
 				1EC038FC1F8011F700A4D83A /* AudioFrequency */,
 				1EC039751F80158400A4D83A /* AudioFrequencyMacExclusive.app */,
+				1E7A1F1F1F9D1FF700953C86 /* AudioFrequencyIphoneExclusive.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -287,6 +362,10 @@
 		1E6BEE3F1F48FAC600CE9060 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E7A1F591F9D224600953C86 /* CoreGraphics.framework */,
+				1E7A1F571F9D223D00953C86 /* AudioToolbox.framework */,
+				1E7A1F551F9D223500953C86 /* CoreFoundation.framework */,
+				1E7A1F191F9C099600953C86 /* libdispatch.tbd */,
 				1E07CC271F94132D0004051D /* CoreFoundation.framework */,
 				1E07CC251F94131D0004051D /* AudioToolbox.framework */,
 				1E07CBFC1F8A79D00004051D /* QTPlotController.o */,
@@ -307,6 +386,20 @@
 				1EC039AC1F8018DA00A4D83A /* Headers */,
 			);
 			name = "C++";
+			sourceTree = "<group>";
+		};
+		1E7A1F201F9D1FF700953C86 /* iPhone Application Layer */ = {
+			isa = PBXGroup;
+			children = (
+				1E7A1F211F9D1FF700953C86 /* AppDelegate.swift */,
+				1E7A1F231F9D1FF700953C86 /* ViewController.swift */,
+				1E7A1F251F9D1FF700953C86 /* Main.storyboard */,
+				1E7A1F281F9D1FF700953C86 /* Assets.xcassets */,
+				1E7A1F2A1F9D1FF700953C86 /* LaunchScreen.storyboard */,
+				1E7A1F2D1F9D1FF700953C86 /* Info.plist */,
+			);
+			name = "iPhone Application Layer";
+			path = AudioFrequencyIphoneExclusive;
 			sourceTree = "<group>";
 		};
 		1EBA3E3B1F7E37150069BF50 /* Objective-C Layer */ = {
@@ -393,6 +486,7 @@
 				1EC038DA1F8010C100A4D83A /* RC_LowPass.h */,
 				1EC038D71F8010C100A4D83A /* SecondOrderPLL.h */,
 				1EC038C61F8010C100A4D83A /* SignaledThread.h */,
+				1E07CC2A1F9BD59A0004051D /* PosixSignaledThread.h */,
 				1EC038F71F8010C100A4D83A /* simple.h */,
 				1EC038F51F8010C100A4D83A /* SpectrumAnalyzer.h */,
 				1EC038F61F8010C100A4D83A /* Stack.h */,
@@ -403,7 +497,7 @@
 				1EC038C71F8010C100A4D83A /* TestFrameworkStdin.h */,
 				1EC038C91F8010C100A4D83A /* Transceiver.h */,
 				1EC038CA1F8010C100A4D83A /* TransceiverBPSK.h */,
-				1E07CC291F9438190004051D /* AudioDriverOSX.h */,
+				1E7A1F181F9C06F700953C86 /* SerialDispatchQueueSignaledThread.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -436,6 +530,7 @@
 				1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */,
 				1E19636B1F48CBB400E736C2 /* PlottableFirFilter.cpp */,
 				1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */,
+				1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */,
 				1E1963631F48CBB400E736C2 /* Prefix.cpp */,
 				1E1963641F48CBB400E736C2 /* Pulseshape.cpp */,
 				1E19635C1F48CBB400E736C2 /* QPSK.cpp */,
@@ -449,7 +544,8 @@
 				1E19637C1F48CBB500E736C2 /* Transceiver.cpp */,
 				1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */,
 				1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */,
-				1E07CC221F93DA820004051D /* AudioDriverSimulator.cpp */,
+				1E07CC2E1F9BDE260004051D /* PosixSignaledThread.cpp */,
+				1E7A1F161F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -457,6 +553,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1E7A1F1E1F9D1FF700953C86 /* AudioFrequencyIphoneExclusive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E7A1F2E1F9D1FF800953C86 /* Build configuration list for PBXNativeTarget "AudioFrequencyIphoneExclusive" */;
+			buildPhases = (
+				1E7A1F1B1F9D1FF700953C86 /* Sources */,
+				1E7A1F1C1F9D1FF700953C86 /* Frameworks */,
+				1E7A1F1D1F9D1FF700953C86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AudioFrequencyIphoneExclusive;
+			productName = AudioFrequencyIphoneExclusive;
+			productReference = 1E7A1F1F1F9D1FF700953C86 /* AudioFrequencyIphoneExclusive.app */;
+			productType = "com.apple.product-type.application";
+		};
 		1EC038FB1F8011F700A4D83A /* AudioFrequency */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1EC039001F8011F700A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequency" */;
@@ -501,6 +614,10 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Robby Tong";
 				TargetAttributes = {
+					1E7A1F1E1F9D1FF700953C86 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
 					1EC038FB1F8011F700A4D83A = {
 						CreatedOnToolsVersion = 8.3.3;
 						ProvisioningStyle = Automatic;
@@ -526,11 +643,22 @@
 			targets = (
 				1EC038FB1F8011F700A4D83A /* AudioFrequency */,
 				1EC039741F80158400A4D83A /* AudioFrequencyMacExclusive */,
+				1E7A1F1E1F9D1FF700953C86 /* AudioFrequencyIphoneExclusive */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1E7A1F1D1F9D1FF700953C86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E7A1F2C1F9D1FF700953C86 /* LaunchScreen.storyboard in Resources */,
+				1E7A1F291F9D1FF700953C86 /* Assets.xcassets in Resources */,
+				1E7A1F271F9D1FF700953C86 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1EC039731F80158400A4D83A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -543,10 +671,55 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1E7A1F1B1F9D1FF700953C86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E7A1F5F1F9D33A600953C86 /* RadioMsg.cpp in Sources */,
+				1E7A1F471F9D21EA00953C86 /* BandPass.cpp in Sources */,
+				1E7A1F481F9D21EA00953C86 /* FirFilter.cpp in Sources */,
+				1E7A1F491F9D21EA00953C86 /* FirLowPass.cpp in Sources */,
+				1E7A1F4A1F9D21EA00953C86 /* generator.cpp in Sources */,
+				1E7A1F4B1F9D21EA00953C86 /* math.cpp in Sources */,
+				1E7A1F4C1F9D21EA00953C86 /* Memory.cpp in Sources */,
+				1E7A1F5E1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */,
+				1E7A1F4D1F9D21EA00953C86 /* Modulator.cpp in Sources */,
+				1E7A1F4E1F9D21EA00953C86 /* Module.cpp in Sources */,
+				1E7A1F4F1F9D21EA00953C86 /* PlottableFirFilter.cpp in Sources */,
+				1E7A1F501F9D21EA00953C86 /* PortAudioDriver.cpp in Sources */,
+				1E7A1F511F9D21EA00953C86 /* StdinSource.cpp in Sources */,
+				1E7A1F521F9D21EA00953C86 /* Transceiver.cpp in Sources */,
+				1E7A1F531F9D21EA00953C86 /* TransceiverBPSK.cpp in Sources */,
+				1E7A1F541F9D21EA00953C86 /* SerialDispatchQueueSignaledThread.cpp in Sources */,
+				1E7A1F311F9D213A00953C86 /* RJTPlotController.cpp in Sources */,
+				1E7A1F321F9D213A00953C86 /* RJTRadio.mm in Sources */,
+				1E7A1F341F9D213A00953C86 /* Autogain.cpp in Sources */,
+				1E7A1F351F9D213B00953C86 /* Biquad_LowPass.cpp in Sources */,
+				1E7A1F361F9D213B00953C86 /* bpsk.cpp in Sources */,
+				1E7A1F371F9D213B00953C86 /* BPSK.cpp in Sources */,
+				1E7A1F381F9D213B00953C86 /* BPSKDecoder.cpp in Sources */,
+				1E7A1F391F9D213B00953C86 /* ByteInputInterface.cpp in Sources */,
+				1E7A1F3A1F9D213B00953C86 /* Channel.cpp in Sources */,
+				1E7A1F3B1F9D213B00953C86 /* Constellation.cpp in Sources */,
+				1E7A1F3C1F9D213B00953C86 /* CostasLoop.cpp in Sources */,
+				1E7A1F3D1F9D213B00953C86 /* CostasLoopBlock.cpp in Sources */,
+				1E7A1F3E1F9D213B00953C86 /* crc.cpp in Sources */,
+				1E7A1F3F1F9D213B00953C86 /* Plottable_BPSKDecoder.cpp in Sources */,
+				1E7A1F401F9D213B00953C86 /* Plottable_CostasLoop.cpp in Sources */,
+				1E7A1F411F9D213B00953C86 /* PlottableAutogain.cpp in Sources */,
+				1E7A1F421F9D213B00953C86 /* Prefix.cpp in Sources */,
+				1E7A1F431F9D213B00953C86 /* QPSK.cpp in Sources */,
+				1E7A1F441F9D213B00953C86 /* QPSKBlock.cpp in Sources */,
+				1E7A1F241F9D1FF700953C86 /* ViewController.swift in Sources */,
+				1E7A1F221F9D1FF700953C86 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1EC038F81F8011F700A4D83A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E7A1F101F9BF00F00953C86 /* PortAudioDriver.cpp in Sources */,
 				1EC0393F1F80121000A4D83A /* Autogain.cpp in Sources */,
 				1EC039401F80121000A4D83A /* PlottableAutogain.cpp in Sources */,
 				1EC039411F80121000A4D83A /* Channel.cpp in Sources */,
@@ -561,6 +734,7 @@
 				1EC0394A1F80121000A4D83A /* BPSKDecoder.cpp in Sources */,
 				1EC0394B1F80121000A4D83A /* Plottable_BPSKDecoder.cpp in Sources */,
 				1EC0394C1F80121000A4D83A /* BPSK.cpp in Sources */,
+				1E07CC301F9BDE260004051D /* PosixSignaledThread.cpp in Sources */,
 				1EC0394D1F80121000A4D83A /* ByteInputInterface.cpp in Sources */,
 				1EC0394E1F80121000A4D83A /* Prefix.cpp in Sources */,
 				1EC039501F80121000A4D83A /* StdinSource.cpp in Sources */,
@@ -577,6 +751,7 @@
 				1EC039BB1F814ED700A4D83A /* RJTPlotController.cpp in Sources */,
 				1EC039621F80121000A4D83A /* TestFramework.cpp in Sources */,
 				1EC039631F80121000A4D83A /* TestFrameworkStdin.cpp in Sources */,
+				1E7A1F5C1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */,
 				1EC039651F80121000A4D83A /* simple.cpp in Sources */,
 				1EC039661F80121000A4D83A /* Transceiver.cpp in Sources */,
 				1EC039671F80121000A4D83A /* TransceiverBPSK.cpp in Sources */,
@@ -588,6 +763,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E07CC311F9BDE260004051D /* PosixSignaledThread.cpp in Sources */,
 				1E07CC241F93ED3E0004051D /* AudioDriverOSX.cpp in Sources */,
 				1E07CBFE1F8A8EFE0004051D /* bpsk.cpp in Sources */,
 				1E09E7761F88DBDF0011C95E /* RJTPlotController.cpp in Sources */,
@@ -625,9 +801,11 @@
 				1EC039AA1F8018AD00A4D83A /* TransceiverBPSK.cpp in Sources */,
 				1EC039861F80161800A4D83A /* Graph.swift in Sources */,
 				1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */,
+				1E7A1F5D1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */,
 				1EC0397A1F80158400A4D83A /* ViewController.swift in Sources */,
 				1EC039781F80158400A4D83A /* AppDelegate.swift in Sources */,
 				1EC039871F80161800A4D83A /* GraphView.swift in Sources */,
+				1E7A1F171F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp in Sources */,
 				1E09E7731F88D9500011C95E /* SineWave.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -635,6 +813,22 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		1E7A1F251F9D1FF700953C86 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E7A1F261F9D1FF700953C86 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1E7A1F2A1F9D1FF700953C86 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E7A1F2B1F9D1FF700953C86 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		1EC0397D1F80158400A4D83A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -735,9 +929,77 @@
 			};
 			name = Release;
 		};
+		1E7A1F2F1F9D1FF800953C86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = BZ43VN2TVC;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MACOSX_APP=1",
+					"DEBUG=1",
+					"AUDIOTOOLBOX=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					../,
+					../../,
+					../../../,
+				);
+				INFOPLIST_FILE = AudioFrequencyIphoneExclusive/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-lm",
+					"-lpthread",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = RobbyTog.AudioFrequencyIphoneExclusive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		1E7A1F301F9D1FF800953C86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = BZ43VN2TVC;
+				HEADER_SEARCH_PATHS = (
+					../,
+					../../,
+					../../../,
+				);
+				INFOPLIST_FILE = AudioFrequencyIphoneExclusive/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-lm",
+					"-lpthread",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = RobbyTog.AudioFrequencyIphoneExclusive;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		1EC039011F8011F700A4D83A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
+					"DEBUG=1",
+					"PORTAUDIO=1",
+					"TERMINAL_APP=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					../../,
@@ -827,7 +1089,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = BZ43VN2TVC;
-				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = MACOSX_APP;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MACOSX_APP=1",
+					"DEBUG=1",
+					"AUDIOTOOLBOX=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
 					../../../,
@@ -836,7 +1102,10 @@
 				);
 				INFOPLIST_FILE = AudioFrequencyMacExclusive/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					"$(SDKROOT)/usr/lib/system",
+				);
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lfftw3f",
@@ -888,7 +1157,10 @@
 				);
 				INFOPLIST_FILE = AudioFrequencyMacExclusive/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					"$(SDKROOT)/usr/lib/system",
+				);
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lfftw3f",
@@ -936,6 +1208,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		1E7A1F2E1F9D1FF800953C86 /* Build configuration list for PBXNativeTarget "AudioFrequencyIphoneExclusive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E7A1F2F1F9D1FF800953C86 /* Debug */,
+				1E7A1F301F9D1FF800953C86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		1EC039001F8011F700A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequency" */ = {
 			isa = XCConfigurationList;
