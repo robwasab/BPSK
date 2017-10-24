@@ -104,6 +104,12 @@ void AudioDriver_stop(int handle)
         LOG("Invalid Handle %d...\n", handle);
         return;
     }
+ 
+    pthread_mutex_lock(&mutex);
+    quit = true;
+    pthread_mutex_unlock(&mutex);
+    
+    pthread_join(thread, NULL);
     
     pthread_mutex_lock(&mutex);
     
@@ -123,12 +129,6 @@ void AudioDriver_stop(int handle)
     {
         LOG("Shutting down Port Audio!\n");
     }
-    
-    pthread_mutex_lock(&mutex);
-    quit = true;
-    pthread_mutex_unlock(&mutex);
-    
-    pthread_join(thread, NULL);
 }
 
 void * PortAudioSimulator_loop(void * arg)

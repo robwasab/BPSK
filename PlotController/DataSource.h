@@ -6,7 +6,7 @@
 #include <math.h>
 
 #define NUM_FRAMES 6
-#define UPDATE_RATE_HZ 24
+#define UPDATE_RATE_HZ 12
 #define UPDATE_INTERVAL_MS (1000/UPDATE_RATE_HZ)
 #define FRAME_SIZE(fs) ((int)(round(1.0*fs/UPDATE_RATE_HZ)))
 #define BUFFER_SIZE(fs) (NUM_FRAMES * FRAME_SIZE(fs))

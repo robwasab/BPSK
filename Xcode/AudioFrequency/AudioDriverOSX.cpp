@@ -33,6 +33,8 @@
 
 #if defined(AUDIOTOOLBOX) && !defined(SIMULATE)
 
+static void PrintResultCode(OSStatus code);
+
 /*****************************************************************
  * MARK: Global Variables + Type Defs
  *****************************************************************/
@@ -41,7 +43,7 @@ static int occupied_channels = 0;
 static Channel * channels[MAX_CHANNELS] = {NULL};
 
 // Set the number of buffers to use
-static const int kNumberBuffers = 6;
+static const int kNumberBuffers = 3;
 
 static pthread_mutex_t mutex;
 
@@ -324,7 +326,7 @@ static
 void AQPlayerState_InitOutputQueue(struct AQPlayerState * aq)
 {
     OSStatus code =
-    AudioQueueNewOutput(&aq->mDataFormat, HandleOutputBuffer, aq, CFRunLoopGetMain(), kCFRunLoopCommonModes, 0, &aq->mQueue);
+    AudioQueueNewOutput(&aq->mDataFormat, HandleOutputBuffer, aq, CFRunLoopGetMain(), kCFRunLoopDefaultMode, 0, &aq->mQueue);
     
     CheckError(code, "AudioQueueNewOutput ");
 }
@@ -406,7 +408,7 @@ void HandleInputBuffer(
                        UInt32 inNumPackets,
                        const AudioStreamPacketDescription * inPacketDesc)
 {
-    struct AQRecorderState * aq = (struct AQRecorderState *) userData;
+    //struct AQRecorderState * aq = (struct AQRecorderState *) userData;
     
     bool stopped = false;
     LOCK
@@ -432,7 +434,7 @@ void HandleInputBuffer(
     // Enqueue the buffer
     // The last two parameters inNumPacketDesc, which equals zero, and
     // inPacketDescs, which equals NULL, are unused when recording.
-    AudioQueueEnqueueBuffer(inAudioQueue, inBuffer, 0, NULL);
+    OSStatus status = AudioQueueEnqueueBuffer(inAudioQueue, inBuffer, 0, NULL);
 }
 
 
@@ -473,7 +475,7 @@ bool AQRecorderState_InitAudioQueue(struct AQRecorderState * aq)
 {
     OSStatus code;
 
-    code = AudioQueueNewInput(&aq->mDataFormat, HandleInputBuffer, aq, CFRunLoopGetMain(), kCFRunLoopCommonModes, 0, &aq->mQueue);
+    code = AudioQueueNewInput(&aq->mDataFormat, HandleInputBuffer, aq, CFRunLoopGetMain(), kCFRunLoopDefaultMode, 0, &aq->mQueue);
     
     if (code != noErr)
     {

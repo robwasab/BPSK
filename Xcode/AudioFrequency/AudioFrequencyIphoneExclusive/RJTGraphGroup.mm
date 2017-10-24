@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKit.h>
 #import "RJTGraphGroup.h"
 #import "RJTGraph.h"
 #import "RJTRadio.h"
@@ -35,20 +37,24 @@ using namespace std;
     size_t mNumGraphs;
     CGFloat mWidth;
     CGFloat mHeight;
+    CGFloat mX;
+    CGFloat mY;
     BOOL mExpandRemainingGraphs;
     NSMutableArray * mGraphs;
 }
 
 -(id) initWithNumGraphs:(int)numGraphs
-                  width:(CGFloat)width
-                 height:(CGFloat)height
+                  frame:(CGRect)frame
   expandRemainingGraphs:(BOOL)expand
 {
     self = [super init];
     if (self != nil)
     {
-        mWidth = width;
-        mHeight = height;
+        mWidth = frame.size.width;
+        mHeight = frame.size.height;
+        mX = frame.origin.x;
+        mY = frame.origin.y;
+        
         mExpandRemainingGraphs = expand;
         mGraphs = [[NSMutableArray alloc] init];
         [self graphsToCreate:numGraphs];
@@ -176,6 +182,13 @@ using namespace std;
 
 -(void) draw:(CGContextRef)ctx
 {
+    CGRect rect = CGRectMake(mX, mY, mWidth, mHeight);
+    CGContextSetStrokeColorWithColor(ctx, UIColor.blueColor.CGColor);
+    
+    CGContextStrokeRect(ctx, rect);
+    
+    CGContextTranslateCTM(ctx, 0, mHeight);
+    CGContextScaleCTM(ctx, 1.0, -1.0);
     NSInteger count = [mGraphs count];
     for (int k = 0; k < count; k++)
     {

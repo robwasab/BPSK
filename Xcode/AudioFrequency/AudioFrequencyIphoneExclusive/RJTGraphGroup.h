@@ -26,8 +26,7 @@
 @property (weak, atomic) id <RJTViewUpdateDelegate> delegate;
 
 -(id) initWithNumGraphs:(int)numGraphs
-                  width:(CGFloat)width
-                 height:(CGFloat)height
+                  frame:(CGRect)frame
   expandRemainingGraphs:(BOOL)expand;
 
 

@@ -2,12 +2,15 @@
 //  AudioFrequency-Bridging-Header.h
 //  AudioFrequency
 //
-//  Created by Robby Tong on 10/22/17.
+//  Created by Robby Tong on 9/30/17.
 //  Copyright © 2017 Robby Tong. All rights reserved.
 //
 
 #ifndef AudioFrequency_Bridging_Header_h
 #define AudioFrequency_Bridging_Header_h
 
+#import "AudioFrequencyMacExclusive/RJTGraph.h"
+#import "AudioFrequencyMacExclusive/RJTGraphGroup.h"
+#import "RJTRadio.h"
 
 #endif /* AudioFrequency_Bridging_Header_h */

@@ -20,10 +20,12 @@
 		1E09E7751F88D9500011C95E /* RJTGraphGroup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */; };
 		1E09E7761F88DBDF0011C95E /* RJTPlotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */; };
 		1E09E7791F89AF0E0011C95E /* RJTRadio.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E09E7781F89AF0E0011C95E /* RJTRadio.mm */; };
+		1E1B4DCE1F9DB9CD00450C33 /* AudioDriverOSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CC021F930D7A0004051D /* AudioDriverOSX.cpp */; };
+		1E1B4DD11F9F070100450C33 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1B4DD01F9F070100450C33 /* AVFoundation.framework */; };
 		1E7A1F101F9BF00F00953C86 /* PortAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E07CBFF1F92BC460004051D /* PortAudioDriver.cpp */; };
 		1E7A1F171F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F161F9C06DE00953C86 /* SerialDispatchQueueSignaledThread.cpp */; };
 		1E7A1F221F9D1FF700953C86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F211F9D1FF700953C86 /* AppDelegate.swift */; };
-		1E7A1F241F9D1FF700953C86 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F231F9D1FF700953C86 /* ViewController.swift */; };
+		1E7A1F241F9D1FF700953C86 /* iPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F231F9D1FF700953C86 /* iPhoneViewController.swift */; };
 		1E7A1F271F9D1FF700953C86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A1F251F9D1FF700953C86 /* Main.storyboard */; };
 		1E7A1F291F9D1FF700953C86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A1F281F9D1FF700953C86 /* Assets.xcassets */; };
 		1E7A1F2C1F9D1FF700953C86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E7A1F2A1F9D1FF700953C86 /* LaunchScreen.storyboard */; };
@@ -67,6 +69,10 @@
 		1E7A1F5D1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */; };
 		1E7A1F5E1F9D2D1100953C86 /* SimulateAudioDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */; };
 		1E7A1F5F1F9D33A600953C86 /* RadioMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963741F48CBB400E736C2 /* RadioMsg.cpp */; };
+		1E7A1F611F9D71E000953C86 /* RJTGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F601F9D71E000953C86 /* RJTGraph.mm */; };
+		1E7A1F641F9D779C00953C86 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F631F9D779C00953C86 /* GraphView.swift */; };
+		1E7A1F691F9D784500953C86 /* SineWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F671F9D784500953C86 /* SineWave.cpp */; };
+		1E7A1F6A1F9D784500953C86 /* RJTGraphGroup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1E7A1F681F9D784500953C86 /* RJTGraphGroup.mm */; };
 		1EC0393F1F80121000A4D83A /* Autogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963541F48CBB400E736C2 /* Autogain.cpp */; };
 		1EC039401F80121000A4D83A /* PlottableAutogain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963551F48CBB400E736C2 /* PlottableAutogain.cpp */; };
 		1EC039411F80121000A4D83A /* Channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E1963561F48CBB400E736C2 /* Channel.cpp */; };
@@ -168,10 +174,10 @@
 		1E07CC2E1F9BDE260004051D /* PosixSignaledThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PosixSignaledThread.cpp; path = ../../SignaledThread/PosixSignaledThread.cpp; sourceTree = "<group>"; };
 		1E09E76D1F88D9500011C95E /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
 		1E09E76E1F88D9500011C95E /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
-		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraph.mm; path = AudioFrequencyMacExclusive/RJTGraph.mm; sourceTree = "<group>"; };
-		1E09E7701F88D9500011C95E /* RJTGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RJTGraph.h; path = AudioFrequencyMacExclusive/RJTGraph.h; sourceTree = "<group>"; };
-		1E09E7711F88D9500011C95E /* RJTGraphGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RJTGraphGroup.h; path = AudioFrequencyMacExclusive/RJTGraphGroup.h; sourceTree = "<group>"; };
-		1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RJTGraphGroup.mm; path = AudioFrequencyMacExclusive/RJTGraphGroup.mm; sourceTree = "<group>"; };
+		1E09E76F1F88D9500011C95E /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RJTGraph.mm; sourceTree = "<group>"; };
+		1E09E7701F88D9500011C95E /* RJTGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTGraph.h; sourceTree = "<group>"; };
+		1E09E7711F88D9500011C95E /* RJTGraphGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTGraphGroup.h; sourceTree = "<group>"; };
+		1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RJTGraphGroup.mm; sourceTree = "<group>"; };
 		1E09E7771F89A9970011C95E /* RJTRadio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTRadio.h; sourceTree = "<group>"; };
 		1E09E7781F89AF0E0011C95E /* RJTRadio.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RJTRadio.mm; sourceTree = "<group>"; };
 		1E1963541F48CBB400E736C2 /* Autogain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Autogain.cpp; path = ../../Autogain/Autogain.cpp; sourceTree = SOURCE_ROOT; };
@@ -210,6 +216,8 @@
 		1E19637C1F48CBB500E736C2 /* Transceiver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Transceiver.cpp; path = ../../Transceivers/Transceiver.cpp; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		1E19637D1F48CBB500E736C2 /* TransceiverBPSK.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TransceiverBPSK.cpp; path = ../../Transceivers/TransceiverBPSK.cpp; sourceTree = SOURCE_ROOT; };
 		1E19637E1F48CBB500E736C2 /* bpsk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = bpsk.cpp; path = ../../bpsk.cpp; sourceTree = SOURCE_ROOT; };
+		1E1B4DCF1F9EFE7000450C33 /* AudioFrequencyIphoneExclusive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AudioFrequencyIphoneExclusive.entitlements; path = AudioFrequencyIphoneExclusive/AudioFrequencyIphoneExclusive.entitlements; sourceTree = "<group>"; };
+		1E1B4DD01F9F070100450C33 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		1E6BEE401F48FAC600CE9060 /* circularbuffer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = circularbuffer.o; path = ../../PlotController/circularbuffer.o; sourceTree = "<group>"; };
 		1E6BEE411F48FAC600CE9060 /* mainwindow.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = mainwindow.o; path = ../../PlotController/mainwindow.o; sourceTree = "<group>"; };
 		1E6BEE421F48FAC600CE9060 /* moc_mainwindow.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = moc_mainwindow.o; path = ../../PlotController/moc_mainwindow.o; sourceTree = "<group>"; };
@@ -220,7 +228,7 @@
 		1E7A1F191F9C099600953C86 /* libdispatch.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libdispatch.tbd; path = usr/lib/system/libdispatch.tbd; sourceTree = SDKROOT; };
 		1E7A1F1F1F9D1FF700953C86 /* AudioFrequencyIphoneExclusive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioFrequencyIphoneExclusive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E7A1F211F9D1FF700953C86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1E7A1F231F9D1FF700953C86 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1E7A1F231F9D1FF700953C86 /* iPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPhoneViewController.swift; sourceTree = "<group>"; };
 		1E7A1F261F9D1FF700953C86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1E7A1F281F9D1FF700953C86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1E7A1F2B1F9D1FF700953C86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -229,6 +237,14 @@
 		1E7A1F571F9D223D00953C86 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		1E7A1F591F9D224600953C86 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		1E7A1F5B1F9D2D1100953C86 /* SimulateAudioDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimulateAudioDriver.cpp; path = ../../AudioDriver/SimulateAudioDriver.cpp; sourceTree = "<group>"; };
+		1E7A1F601F9D71E000953C86 /* RJTGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RJTGraph.mm; sourceTree = "<group>"; };
+		1E7A1F621F9D71F100953C86 /* RJTGraph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RJTGraph.h; sourceTree = "<group>"; };
+		1E7A1F631F9D779C00953C86 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		1E7A1F651F9D784500953C86 /* RJTGraphGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTGraphGroup.h; sourceTree = "<group>"; };
+		1E7A1F661F9D784500953C86 /* SineWave.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SineWave.hpp; sourceTree = "<group>"; };
+		1E7A1F671F9D784500953C86 /* SineWave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineWave.cpp; sourceTree = "<group>"; };
+		1E7A1F681F9D784500953C86 /* RJTGraphGroup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RJTGraphGroup.mm; sourceTree = "<group>"; };
+		1E7A1F6B1F9D78D600953C86 /* AudioFrequency-iPhone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AudioFrequency-iPhone-Bridging-Header.h"; sourceTree = "<group>"; };
 		1EC0387E1F7FBF6B00A4D83A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1EC038BC1F8010C100A4D83A /* switches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = switches.h; path = ../../switches.h; sourceTree = "<group>"; };
 		1EC038BD1F8010C100A4D83A /* crc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc.h; path = "../../CRC-16/crc.h"; sourceTree = "<group>"; };
@@ -296,7 +312,7 @@
 		1EC039801F80158400A4D83A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EC039841F80161800A4D83A /* Graph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Graph.swift; sourceTree = "<group>"; };
 		1EC039851F80161800A4D83A /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
-		1EC039B81F801CE300A4D83A /* AudioFrequency-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AudioFrequency-Bridging-Header.h"; sourceTree = "<group>"; };
+		1EC039B81F801CE300A4D83A /* AudioFrequency-Mac-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AudioFrequency-Mac-Bridging-Header.h"; path = "../AudioFrequency-Mac-Bridging-Header.h"; sourceTree = "<group>"; };
 		1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RJTPlotController.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -305,6 +321,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E1B4DD11F9F070100450C33 /* AVFoundation.framework in Frameworks */,
 				1E7A1F5A1F9D224600953C86 /* CoreGraphics.framework in Frameworks */,
 				1E7A1F581F9D223D00953C86 /* AudioToolbox.framework in Frameworks */,
 				1E7A1F561F9D223500953C86 /* CoreFoundation.framework in Frameworks */,
@@ -340,6 +357,7 @@
 		1E19631D1F48C9AD00E736C2 = {
 			isa = PBXGroup;
 			children = (
+				1E1B4DCF1F9EFE7000450C33 /* AudioFrequencyIphoneExclusive.entitlements */,
 				1E7A1F201F9D1FF700953C86 /* iPhone Application Layer */,
 				1EC039761F80158400A4D83A /* Mac Application Layer */,
 				1EBA3E3B1F7E37150069BF50 /* Objective-C Layer */,
@@ -362,6 +380,7 @@
 		1E6BEE3F1F48FAC600CE9060 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E1B4DD01F9F070100450C33 /* AVFoundation.framework */,
 				1E7A1F591F9D224600953C86 /* CoreGraphics.framework */,
 				1E7A1F571F9D223D00953C86 /* AudioToolbox.framework */,
 				1E7A1F551F9D223500953C86 /* CoreFoundation.framework */,
@@ -391,12 +410,20 @@
 		1E7A1F201F9D1FF700953C86 /* iPhone Application Layer */ = {
 			isa = PBXGroup;
 			children = (
+				1E7A1F661F9D784500953C86 /* SineWave.hpp */,
+				1E7A1F671F9D784500953C86 /* SineWave.cpp */,
+				1E7A1F651F9D784500953C86 /* RJTGraphGroup.h */,
+				1E7A1F681F9D784500953C86 /* RJTGraphGroup.mm */,
+				1E7A1F6B1F9D78D600953C86 /* AudioFrequency-iPhone-Bridging-Header.h */,
+				1E7A1F631F9D779C00953C86 /* GraphView.swift */,
 				1E7A1F211F9D1FF700953C86 /* AppDelegate.swift */,
-				1E7A1F231F9D1FF700953C86 /* ViewController.swift */,
+				1E7A1F231F9D1FF700953C86 /* iPhoneViewController.swift */,
 				1E7A1F251F9D1FF700953C86 /* Main.storyboard */,
 				1E7A1F281F9D1FF700953C86 /* Assets.xcassets */,
 				1E7A1F2A1F9D1FF700953C86 /* LaunchScreen.storyboard */,
 				1E7A1F2D1F9D1FF700953C86 /* Info.plist */,
+				1E7A1F601F9D71E000953C86 /* RJTGraph.mm */,
+				1E7A1F621F9D71F100953C86 /* RJTGraph.h */,
 			);
 			name = "iPhone Application Layer";
 			path = AudioFrequencyIphoneExclusive;
@@ -405,15 +432,10 @@
 		1EBA3E3B1F7E37150069BF50 /* Objective-C Layer */ = {
 			isa = PBXGroup;
 			children = (
-				1EC039B81F801CE300A4D83A /* AudioFrequency-Bridging-Header.h */,
 				1EC039B91F814ED700A4D83A /* RJTPlotController.cpp */,
 				1E07CBF81F8A58E90004051D /* RJTPlotController.h */,
 				1E09E7771F89A9970011C95E /* RJTRadio.h */,
 				1E09E7781F89AF0E0011C95E /* RJTRadio.mm */,
-				1E09E76F1F88D9500011C95E /* RJTGraph.mm */,
-				1E09E7701F88D9500011C95E /* RJTGraph.h */,
-				1E09E7711F88D9500011C95E /* RJTGraphGroup.h */,
-				1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */,
 			);
 			name = "Objective-C Layer";
 			sourceTree = "<group>";
@@ -423,6 +445,11 @@
 			children = (
 				1E09E76D1F88D9500011C95E /* SineWave.cpp */,
 				1E09E76E1F88D9500011C95E /* SineWave.hpp */,
+				1E09E76F1F88D9500011C95E /* RJTGraph.mm */,
+				1E09E7701F88D9500011C95E /* RJTGraph.h */,
+				1E09E7711F88D9500011C95E /* RJTGraphGroup.h */,
+				1E09E7721F88D9500011C95E /* RJTGraphGroup.mm */,
+				1EC039B81F801CE300A4D83A /* AudioFrequency-Mac-Bridging-Header.h */,
 				1EC039841F80161800A4D83A /* Graph.swift */,
 				1EC039851F80161800A4D83A /* GraphView.swift */,
 				1EC039771F80158400A4D83A /* AppDelegate.swift */,
@@ -610,6 +637,9 @@
 		1E19631E1F48C9AD00E736C2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Robby Tong";
@@ -617,6 +647,11 @@
 					1E7A1F1E1F9D1FF700953C86 = {
 						CreatedOnToolsVersion = 8.3.3;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.InterAppAudio = {
+								enabled = 1;
+							};
+						};
 					};
 					1EC038FB1F8011F700A4D83A = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -675,6 +710,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E1B4DCE1F9DB9CD00450C33 /* AudioDriverOSX.cpp in Sources */,
 				1E7A1F5F1F9D33A600953C86 /* RadioMsg.cpp in Sources */,
 				1E7A1F471F9D21EA00953C86 /* BandPass.cpp in Sources */,
 				1E7A1F481F9D21EA00953C86 /* FirFilter.cpp in Sources */,
@@ -688,6 +724,7 @@
 				1E7A1F4F1F9D21EA00953C86 /* PlottableFirFilter.cpp in Sources */,
 				1E7A1F501F9D21EA00953C86 /* PortAudioDriver.cpp in Sources */,
 				1E7A1F511F9D21EA00953C86 /* StdinSource.cpp in Sources */,
+				1E7A1F611F9D71E000953C86 /* RJTGraph.mm in Sources */,
 				1E7A1F521F9D21EA00953C86 /* Transceiver.cpp in Sources */,
 				1E7A1F531F9D21EA00953C86 /* TransceiverBPSK.cpp in Sources */,
 				1E7A1F541F9D21EA00953C86 /* SerialDispatchQueueSignaledThread.cpp in Sources */,
@@ -697,6 +734,8 @@
 				1E7A1F351F9D213B00953C86 /* Biquad_LowPass.cpp in Sources */,
 				1E7A1F361F9D213B00953C86 /* bpsk.cpp in Sources */,
 				1E7A1F371F9D213B00953C86 /* BPSK.cpp in Sources */,
+				1E7A1F691F9D784500953C86 /* SineWave.cpp in Sources */,
+				1E7A1F6A1F9D784500953C86 /* RJTGraphGroup.mm in Sources */,
 				1E7A1F381F9D213B00953C86 /* BPSKDecoder.cpp in Sources */,
 				1E7A1F391F9D213B00953C86 /* ByteInputInterface.cpp in Sources */,
 				1E7A1F3A1F9D213B00953C86 /* Channel.cpp in Sources */,
@@ -706,11 +745,12 @@
 				1E7A1F3E1F9D213B00953C86 /* crc.cpp in Sources */,
 				1E7A1F3F1F9D213B00953C86 /* Plottable_BPSKDecoder.cpp in Sources */,
 				1E7A1F401F9D213B00953C86 /* Plottable_CostasLoop.cpp in Sources */,
+				1E7A1F641F9D779C00953C86 /* GraphView.swift in Sources */,
 				1E7A1F411F9D213B00953C86 /* PlottableAutogain.cpp in Sources */,
 				1E7A1F421F9D213B00953C86 /* Prefix.cpp in Sources */,
 				1E7A1F431F9D213B00953C86 /* QPSK.cpp in Sources */,
 				1E7A1F441F9D213B00953C86 /* QPSKBlock.cpp in Sources */,
-				1E7A1F241F9D1FF700953C86 /* ViewController.swift in Sources */,
+				1E7A1F241F9D1FF700953C86 /* iPhoneViewController.swift in Sources */,
 				1E7A1F221F9D1FF700953C86 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -933,10 +973,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AudioFrequencyIphoneExclusive/AudioFrequencyIphoneExclusive.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = BZ43VN2TVC;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"MACOSX_APP=1",
+					"IPHONE_APP=1",
 					"DEBUG=1",
 					"AUDIOTOOLBOX=1",
 				);
@@ -960,6 +1001,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "AudioFrequencyIphoneExclusive/AudioFrequency-iPhone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -969,6 +1011,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AudioFrequencyIphoneExclusive/AudioFrequencyIphoneExclusive.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = BZ43VN2TVC;
 				HEADER_SEARCH_PATHS = (
@@ -1137,7 +1180,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = RobbyTog.AudioFrequencyMacExclusive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "AudioFrequency-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "AudioFrequency-Mac-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -1191,7 +1234,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = RobbyTog.AudioFrequencyMacExclusive;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "AudioFrequency-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "AudioFrequency-Mac-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};
@@ -1216,6 +1259,7 @@
 				1E7A1F301F9D1FF800953C86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EC039001F8011F700A4D83A /* Build configuration list for PBXNativeTarget "AudioFrequency" */ = {
 			isa = XCConfigurationList;

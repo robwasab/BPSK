@@ -14,6 +14,10 @@
 #include "PosixSignaledThread.h"
 #include "SerialDispatchQueueSignaledThread.h"
 
+#ifdef IPHONE_APP
+#import <AVFoundation/AVFoundation.h>
+#endif
+
 typedef enum
 {
     RJT_START_RADIO,
@@ -167,17 +171,39 @@ void RJTRadio_callBack(void * obj, RadioMsg * msg)
                             bw,
                             cycles,
                             mPlotController);
+        
+        #ifdef IPHONE_APP
+        NSError *error = nil;
+        // the param category depends what you need
+        BOOL ret = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+        if (!ret)
+        {
+            NSLog(@"Audio session category setup failed");
+            return nil;
+        }
+        #endif
     }
     return self;
 }
 
 -(id) initWithTxFreq:(double)txFreq rxFreq:(double)rxFreq
 {
-    return [self initWithTxFreq:txFreq rxFreq:rxFreq ifBandWidth:4E3 ifFreq:3E3 cyclesPerBit:10];
+    return [self initWithTxFreq:txFreq rxFreq:rxFreq ifBandWidth:3E3 ifFreq:3E3 cyclesPerBit:20];
 }
 
 -(void) dealloc
 {
+    #ifdef IPHONE_APP
+    NSError *error = nil;
+    // don't forget to setActive NO when finishing recording
+    BOOL ret = [[AVAudioSession sharedInstance] setActive:YES error:&error];
+    if (!ret)
+    {
+        NSLog(@"Audio session activation failed");
+        return;
+    }
+    #endif
+    
     delete mSignaledThread;
     delete mTransceiver;
     delete mPlotController;

@@ -71,9 +71,9 @@ import CoreGraphics
         let height = self.bounds.height
         
         mGraphGroup = RJTGraphGroup(numGraphs: Int32(numGraphs),
-                                    width: width,
-                                    height: height,
-                                    expandRemainingGraphs: expandRemainingGraphs)
+                            width: width,
+                            height: height,
+                            expandRemainingGraphs: expandRemainingGraphs)
         mGraphGroup?.delegate = self
         mGraphGroup?.loadDataSources(from: mRadio)
         self.needsDisplay = true
